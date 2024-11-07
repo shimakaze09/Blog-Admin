@@ -1,5 +1,6 @@
 <template>
-  <div class="header" :style="{ 'background': themeColor }" :class="collapse ? 'position-collapse-left' : 'position-left'">
+  <div class="header" :style="{ 'background': themeColor }"
+    :class="collapse ? 'position-collapse-left' : 'position-left'">
     <!-- Navigation collapse -->
     <span class="hamburg">
       <el-menu class="el-menu-demo" :background-color="themeColor" text-color="#fff" :active-text-color="themeColor"
@@ -18,9 +19,12 @@
           <theme-picker class="theme-picker" :default="themeColor" @onThemeChange="onThemeChange">
           </theme-picker>
         </el-menu-item>
-        <el-menu-item index="2">
+        <el-menu-item index="2" v-popover:popover-personal>
           <!-- User Information -->
           <span class="user-info"><img :src="user.avatar" />{{ user.name }}</span>
+          <el-popover ref="popover-personal" placement="bottom-end" trigger="click" :visible-arrow="false">
+            <personal-panel :user="user"></personal-panel>
+          </el-popover>
         </el-menu-item>
       </el-menu>
     </span>
@@ -30,13 +34,19 @@
 <script>
 import { mapState } from 'vuex'
 import Hamburger from "../components/Hamburger"
-import ThemePicker from "../components/ThemePicker";
+import ThemePicker from "../components/ThemePicker"
+import NoticePanel from "./Core/NoticePanel"
+import MessagePanel from "./Core/MessagePanel"
+import PersonalPanel from "./Core/PersonalPanel"
 
 export default {
   name: "HeaderBar",
   components: {
     Hamburger,
-    ThemePicker
+    ThemePicker,
+    NoticePanel,
+    MessagePanel,
+    PersonalPanel
   },
   data() {
     return {
@@ -112,6 +122,10 @@ export default {
     margin: 10px 0px 10px 10px;
     float: right;
   }
+}
+
+.badge {
+  line-height: 18px;
 }
 
 .position-left {
