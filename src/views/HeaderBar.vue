@@ -31,7 +31,7 @@
         </el-menu-item>
         <el-menu-item index="2" v-popover:popover-message>
           <!-- My Messages -->
-          <el-badge :value="5" :max="99" class="badge" type="error">
+          <el-badge :value="5" :max="99" class="badge" type="danger">
             <li style="color:#fff;" class="fa fa-envelope-o fa-lg"></li>
           </el-badge>
           <el-popover ref="popover-message" placement="bottom-end" trigger="click">
@@ -40,7 +40,7 @@
         </el-menu-item>
         <el-menu-item index="3" v-popover:popover-notice>
           <!-- System Notifications -->
-          <el-badge :value="4" :max="99" class="badge" type="error">
+          <el-badge :value="4" :max="99" class="badge" type="danger">
             <li style="color:#fff;" class="fa fa-bell-o fa-lg"></li>
           </el-badge>
           <el-popover ref="popover-notice" placement="bottom-end" trigger="click">
