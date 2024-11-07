@@ -10,6 +10,16 @@
         </el-menu-item>
       </el-menu>
     </span>
+    <!-- Navigation Menu -->
+    <span class="navbar">
+      <el-menu :default-active="activeIndex" class="el-menu-demo" :background-color="themeColor" text-color="#fff"
+        active-text-color="#ffd04b" mode="horizontal" @select="selectNavBar()">
+        <el-menu-item index="1" @click="$router.push('/')">Home</el-menu-item>
+        <el-menu-item index="2" @click="openWindow('https://github.com/shimakaze09')">Menu
+          1</el-menu-item>
+        <el-menu-item index="3" @click="openWindow('https://google.com')">Menu 2</el-menu-item>
+      </el-menu>
+    </span>
     <!-- Toolbar -->
     <span class="toolbar">
       <el-menu class="el-menu-demo" :background-color="themeColor" text-color="#14889A" :active-text-color="themeColor"
@@ -78,6 +88,9 @@ export default {
     }
   },
   methods: {
+    openWindow(url) {
+      window.open(url)
+    },
     selectNavBar(key, keyPath) {
       console.log(key, keyPath)
     },
