@@ -1,11 +1,45 @@
 <template>
   <div class="menu-bar-container">
     <!-- logo -->
-    <div class="logo" :style="{ 'background': themeColor }" :class="collapse ? 'menu-bar-collapse-width' : 'menu-bar-width'"
-      @click="$router.push('/')">
+    <div class="logo" :style="{ 'background': themeColor }"
+      :class="collapse ? 'menu-bar-collapse-width' : 'menu-bar-width'" @click="$router.push('/')">
       <img v-if="collapse" src="@/assets/codelab.png" />
       <div>{{ collapse ? '' : appName }}</div>
     </div>
+    <!-- Navigation Menu -->
+    <el-menu default-active="1" :class="collapse ? 'menu-bar-collapse-width' : 'menu-bar-width'" :collapse="collapse"
+      :collapse-transition="false" :unique-opened="false" @open="handleOpen" @close="handleClose"
+      @select="handleSelect">
+      <el-submenu index="1">
+        <template slot="title">
+          <i class="el-icon-location"></i>
+          <span>Blogs</span>
+        </template>
+        <el-menu-item-group title="Category Management">
+          <el-menu-item index="1-1">List of Categories</el-menu-item>
+        </el-menu-item-group>
+        <el-menu-item-group title="Article Management">
+          <el-menu-item index="1-2">List of Articles</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <el-submenu index="2">
+        <template slot="title">
+          <i class="el-icon-location"></i>
+          <span>Photography</span>
+        </template>
+        <el-menu-item-group title="Photo Management">
+          <el-menu-item index="2-1">List of Photos</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <el-menu-item index="3">
+        <i class="el-icon-menu"></i>
+        <span slot="title">Navigation 2</span>
+      </el-menu-item>
+      <el-menu-item index="4">
+        <i class="el-icon-setting"></i>
+        <span slot="title">Navigation 3</span>
+      </el-menu-item>
+    </el-menu>
   </div>
 </template>
 
@@ -16,11 +50,23 @@ export default {
   computed: {
     ...mapState({
       appName: state => state.app.appName,
-      themeColor: state=>state.app.themeColor,
+      themeColor: state => state.app.themeColor,
       collapse: state => state.app.collapse,
     })
   },
-  methods: {}
+  methods: {
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleSelect(a, b) {
+      // console.log('handleSelect', a, b)
+      console.log('handleSelect', 'a', a)
+      console.log('handleSelect', 'b', b)
+    }
+  }
 }
 </script>
 
@@ -31,6 +77,13 @@ export default {
   left: 0;
   bottom: 0;
   z-index: 1020;
+
+  .el-menu {
+    position: absolute;
+    top: 60px;
+    bottom: 0;
+    text-align: left;
+  }
 
   .logo {
     position: absolute;
