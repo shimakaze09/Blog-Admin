@@ -1,6 +1,6 @@
 export default {
   state: {
-    appName: "StarBlog",  // Application name
+    appName: "Blog",  // Application name
     themeColor: "#14889A",  // Theme color
     oldThemeColor: "#14889A",   // Previous theme color
     collapse: false,  // Navigation bar collapse state
