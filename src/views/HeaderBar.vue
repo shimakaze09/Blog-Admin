@@ -19,7 +19,16 @@
           <theme-picker class="theme-picker" :default="themeColor" @onThemeChange="onThemeChange">
           </theme-picker>
         </el-menu-item>
-        <el-menu-item index="2" v-popover:popover-notice>
+        <el-menu-item index="2" v-popover:popover-message>
+          <!-- My Messages -->
+          <el-badge :value="5" :max="99" class="badge" type="error">
+            <li style="color:#fff;" class="fa fa-envelope-o fa-lg"></li>
+          </el-badge>
+          <el-popover ref="popover-message" placement="bottom-end" trigger="click">
+            <message-panel></message-panel>
+          </el-popover>
+        </el-menu-item>
+        <el-menu-item index="3" v-popover:popover-notice>
           <!-- System Notifications -->
           <el-badge :value="4" :max="99" class="badge" type="error">
             <li style="color:#fff;" class="fa fa-bell-o fa-lg"></li>
@@ -28,7 +37,7 @@
             <notice-panel></notice-panel>
           </el-popover>
         </el-menu-item>
-        <el-menu-item index="3" v-popover:popover-personal>
+        <el-menu-item index="4" v-popover:popover-personal>
           <!-- User Information -->
           <span class="user-info"><img :src="user.avatar" />{{ user.name }}</span>
           <el-popover ref="popover-personal" placement="bottom-end" trigger="click" :visible-arrow="false">
