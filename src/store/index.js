@@ -5,10 +5,12 @@ Vue.use(vuex);
 
 // Import child modules
 import app from './modules/app'
+import tab from './modules/tab'
 
 const store = new vuex.Store({
   modules: {
-    app: app
+    app,
+    tab
   }
 })
 

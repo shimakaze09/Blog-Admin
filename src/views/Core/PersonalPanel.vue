@@ -62,7 +62,7 @@ export default {
       default: {
         name: "admin",
         avatar: "@/assets/user.png",
-        role: "超级管理员",
+        role: "super administrator",
         registeInfo: "Registration Time: 2018-12-25 "
       }
     }
