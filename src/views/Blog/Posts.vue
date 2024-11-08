@@ -2,11 +2,11 @@
   <el-container>
     <el-header height="30px">
       <el-row type="flex" justify="space-between">
-        <el-row gutter="10">
-          <el-col span="12">
+        <el-row :gutter="10">
+          <el-col :span="12">
             <el-input placeholder="Enter keyword" prefix-icon="el-icon-search"></el-input>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <!-- Category Filter -->
             <!-- Adding the filterable attribute to el-select enables search functionality. By default, Select will find options whose label contains the input value. -->
             <el-select v-model="currentCategoryName" filterable placeholder="Select category"
@@ -66,12 +66,6 @@ export default {
       categories: [],
       currentCategoryId: 0,
       currentCategoryName: ''
-    }
-  },
-  watch: {
-    currentCategoryId: function (val, oldVal) {
-      console.log(val, oldVal)
-      this.loadBlogPosts()
     }
   },
   mounted() {
