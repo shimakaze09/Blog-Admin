@@ -7,8 +7,8 @@
       <div>{{ collapse ? '' : appName }}</div>
     </div>
     <!-- Navigation Menu -->
-    <el-menu default-active="1" :class="collapse ? 'menu-bar-collapse-width' : 'menu-bar-width'" :collapse="collapse"
-      :collapse-transition="false" :unique-opened="false" @open="handleOpen" @close="handleClose"
+    <el-menu ref="navmenu" default-active="1" :class="collapse ? 'menu-bar-collapse-width' : 'menu-bar-width'"
+      :collapse="collapse" :collapse-transition="false" :unique-opened="false" @open="handleOpen" @close="handleClose"
       @select="handleSelect">
       <el-submenu index="blog">
         <template slot="title">
@@ -31,9 +31,9 @@
           <el-menu-item index="photos">List of Photos</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-menu-item index="3">
+      <el-menu-item index="test">
         <i class="el-icon-menu"></i>
-        <span slot="title">Navigation 2</span>
+        <span slot="title">test</span>
       </el-menu-item>
       <el-menu-item index="login">
         <i class="el-icon-setting"></i>
@@ -52,7 +52,29 @@ export default {
       appName: state => state.app.appName,
       themeColor: state => state.app.themeColor,
       collapse: state => state.app.collapse,
-    })
+    }),
+    mainTabs: {
+      get() {
+        return this.$store.state.tab.mainTabs
+      },
+      set(val) {
+        this.$store.commit('updateMainTabs', val)
+      }
+    },
+    mainTabsActiveName: {
+      get() {
+        return this.$store.state.tab.mainTabsActiveName
+      },
+      set(val) {
+        this.$store.commit('updateMainTabsActiveName', val)
+      }
+    }
+  },
+  watch: {
+    $route: 'handleRoute'
+  },
+  created() {
+    this.handleRoute(this.$route)
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -64,12 +86,34 @@ export default {
     handleSelect(menuStr, menuArr) {
       console.log('handleSelect', menuArr)
       switch (menuArr[0]) {
+        case 'test':
+          this.$router.push('test')
+          break
         case 'login':
           this.$router.push('/login')
           break
         default:
           console.log('default...')
           break
+      }
+    },
+    // Route handling
+    handleRoute(route) {
+      // Tab selection: If the tab doesn't exist, add it
+      let tab = this.mainTabs.filter(item => item.name === route.name)[0];
+      if (!tab) {
+        tab = {
+          name: route.name,
+          title: route.name,
+          icon: route.meta.icon
+        };
+        this.mainTabs = this.mainTabs.concat(tab);
+      }
+      this.mainTabsActiveName = tab.name;
+      // Update highlighted menu when switching tabs
+      if (this.$refs.navmenu != null) {
+        this.$refs.navmenu.activeIndex = '' + route.meta.index;
+        this.$refs.navmenu.initOpenedMenu();
       }
     }
   }
