@@ -80,8 +80,9 @@ export default {
     return {
       user: {
         name: "CodeLab",
-        avatar: require("@/assets/star.png"),
-        role: "Super Admin",
+        avatar: require("@/assets/user.png"),
+        role: "Administrator",
+        registerInfo: "Registered on 8/11/2024"
       },
       activeIndex: '1',
       langVisible: false
