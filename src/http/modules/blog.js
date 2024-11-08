@@ -1,7 +1,7 @@
 import axios from '../axios'
 
 // Get blog list
-export const getList = (categoryId, page, pageSize) => {
+export const getList = (categoryId = 0, page = 1, pageSize = 20) => {
   return axios({
     url: 'BlogPost',
     method: 'get',
