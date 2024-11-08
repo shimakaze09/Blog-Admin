@@ -20,7 +20,8 @@ export default function $axios(options) {
           config.headers.token = token
         } else {
           // Redirect to login page
-          router.push('/login')
+          // TODO: After login, I'll enable redirection here
+          // router.push('/login')
         }
         return config
       },
