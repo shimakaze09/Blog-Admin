@@ -5,7 +5,7 @@
     </span>
     <h2 class="title">System Login</h2>
     <el-form-item prop="account">
-      <el-input type="text" v-model="loginForm.account" auto-complete="off" placeholder="Account"></el-input>
+      <el-input type="text" v-model="loginForm.username" auto-complete="off" placeholder="Account"></el-input>
     </el-form-item>
     <el-form-item prop="password">
       <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="Password"></el-input>
@@ -26,13 +26,12 @@ export default {
     return {
       loading: false,
       loginForm: {
-        account: 'admin',
+        username: 'admin',
         password: 'admin',
-        src: ''
       },
       fieldRules: {
-        account: [
-          { required: true, message: 'Please enter account', trigger: 'blur' }
+        username: [
+          { required: true, message: 'Please enter username', trigger: 'blur' }
         ],
         password: [
           { required: true, message: 'Please enter password', trigger: 'blur' }
@@ -45,21 +44,22 @@ export default {
     login() {
       this.loading = true
       let userInfo = {
-        account: this.loginForm.account,
+        username: this.loginForm.username,
         password: this.loginForm.password,
       }
-      this.$api.login.login(userInfo).then((res) => {  // Call login API
-        if (res.msg != null) {
-          this.$message({ message: res.msg, type: 'error' })
+      this.$api.login.login(userInfo).then(res => {  // Call login API
+        if (res.message != null) {
+          this.$message({ message: res.message, type: 'info' })
         } else {
           Cookies.set('token', res.data.token) // Set token in Cookie
-          sessionStorage.setItem('user', userInfo.account) // Save user to local session
+          sessionStorage.setItem('user', userInfo.username) // Save user to local session
           this.$router.push('/')  // Redirect to homepage after successful login
         }
         this.loading = false
-      }).catch((res) => {
-        this.$message({ message: res.message, type: 'error' })
       })
+        .catch((res) => {
+          this.$message({ message: res.message, type: 'error' })
+        })
     },
     reset() {
       this.$refs.loginForm.resetFields()

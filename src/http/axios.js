@@ -17,11 +17,11 @@ export default function $axios(options) {
         let token = Cookies.get('token')
         // Send token along with the request
         if (token) {
-          config.headers.token = token
+          config.headers.Authorization = `Bearer ${token}`
         } else {
           // Redirect to login page
           // TODO: After login, I'll enable redirection here
-          // router.push('/login')
+          router.push('/login')
         }
         return config
       },
