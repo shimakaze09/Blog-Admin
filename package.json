@@ -11,7 +11,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "axios": "^0.26.0",
+    "axios": "^0.28.0",
     "blog-admin": "file:",
     "element-ui": "^2.15.6",
     "font-awesome": "^4.7.0",
