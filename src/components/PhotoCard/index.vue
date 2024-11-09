@@ -1,5 +1,5 @@
 <template>
-  <el-popover placement="bottom" width="200" trigger="custom" v-model="visible">
+  <el-popover placement="bottom" width="200" trigger="manual" v-model="visible">
     <p>Image Name: {{ photo.title }}</p>
     <p>Location: {{ photo.location }}</p>
     <el-button-group>
