@@ -8,8 +8,8 @@
         <el-input v-model="form.location" autocomplete="off"></el-input>
       </el-form-item>
     </el-form>
-    <el-upload ref="upload" drag action="" :limit="1" accept="image/jpeg,image/png" :on-change="onUploadChange"
-      :auto-upload="false">
+    <el-upload ref="upload" drag action="" accept="image/jpeg,image/png" :file-list="fileList"
+      :on-change="onUploadChange" :auto-upload="false">
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">Drag files here or <em>click to upload</em></div>
       <div class="el-upload__tip" slot="tip">Only JPG/PNG files are allowed, and they should not exceed 500KB</div>
@@ -32,6 +32,7 @@ export default {
   data() {
     return {
       dialogFormVisible: false,
+      fileList: [],
       form: {
         title: '',
         location: '',
@@ -53,6 +54,11 @@ export default {
         this.$message.error('Only JPG/PNG images are allowed!')
         return false
       }
+
+      if (fileList.length > 0) {
+        this.fileList = [fileList[fileList.length - 1]]
+      }
+
       this.form.file = file
     },
     show() {
