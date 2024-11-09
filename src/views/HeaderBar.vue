@@ -105,7 +105,7 @@ export default {
     },
   },
   mounted() {
-    let user = sessionStorage.getItem("user")
+    let user = localStorage.getItem("user")
     if (user) {
       this.user.name = user
       this.user.avatar = require("@/assets/star.png")

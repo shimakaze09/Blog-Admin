@@ -72,7 +72,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   // After successful login on the login page, user information will be saved in session storage
   // Its lifetime is the session lifecycle, and it becomes invalid when the page is closed.
-  let userName = sessionStorage.getItem('user')
+  let userName = localStorage.getItem('user')
 
   if (to.path === '/login') {
     // If accessing the login page, if user session information exists, it means the user has logged in before, redirect to the home page

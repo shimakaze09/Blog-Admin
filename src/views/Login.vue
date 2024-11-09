@@ -52,7 +52,7 @@ export default {
           this.$message({ message: res.message, type: 'info' })
         } else {
           Cookies.set('token', res.data.token) // Set token in Cookie
-          sessionStorage.setItem('user', userInfo.username) // Save user to local session
+          localStorage.setItem('user', userInfo.username) // Save user to local session
           this.$router.push('/')  // Redirect to homepage after successful login
         }
         this.loading = false
