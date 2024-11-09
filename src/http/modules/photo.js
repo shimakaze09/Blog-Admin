@@ -16,9 +16,10 @@ export const get = photoId => {
 }
 
 // Upload Photo
-export const add = (title, file) => {
+export const add = (title, location, file) => {
   let formData = new FormData()
   formData.append('title', title)
+  formData.append('location', location)
   formData.append('file', file)
 
   return axios({

@@ -3,7 +3,7 @@
     <el-header height="30px">
       <el-row type="flex" justify="start">
         <div>
-          <el-button @click="dialogFormVisible = true">Add</el-button>
+          <el-button @click="$refs.addPhotoDialog.show()">Add</el-button>
           <el-button type="danger">Bulk Delete</el-button>
         </div>
       </el-row>
@@ -29,23 +29,7 @@
           </el-card>
         </el-col>
       </el-row>
-      <el-dialog title="Upload Image" :visible.sync="dialogFormVisible" width="30%">
-        <el-form ref="uploadForm" :model="form" :rules="formRules" label-width="80px">
-          <el-form-item label="Image Title" prop="title">
-            <el-input v-model="form.title" autocomplete="off"></el-input>
-          </el-form-item>
-        </el-form>
-        <el-upload ref="upload" drag action="" accept="image/jpeg,image/png" :on-change="onUploadChange"
-          :auto-upload="false">
-          <i class="el-icon-upload"></i>
-          <div class="el-upload__text">Drag the file here or <em>click to upload</em></div>
-          <div class="el-upload__tip" slot="tip">Only JPG/PNG files are allowed, and no more than 500KB</div>
-        </el-upload>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">Cancel</el-button>
-          <el-button type="primary" @click="submitUpload">Confirm</el-button>
-        </div>
-      </el-dialog>
+      <add-photo-dialog ref="addPhotoDialog" @onAddPhotoSucceed="onAddPhotoSucceed"></add-photo-dialog>
     </el-main>
     <el-footer height="30px">
       <!-- Pagination -->
@@ -58,27 +42,20 @@
 </template>
 
 <script>
-import { baseUrl } from "@/utils/global";
+import { baseUrl } from "@/utils/global"
+import addPhotoDialog from "@/views/Photography/AddPhotoDialog"
 
 export default {
   name: "Photos",
+  components: {
+    addPhotoDialog
+  },
   data() {
     return {
       currentPage: 1,
       pageSize: 20,
       totalCount: 1000,
       photos: [],
-      dialogFormVisible: false,
-      form: {
-        title: '',
-        file: null
-      },
-      formRules: {
-        title: [
-          { required: true, message: 'Please enter image title', trigger: 'blur' },
-          { min: 1, max: 200, message: 'Length should be between 1 and 200 characters', trigger: 'blur' }
-        ],
-      }
     }
   },
   mounted() {
@@ -106,29 +83,8 @@ export default {
       this.currentPage = page
       this.loadPhotos()
     },
-    onUploadChange(file) {
-      const isIMAGE = (file.raw.type === 'image/jpeg' || file.raw.type === 'image/png')
-      if (!isIMAGE) {
-        this.$message.error('Only JPEG/PNG images are allowed!')
-        return false
-      }
-      this.form.file = file
-    },
-    submitUpload() {
-      // this.$refs.upload.submit()
-      this.$refs.uploadForm.validate((valid) => {
-        if (!valid) return false;
-        console.log(this.form)
-
-        this.$api.photo.add(this.form.title, this.form.file.raw)
-          .then(res => {
-            console.log(res.data)
-            if (res.successful) {
-              this.dialogFormVisible = false
-              this.loadPhotos()
-            }
-          })
-      })
+    onAddPhotoSucceed() {
+      this.loadPhotos()
     }
   }
 }
