@@ -1,41 +1,5 @@
 <template>
-  <div class="page-container" style="width:99%;margin-top:15px;">
-    <el-carousel :interval="3000" type="card" height="550px" class="carousel">
-      <el-carousel-item class="carousel-item-intro">
-        <h2>Project Introduction</h2>
-        <ul>
-          <li>Based on Spring Boot, Spring Cloud, Vue, Element, Java EE rapid development platform</li>
-          <li>Aims to provide a concise and easy-to-use solution to help users effectively reduce project development difficulty and cost</li>
-          <li>The blog provides synchronous tutorial articles for the development process, teaching you how to develop similar systems step by step</li>
-        </ul>
-        <div><img src="@/assets/user.png" alt=""/></div>
-      </el-carousel-item>
-      <el-carousel-item class="carousel-item-func">
-        <h2>Function Plan</h2>
-        <ul>
-          <li>Core framework: Spring Boot 2.x. Service governance: Spring Cloud.</li>
-          <li>View framework: Spring MVC 5.x. Persistence layer framework: MyBatis 3.x.</li>
-          <li>Database connection pool: Druid 1.x. Security framework: Shiro 1.4.x.</li>
-          <li>Front-end framework: Vue.js 2.x. Page components: Element 2.x.</li>
-          <li>Status management: Vuex.js 2.x. Backend interaction: axios 0.18.x.</li>
-          <li>...</li>
-        </ul>
-        <div><img src="@/assets/codelab.png" alt=""></div>
-      </el-carousel-item>
-      <el-carousel-item class="carousel-item-env">
-        <h2>Development Environment</h2>
-        <ul>
-          <li>Core framework: Spring Boot 2.x. Service governance: Spring Cloud.</li>
-          <li>View framework: Spring MVC 5.x. Persistence layer framework: MyBatis 3.x.</li>
-          <li>Database connection pool: Druid 1.x. Security framework: Shiro 1.4.x.</li>
-          <li>Front-end framework: Vue.js 2.x. Page components: Element 2.x.</li>
-          <li>Status management: Vuex.js 2.x. Backend interaction: axios 0.18.x.</li>
-          <li>...</li>
-        </ul>
-        <div><img src="@/assets/star.png" alt=""></div>
-      </el-carousel-item>
-    </el-carousel>
-  </div>
+  <el-skeleton :rows="6"></el-skeleton>
 </template>
 
 <script>
