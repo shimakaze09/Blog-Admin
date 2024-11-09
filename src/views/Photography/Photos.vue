@@ -12,18 +12,7 @@
       <Waterfall align="center" :line-gap="300" :min-line-gap="250" :max-line-gap="400" :watch="photos">
         <waterfall-slot v-for="(photo, index) in photos" :height="photo.height" :width="photo.width" :order="index"
           :key="photo.id" move-class="item-move">
-          <el-popover placement="top" width="200" trigger="hover">
-            <p>Image Name: {{ photo.title }}</p>
-            <p>Location: {{ photo.location }}</p>
-            <el-button-group>
-              <el-button type="" icon="el-icon-edit"></el-button>
-              <el-button type="" icon="el-icon-share"></el-button>
-              <el-button type="" icon="el-icon-delete"></el-button>
-            </el-button-group>
-            <el-card slot="reference" :body-style="{ padding: '0px' }" style="margin: 5px;">
-              <el-image :src="photo.url" class="image" :preview-src-list="[photo.url]"></el-image>
-            </el-card>
-          </el-popover>
+          <photo-card :photo="photo"></photo-card>
         </waterfall-slot>
       </Waterfall>
       <add-photo-dialog ref="addPhotoDialog" @onAddPhotoSucceed="onAddPhotoSucceed"></add-photo-dialog>
@@ -43,13 +32,15 @@ import { baseUrl } from "@/utils/global"
 import addPhotoDialog from "@/views/Photography/AddPhotoDialog"
 import Waterfall from 'vue-waterfall/lib/waterfall'
 import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
+import PhotoCard from "@/components/PhotoCard";
 
 export default {
   name: "Photos",
   components: {
     addPhotoDialog,
     Waterfall,
-    WaterfallSlot
+    WaterfallSlot,
+    PhotoCard
   },
   data() {
     return {
