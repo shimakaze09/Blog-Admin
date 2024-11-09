@@ -10,7 +10,7 @@ import Photos from "@/views/Photography/Photos"
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -68,3 +68,23 @@ export default new Router({
     },
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  // After successful login on the login page, user information will be saved in session storage
+  // Its lifetime is the session lifecycle, and it becomes invalid when the page is closed.
+  let userName = sessionStorage.getItem('user')
+
+  if (to.path === '/login') {
+    // If accessing the login page, if user session information exists, it means the user has logged in before, redirect to the home page
+    if (userName) next({ path: '/' })
+    else next()
+  } else {
+    if (!userName) {
+      // If accessing a non-login page and user session information does not exist, it means the user has not logged in, so redirect to the login page
+      next({ path: '/login' })
+    }
+    next()
+  }
+})
+
+export default router
