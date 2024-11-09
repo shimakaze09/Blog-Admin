@@ -47,18 +47,21 @@ export default {
         username: this.loginForm.username,
         password: this.loginForm.password,
       }
-      this.$api.login.login(userInfo).then(res => {  // Call login API
-        if (res.message != null) {
-          this.$message({ message: res.message, type: 'info' })
-        } else {
-          Cookies.set('token', res.data.token) // Set token in Cookie
-          localStorage.setItem('user', userInfo.username) // Save user to local session
-          this.$router.push('/')  // Redirect to homepage after successful login
-        }
-        this.loading = false
-      })
-        .catch((res) => {
-          this.$message({ message: res.message, type: 'error' })
+      this.$api.auth.login(userInfo)
+        .then(res => {  // Call login API
+          if (res.successful) {
+            Cookies.set('token', res.data.token) // Set token in Cookie
+            localStorage.setItem('user', userInfo.username) // Save user to local storage
+            this.$router.push('/')  // Redirect to home page after successful login
+            this.$message({ message: 'Login Successful', type: 'success' })
+          } else {
+            this.$message({ message: `Login Failed: ${res.message}`, type: 'error' })
+          }
+          this.loading = false
+        })
+        .catch(err => {
+          this.$message({ message: `Login Failed: ${err.message}`, type: 'error' })
+          this.loading = false
         })
     },
     reset() {
