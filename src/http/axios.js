@@ -52,7 +52,9 @@ export default function $axios(options) {
         return response.data
       },
       err => {
+        let reason = err
         if (err && err.response) {
+          // Wrap up the default error message
           switch (err.response.status) {
             case 400:
               err.message = 'Bad request'
@@ -89,9 +91,14 @@ export default function $axios(options) {
               break
             default:
           }
+          // If there's an error message returned, let's handle it
+          if (err.response.data) {
+            reason = err.response.data;
+            if (reason.message) err.message = reason.message;
+          }
         }
         console.error(err)
-        return Promise.reject(err) // Return error information returned by the interface
+        return Promise.reject(reason) // Return error information returned by the interface
       }
     )
     // Request processing
