@@ -1,18 +1,17 @@
 import axios from '../axios'
 
-// Get blog list
-export const getList = (categoryId = 0, page = 1, pageSize = 20) => {
+// Get top blogs
+export const top = () => {
   return axios({
-    url: 'BlogPost',
-    method: 'get',
-    params: { categoryId, page, pageSize }
+    url: 'Blog/Top',
+    method: 'get'
   })
 }
 
-// Get specified blog post
-export const get = postId => {
+// Get featured blogs
+export const featured = () => {
   return axios({
-    url: `BlogPost/${postId}/`,
-    method: 'get',
+    url: 'Blog/Featured',
+    method: 'get'
   })
 }

@@ -8,3 +8,9 @@ export const login = data => {
     data
   })
 }
+
+// Get user information
+export const get = () => axios({
+  url: 'Auth',
+  method: 'get'
+})
