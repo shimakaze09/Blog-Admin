@@ -4,12 +4,12 @@
       <el-row type="flex" justify="space-between">
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-input placeholder="Enter keyword" prefix-icon="el-icon-search"></el-input>
+            <el-input placeholder="Please enter keywords" prefix-icon="el-icon-search"></el-input>
           </el-col>
           <el-col :span="12">
             <!-- Category Filter -->
-            <!-- Adding the filterable attribute to el-select enables search functionality. By default, Select will find options whose label contains the input value. -->
-            <el-select v-model="currentCategoryName" filterable placeholder="Select category"
+            <!-- Enable search functionality by adding filterable attribute to el-select -->
+            <el-select v-model="currentCategoryName" filterable placeholder="Please select category"
               v-on:change="handleCategoryChange">
               <el-option v-for="item in categories" :key="item.id" :label="item.name" :value="item.id">
               </el-option>
@@ -17,18 +17,21 @@
           </el-col>
         </el-row>
         <div>
-          <el-button>Add</el-button>
-          <el-button type="danger">Delete</el-button>
+          <el-button @click="addPost">Add</el-button>
+          <el-button type="danger" :disabled="cancelSelectionBtnDisabled">Delete</el-button>
+          <el-button @click="toggleSelection()" :disabled="cancelSelectionBtnDisabled">Cancel Selection</el-button>
         </div>
       </el-row>
     </el-header>
     <el-main>
-      <!-- Setting height on the el-table element allows fixed table headers without additional code. -->
-      <el-table :data="posts" height="730" stripe style="width: 100%"
-        :default-sort="{ prop: 'lastUpdateTime', order: 'descending' }">
+      <!-- Fixed table header can be achieved by setting height property on el-table element -->
+      <el-table ref="table" :data="posts" height="730" stripe style="width: 100%"
+        @selection-change="handleSelectionChange" :default-sort="{ prop: 'lastUpdateTime', order: 'descending' }">
+        <el-table-column type="selection" width="30">
+        </el-table-column>
         <el-table-column prop="id" label="ID" width="180">
         </el-table-column>
-        <el-table-column prop="title" label="Title" sortable width="680">
+        <el-table-column prop="title" label="Title" sortable :show-overflow-tooltip="true" width="600">
         </el-table-column>
         <el-table-column prop="creationTime" label="Creation Time" sortable width="250">
         </el-table-column>
@@ -36,10 +39,20 @@
         </el-table-column>
         <el-table-column prop="category.name" label="Category">
         </el-table-column>
-        <el-table-column fixed="right" label="Operations" width="100">
+        <el-table-column fixed="right" label="Operations" width="150">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">View</el-button>
-            <el-button type="text" size="small">Edit</el-button>
+            <el-link type="info" @click="handleClick(scope.row)">View</el-link>
+            <el-link type="danger">Delete</el-link>
+            <el-dropdown>
+              <el-button type="text" size="small">
+                More<i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>Set Recommended</el-dropdown-item>
+                <el-dropdown-item>Unset Recommended</el-dropdown-item>
+                <el-dropdown-item>Set Top</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </template>
         </el-table-column>
       </el-table>
@@ -65,26 +78,34 @@ export default {
       posts: [],
       categories: [],
       currentCategoryId: 0,
-      currentCategoryName: ''
+      currentCategoryName: '',
+      multipleSelection: [],
+      cancelSelectionBtnDisabled: true
     }
   },
   mounted() {
     // Load categories
-    this.$api.category.getAll().then(res => {
-      let categories = [{ id: 0, name: 'All' }]
-      categories = categories.concat(res)
-      this.categories = categories
-    })
+    this.loadCategories()
     // Load blog posts
     this.loadBlogPosts()
   },
   methods: {
+    loadCategories() {
+      this.$api.category.getAll().then(res => {
+        let categories = [{ id: 0, name: 'All' }]
+        categories = categories.concat(res.data)
+        this.categories = categories
+      })
+    },
     loadBlogPosts() {
       this.$api.blog.getList(this.currentCategoryId, this.currentPage, this.pageSize).then(res => {
         console.log(res)
         this.totalCount = res.pagination.totalItemCount
         this.posts = res.data
       })
+    },
+    addPost() {
+      this.$message('Not implemented yet')
     },
     handleClick(row) {
       console.log(row)
@@ -103,6 +124,20 @@ export default {
       console.log(page)
       this.currentPage = page
       this.loadBlogPosts()
+    },
+    toggleSelection(rows) {
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.table.toggleRowSelection(row);
+        });
+      } else {
+        this.$refs.table.clearSelection();
+      }
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+      console.log(this.multipleSelection)
+      this.cancelSelectionBtnDisabled = this.multipleSelection.length === 0
     }
   }
 }
