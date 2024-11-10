@@ -5,7 +5,9 @@ import Framework from "@/views/Framework";
 import NotFound from '@/views/404'
 import Home from "@/views/Home"
 import Categories from "@/views/Category/Categories"
+import FeaturedCategories from "@/views/Category/FeaturedCategories";
 import Posts from "@/views/Blog/Posts"
+import FeaturedPosts from "@/views/Blog/FeaturedPosts";
 import Photos from "@/views/Photography/Photos"
 
 // Override the default push method to catch errors
@@ -32,9 +34,31 @@ const router = new Router({
             index: 0
           }
         },
-        { path: 'category/list', name: 'Category List', component: Categories },
-        { path: 'post/list', name: 'Post List', component: Posts },
-        { path: 'photo/list', name: 'Photo List', component: Photos },
+        {
+          path: 'category/list',
+          name: 'Category List',
+          component: Categories
+        },
+        {
+          path: 'category/featured',
+          name: 'Featured Categories',
+          component: FeaturedCategories
+        },
+        {
+          path: 'post/list',
+          name: 'Article List',
+          component: Posts
+        },
+        {
+          path: 'post/featured',
+          name: 'Featured Articles',
+          component: FeaturedPosts
+        },
+        {
+          path: 'photo/list',
+          name: 'Photo List',
+          component: Photos
+        },
       ]
     },
     { path: '/Login', name: 'Login', component: Login },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-empty></el-empty>
+    <el-empty description="System Home Page"></el-empty>
     <el-skeleton></el-skeleton>
   </div>
 </template>

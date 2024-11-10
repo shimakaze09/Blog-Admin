@@ -1,10 +1,10 @@
 <template>
-  <el-empty description="Category List"></el-empty>
+  <el-empty description="Featured Posts"></el-empty>
 </template>
 
 <script>
 export default {
-  name: "Categories"
+  name: "FeaturedPosts"
 }
 </script>
 
