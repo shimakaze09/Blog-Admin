@@ -1,25 +1,30 @@
 <template>
   <div class="menu-bar-container">
-    <!-- logo -->
-    <div class="logo" :style="{ 'background': themeColor }"
-      :class="collapse ? 'menu-bar-collapse-width' : 'menu-bar-width'" @click="$router.push('/')">
-      <img v-if="collapse" src="@/assets/codelab.png" />
+    <!-- Logo -->
+    <div class="logo" :style="{'background':themeColor}" :class="collapse?'menu-bar-collapse-width':'menu-bar-width'"
+         @click="$router.push('/')">
+      <img v-if="collapse" src="@/assets/codelab.png"/>
       <div>{{ collapse ? '' : appName }}</div>
     </div>
     <!-- Navigation Menu -->
-    <el-menu ref="navMenu" default-active="photography" :class="collapse ? 'menu-bar-collapse-width' : 'menu-bar-width'"
-      :collapse="collapse" :collapse-transition="false" :unique-opened="false" @open="handleOpen" @close="handleClose"
-      @select="handleSelect">
+    <el-menu ref="navMenu" :default-active="$route.path" :class="collapse?'menu-bar-collapse-width':'menu-bar-width'"
+             :collapse="collapse" :collapse-transition="false" :unique-opened="false" router>
+      <el-menu-item index="/">
+        <i class="el-icon-s-home"></i>
+        <span slot="title">Home</span>
+      </el-menu-item>
       <el-submenu index="blog">
         <template slot="title">
           <i class="el-icon-location"></i>
           <span>Blogs</span>
         </template>
         <el-menu-item-group title="Category Management">
-          <el-menu-item index="categories">List of Categories</el-menu-item>
+          <el-menu-item index="/category/list">Category List</el-menu-item>
+          <el-menu-item index="/category/featured">Featured Categories</el-menu-item>
         </el-menu-item-group>
         <el-menu-item-group title="Article Management">
-          <el-menu-item index="posts">List of Articles</el-menu-item>
+          <el-menu-item index="/post/list">Article List</el-menu-item>
+          <el-menu-item index="/post/featured">Featured Articles</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="photography">
@@ -28,19 +33,19 @@
           <span>Photography</span>
         </template>
         <el-menu-item-group title="Photo Management">
-          <el-menu-item index="photos">List of Photos</el-menu-item>
+          <el-menu-item index="/photo/list">Photo List</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-menu-item index="test">
         <i class="el-icon-setting"></i>
-        <span slot="title">Test</span>
+        <span slot="title">Settings</span>
       </el-menu-item>
     </el-menu>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import {mapState} from 'vuex'
 
 export default {
   computed: {
@@ -73,56 +78,23 @@ export default {
     this.handleRoute(this.$route)
   },
   methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleSelect(menuStr, menuArr) {
-      console.log('handleSelect', menuArr)
-      let menu1 = menuArr[0]
-      let menu2 = menuArr.length > 1 ? menuArr[1] : ''
-      switch (menu1) {
-        case 'blog':
-          switch (menu2) {
-            case 'categories':
-              this.$router.push('categories')
-              break
-            case 'posts':
-              this.$router.push('posts')
-              break
-          }
-          break
-        case 'photography':
-          switch (menu2) {
-            case 'photos':
-              this.$router.push('photos')
-              break
-          }
-          break
-        default:
-          console.log('default...')
-          break
-      }
-    },
     // Route handling
     handleRoute(route) {
-      // Tab selection: If the tab doesn't exist, add it
-      let tab = this.mainTabs.filter(item => item.name === route.name)[0];
+      // Tab selection, if not exists then add
+      let tab = this.mainTabs.filter(item => item.name === route.name)[0]
       if (!tab) {
         tab = {
           name: route.name,
           title: route.name,
           icon: route.meta.icon
-        };
-        this.mainTabs = this.mainTabs.concat(tab);
+        }
+        this.mainTabs = this.mainTabs.concat(tab)
       }
-      this.mainTabsActiveName = tab.name;
-      // Update highlighted menu when switching tabs
+      this.mainTabsActiveName = tab.name
+      // Update active menu when switching tabs
       if (this.$refs.navMenu != null) {
-        this.$refs.navMenu.activeIndex = '' + route.meta.index;
-        this.$refs.navMenu.initOpenedMenu();
+        this.$refs.navMenu.activeIndex = '' + route.meta.index
+        this.$refs.navMenu.initOpenedMenu()
       }
     }
   }

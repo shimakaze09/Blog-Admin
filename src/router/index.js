@@ -8,8 +8,8 @@ import Categories from "@/views/Blog/Categories"
 import Posts from "@/views/Blog/Posts"
 import Photos from "@/views/Photography/Photos"
 
+// Override the default push method to catch errors
 const originalPush = Router.prototype.push
-
 Router.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
@@ -33,60 +33,28 @@ const router = new Router({
             index: 0
           }
         },
-        {
-          path: 'categories',
-          name: 'Category List',
-          component: Categories,
-          meta: {
-            icon: 'fa fa-list fa-lg',
-            index: 1
-          }
-        },
-        {
-          path: 'posts',
-          name: 'Post List',
-          component: Posts,
-          meta: {
-            icon: 'fa fa-list fa-lg',
-            index: 2
-          }
-        },
-        {
-          path: 'photos',
-          name: 'Photo List',
-          component: Photos,
-          meta: {
-            icon: 'fa fa-picture-o fa-lg',
-            index: 3
-          }
-        },
+        { path: 'category/list', name: 'Category List', component: Categories },
+        { path: 'post/list', name: 'Post List', component: Posts },
+        { path: 'photo/list', name: 'Photo List', component: Photos },
       ]
     },
-    {
-      path: '/Login',
-      name: 'Login',
-      component: Login
-    },
-    {
-      path: '/404',
-      name: 'NotFound',
-      component: NotFound
-    },
+    { path: '/Login', name: 'Login', component: Login },
+    { path: '/404', name: 'NotFound', component: NotFound },
   ]
 })
 
+// Global navigation guard
 router.beforeEach((to, from, next) => {
-  // After successful login on the login page, user information will be saved in session storage
-  // Its lifetime is the session lifecycle, and it becomes invalid when the page is closed.
+  // Check if the user is logged in
   let userName = localStorage.getItem('user')
 
   if (to.path === '/login') {
-    // If accessing the login page, if user session information exists, it means the user has logged in before, redirect to the home page
+    // Redirect to home if user is already logged in
     if (userName) next({ path: '/' })
     else next()
   } else {
     if (!userName) {
-      // If accessing a non-login page and user session information does not exist, it means the user has not logged in, so redirect to the login page
+      // Redirect to login if not logged in
       next({ path: '/login' })
     }
     next()
