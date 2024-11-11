@@ -60,7 +60,7 @@ export default function $axios(options) {
           // Wrap default error message
           switch (err.response.status) {
             case 400:
-              err.message = 'Request Error'
+              err.message = 'Invalid request parameters'
               break
             case 401:
               err.message = 'Please log in before accessing'
@@ -94,10 +94,12 @@ export default function $axios(options) {
               break
             default:
           }
-          // Process returned error information if available
+
+          // Handle error responses if any
           if (err.response.data) {
             reason = err.response.data
-            if (reason.message) err.message = reason.message
+            // If there's no message in the reason object, use the default message from the error object
+            if (!reason.message) reason.message = err.message
           }
         }
         console.error(err)
