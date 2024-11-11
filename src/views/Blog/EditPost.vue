@@ -21,13 +21,15 @@
       </el-row>
     </el-header>
     <el-main>
-      <v-md-editor v-model="postContent" :default-show-toc="true" :codemirror-style-reset="true" @save="onEditorSave"
-        @fullscreen-change="fullscreenChange" height="750px" />
+      <v-md-editor v-model="postContent" :default-show-toc="true" :codemirror-style-reset="true" :disabled-menus="[]"
+        @save="onEditorSave" @fullscreen-change="fullscreenChange" @upload-image="handleUploadImage" height="750px" />
     </el-main>
   </el-container>
 </template>
 
 <script>
+// TODO: Add a page close warning or auto-save feature
+
 import VMdEditor from '@kangc/v-md-editor';
 import enUS from '@kangc/v-md-editor/lib/lang/en-US';
 
@@ -56,6 +58,24 @@ export default {
     // Fullscreen toggle
     fullscreenChange(isFullscreen) {
       this.$store.commit('onFullscreenChange')
+    },
+    /**
+     * Handle image upload
+     * @param event Event object
+     * @param insertImage Function to insert the image
+     * @param files Array of selected files
+     */
+    handleUploadImage(event, insertImage, files) {
+      let file = files[0]
+      this.$api.blogPost.uploadImage(this.post.id, file)
+        .then(res => {
+          this.$message.success(`Added image: ${res.data.imgName}`)
+          insertImage({
+            url: res.data.imgUrl.replaceAll('\\', '/'),
+            desc: res.data.imgName
+          })
+        })
+        .catch(res => this.$message.error(`Failed to upload image. ${res.message}`))
     },
     // Category selection
     categoryChange(categoryId) {

@@ -43,6 +43,31 @@ export const update = data => {
   })
 }
 
+/**
+ * Upload image
+ * @param itemId Article ID
+ * @param file Image file
+ * @returns {*}
+ */
+export const uploadImage = (itemId, file) => {
+  let formData = new FormData()
+  formData.append('file', file)
+  return axios({
+    url: `BlogPost/${itemId}/UploadImage`,
+    method: 'post',
+    headers: {'Content-Type': 'multipart/form-data;charset=UTF-8'},
+    data: formData
+  })
+}
+
+// Get images from an article
+export const getImages = itemId => {
+  return axios({
+    url: `BlogPost/${itemId}/Images`,
+    method: 'get'
+  })
+}
+
 // Set a blog post as featured
 export const setFeatured = itemId => {
   return axios({
