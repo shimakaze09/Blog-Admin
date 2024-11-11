@@ -4,7 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import api from './http'
-import global from '@/utils/global'
+import Exceptionless from './utils/exceptionless'
+import ErrorHandler from "./utils/errorHandler"
+import global from './utils/global'
 import store from './store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -16,6 +18,10 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 // Import API module
 Vue.use(api)
+// Exceptionless module
+Vue.use(Exceptionless)
+// Global asynchronous handling module
+Vue.use(ErrorHandler)
 
 // Mount global configuration module
 Vue.prototype.global = global
