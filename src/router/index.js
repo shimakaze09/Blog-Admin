@@ -5,10 +5,11 @@ import Framework from "@/views/Framework";
 import NotFound from '@/views/404'
 import Home from "@/views/Home"
 import Categories from "@/views/Category/Categories"
-import FeaturedCategories from "@/views/Category/FeaturedCategories";
+import FeaturedCategories from "@/views/Category/FeaturedCategories"
 import Posts from "@/views/Blog/Posts"
-import FeaturedPosts from "@/views/Blog/FeaturedPosts";
+import FeaturedPosts from "@/views/Blog/FeaturedPosts"
 import Photos from "@/views/Photography/Photos"
+import FeaturedPhotos from "@/views/Photography/FeaturedPhotos"
 
 // Override the default push method to catch errors
 const originalPush = Router.prototype.push
@@ -59,6 +60,11 @@ const router = new Router({
           name: 'Photo List',
           component: Photos
         },
+        {
+          path: 'photo/featured',
+          name: 'Featured Photos',
+          component: FeaturedPhotos
+        }
       ]
     },
     { path: '/Login', name: 'Login', component: Login },

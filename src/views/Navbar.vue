@@ -34,6 +34,7 @@
         </template>
         <el-menu-item-group title="Photo Management">
           <el-menu-item index="/photo/list">Photo List</el-menu-item>
+          <el-menu-item index="/photo/featured">Featured Photo</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>
