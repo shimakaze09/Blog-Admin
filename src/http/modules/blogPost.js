@@ -1,11 +1,25 @@
 import axios from '../axios'
 
-// Get blog list
-export const getList = (categoryId = 0, page = 1, pageSize = 20) => {
+/**
+ * Get blog list
+ * @param categoryId Category ID
+ * @param search Search term
+ * @param sortBy Sorting field
+ * @param page Current page number
+ * @param pageSize Number of items per page
+ * @returns {*}
+ */
+export const getList = (
+  categoryId = 0,
+  search = '',
+  sortBy = '',
+  page = 1,
+  pageSize = 20
+) => {
   return axios({
     url: 'BlogPost',
     method: 'get',
-    params: { categoryId, page, pageSize }
+    params: { categoryId, search, sortBy, page, pageSize }
   })
 }
 
@@ -55,7 +69,7 @@ export const uploadImage = (itemId, file) => {
   return axios({
     url: `BlogPost/${itemId}/UploadImage`,
     method: 'post',
-    headers: {'Content-Type': 'multipart/form-data;charset=UTF-8'},
+    headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' },
     data: formData
   })
 }

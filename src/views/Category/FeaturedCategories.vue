@@ -8,7 +8,7 @@
     </el-table-column>
     <el-table-column prop="iconCssClass" label="Icon" width="200">
     </el-table-column>
-    <el-table-column prop="category.id" label="Category ID" width="80">
+    <el-table-column prop="category.id" label="Category ID" width="120">
     </el-table-column>
     <el-table-column prop="category.name" label="Category Name">
     </el-table-column>
