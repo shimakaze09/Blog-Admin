@@ -154,8 +154,14 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
 .v-md-editor {
   text-align: start;
+
+  .codemirror-wrapper {
+    .CodeMirror {
+      font-size: 18px !important;
+    }
+  }
 }
 </style>

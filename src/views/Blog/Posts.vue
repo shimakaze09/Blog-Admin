@@ -34,11 +34,12 @@
         </el-table-column>
         <el-table-column prop="id" label="ID" width="180">
         </el-table-column>
+        <el-table-column prop="status" label="Status" width="100" />
         <el-table-column prop="title" label="Title" sortable :show-overflow-tooltip="true" width="600">
         </el-table-column>
-        <el-table-column prop="creationTime" label="Creation Time" sortable width="250">
+        <el-table-column prop="creationTime" label="Creation Time" sortable width="150">
         </el-table-column>
-        <el-table-column prop="lastUpdateTime" label="Last Updated" sortable width="250">
+        <el-table-column prop="lastUpdateTime" label="Last Updated" sortable width="150">
         </el-table-column>
         <el-table-column prop="category.name" label="Category">
         </el-table-column>
@@ -95,6 +96,12 @@ export default {
     this.loadBlogPosts()
   },
   methods: {
+    dateTimeBeautify(dateTimeStr) {
+      let dateObj = new Date(dateTimeStr)
+      let dateStr = `${dateObj.getFullYear()}-${dateObj.getMonth()}-${dateObj.getDay()}`
+      let timeStr = `${dateObj.getHours()}:${dateObj.getMinutes()}`
+      return `${dateStr} ${timeStr}`
+    },
     // Load categories
     loadCategories() {
       this.$api.category.getAll().then(res => {
@@ -112,6 +119,10 @@ export default {
         console.log(res)
         this.totalCount = res.pagination.totalItemCount
         this.posts = res.data
+        this.posts.forEach(item => {
+          item.creationTime = this.dateTimeBeautify(item.creationTime)
+          item.lastUpdateTime = this.dateTimeBeautify(item.lastUpdateTime)
+        })
       }).catch(res => this.$message.error(`Error fetching article list: ${res.message}`))
     },
     // Add post button
