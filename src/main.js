@@ -11,6 +11,7 @@ import store from './store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'font-awesome/css/font-awesome.min.css'
+import locale from 'element-ui/lib/locale/lang/en' // Import English locale
 
 import VMdEditor from '@kangc/v-md-editor/lib/codemirror-editor';
 import '@kangc/v-md-editor/lib/style/codemirror-editor.css';
@@ -49,7 +50,7 @@ Vue.use(VMdEditor);
 Vue.config.productionTip = false
 
 // Import Element UI
-Vue.use(ElementUI)
+Vue.use(ElementUI, { locale }) // Set locale globally
 // Import API module
 Vue.use(api)
 // Exceptionless module

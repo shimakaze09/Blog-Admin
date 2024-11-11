@@ -1,12 +1,12 @@
 <template>
   <el-row>
-    <el-col :span="10">
-      <el-table :data="tableData" :height="800" style="width: 100%;">
+    <el-col :span="24">
+      <el-table :data="tableData" :height="790" style="width: 100%;">
         <el-table-column prop="id" label="ID" width="50">
         </el-table-column>
         <el-table-column prop="name" label="Name" width="250">
         </el-table-column>
-        <el-table-column prop="parentId" label="Parent Category" width="120">
+        <el-table-column prop="parentId" label="Parent Category" width="160">
         </el-table-column>
         <el-table-column align="right">
           <template slot="header" slot-scope="scope">
