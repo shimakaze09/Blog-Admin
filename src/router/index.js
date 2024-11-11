@@ -43,7 +43,8 @@ const router = new Router({
         { path: 'post/list', name: 'Post List', component: Posts },
         { path: 'post/featured', name: 'Featured Post', component: FeaturedPosts },
         { path: 'post/top', name: 'Top Post', component: TopPost },
-        {path: 'post/edit/:id', name: 'Edit Post', component: EditPost},
+        { path: 'post/edit/:id', name: 'Edit Post', component: EditPost },
+        { path: 'post/new', name: 'New Article', component: EditPost },
         { path: 'photo/list', name: 'Photo List', component: Photos },
         { path: 'photo/featured', name: 'Featured Photo', component: FeaturedPhotos },
       ]
