@@ -130,9 +130,12 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$api.blogPost.deleteItem(post.id)
-          .then(res => this.$message.success(`Deleted successfully. ${res.message}`))
+          .then(res => {
+            this.$message.success(`Successfully deleted. ${res.message}`)
+            this.loadBlogPosts()
+          })
           .catch(res => this.$message.error(`Failed to operate. ${res.message}`))
-        this.loadBlogPosts()
+          .finally(() => this.loadBlogPosts())
       }).catch(() => this.$message('Deletion cancelled'))
     },
     // Dropdown menu click
