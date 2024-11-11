@@ -50,17 +50,21 @@ export default {
       this.$api.auth.login(userInfo)
         .then(res => {  // Call login API
           if (res.successful) {
-            Cookies.set('token', res.data.token) // Set token in Cookie
-            localStorage.setItem('user', userInfo.username) // Save user to local storage
-            this.$router.push('/')  // Redirect to home page after successful login
-            this.$message({ message: 'Login Successful', type: 'success' })
+            // Save token to Cookie
+            Cookies.set('token', res.data.token)
+            // Save login data to local storage
+            localStorage.setItem('user', userInfo.username)
+            localStorage.setItem('expiration', res.data.expiration)
+            // Redirect to home page after successful login
+            this.$router.push('/')
+            this.$message({ message: 'Login successful', type: 'success' })
           } else {
-            this.$message({ message: `Login Failed: ${res.message}`, type: 'error' })
+            this.$message({ message: `Login failed ${res.message}`, type: 'error' })
           }
           this.loading = false
         })
         .catch(err => {
-          this.$message({ message: `Login Failed: ${err.message}`, type: 'error' })
+          this.$message({ message: `Login failed: ${err.message}`, type: 'error' })
           this.loading = false
         })
     },

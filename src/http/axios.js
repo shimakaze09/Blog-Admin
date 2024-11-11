@@ -11,42 +11,54 @@ export default function $axios(options) {
       timeout: config.timeout,
       withCredentials: config.withCredentials
     })
-    // request request interceptor
+
+    // Request interceptor
     instance.interceptors.request.use(
       config => {
+        let expiration = localStorage.getItem('expiration')
+        if (expiration) {
+          let now = new Date()
+          let expirationTime = new Date(expiration)
+          if (now > expirationTime) {
+            console.log('Token has expired, redirecting to login')
+            localStorage.removeItem('user')
+            localStorage.removeItem('expiration')
+            Cookies.set('token', null)
+            router.push('/login')
+          }
+        }
         let token = Cookies.get('token')
-        // Send token along with the request
+        // Send request with token
         if (token) {
           config.headers.Authorization = `Bearer ${token}`
         } else {
           // Redirect to login page
-          // TODO: After login, I'll enable redirection here
           router.push('/login')
         }
         return config
       },
       error => {
-        // Error handling when request occurs
+        // Handle request errors
         console.log('request:', error)
         // Check for timeout
         if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
-          console.log('timeout request timed out')
+          console.log('Request timed out')
         }
         // Redirect to error page
         const errorInfo = error.response
         console.log(errorInfo)
         if (errorInfo) {
-          error = errorInfo.data  // Page-side catch can get detailed error information
+          error = errorInfo.data  // Page-side catch can retrieve detailed error information
           const errorStatus = errorInfo.status; // 404 403 500 ...
           router.push({
             path: `/error/${errorStatus}`
           })
         }
-        return Promise.reject(error) // Error information can be caught in the calling side
+        return Promise.reject(error) // Error information can be retrieved in the calling side (catch)
       }
     )
 
-    // response response interceptor
+    // Response interceptor
     instance.interceptors.response.use(
       response => {
         return response.data
@@ -54,53 +66,54 @@ export default function $axios(options) {
       err => {
         let reason = err
         if (err && err.response) {
-          // Wrap up the default error message
+          // Wrap default error message
           switch (err.response.status) {
             case 400:
-              err.message = 'Bad request'
+              err.message = 'Invalid request'
               break
             case 401:
               err.message = 'Unauthorized, please log in'
               break
             case 403:
-              err.message = 'Forbidden'
+              err.message = 'Access denied'
               break
             case 404:
-              err.message = `Error in requested URL: ${err.response.config.url}`
+              err.message = `URL error: ${err.response.config.url}`
               break
             case 408:
               err.message = 'Request timed out'
               break
             case 500:
-              err.message = 'Internal server error'
+              err.message = 'Server internal error'
               break
             case 501:
-              err.message = 'Not implemented'
+              err.message = 'Service not implemented'
               break
             case 502:
-              err.message = 'Bad gateway'
+              err.message = 'Gateway error'
               break
             case 503:
               err.message = 'Service unavailable'
               break
             case 504:
-              err.message = 'Gateway timeout'
+              err.message = 'Gateway timed out'
               break
             case 505:
               err.message = 'HTTP version not supported'
               break
             default:
           }
-          // If there's an error message returned, let's handle it
+          // Process returned error information if available
           if (err.response.data) {
-            reason = err.response.data;
-            if (reason.message) err.message = reason.message;
+            reason = err.response.data
+            if (reason.message) err.message = reason.message
           }
         }
         console.error(err)
-        return Promise.reject(reason) // Return error information returned by the interface
+        return Promise.reject(reason) // Return interface returned error information
       }
     )
+
     // Request processing
     instance(options).then(res => {
       resolve(res)
