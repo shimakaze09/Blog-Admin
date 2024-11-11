@@ -12,7 +12,7 @@
       <Waterfall align="center" :line-gap="300" :min-line-gap="250" :max-line-gap="400" :watch="photos">
         <waterfall-slot v-for="(photo, index) in photos" :height="photo.height" :width="photo.width" :order="index"
           :key="photo.id" move-class="item-move">
-          <photo-card :photo="photo"></photo-card>
+          <photo-card :photo="photo" v-on:onItemDeleted="loadPhotos"></photo-card>
         </waterfall-slot>
       </Waterfall>
       <add-photo-dialog ref="addPhotoDialog" @onAddPhotoSucceed="onAddPhotoSucceed"></add-photo-dialog>
@@ -76,6 +76,7 @@ export default {
       this.loadPhotos()
     },
     onAddPhotoSucceed() {
+      this.$message.success('Added successfully')
       this.loadPhotos()
     }
   }

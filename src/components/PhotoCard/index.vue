@@ -1,14 +1,16 @@
 <template>
-  <el-popover placement="bottom" width="200" trigger="manual" v-model="visible">
-    <p>Image Name: {{ photo.title }}</p>
+  <el-popover placement="bottom" width="230" trigger="manual" v-model="visible">
+    <p>Photo name: {{ photo.title }}</p>
     <p>Location: {{ photo.location }}</p>
+    <p>Upload time: {{ dateTimeStr }}</p>
     <el-button-group>
       <el-button type="" icon="el-icon-edit"></el-button>
-      <el-button type="" icon="el-icon-share"></el-button>
-      <el-button type="" icon="el-icon-delete"></el-button>
+      <el-button type="warning" icon="el-icon-check" @click="setFeatured"></el-button>
+      <el-button type="info" icon="el-icon-close" @click="cancelFeatured"></el-button>
+      <el-button type="danger" icon="el-icon-delete" @click="deletePhoto"></el-button>
     </el-button-group>
     <el-card slot="reference" :body-style="{ padding: '0px' }" style="margin: 5px;">
-      <!-- Remove browser default events, add custom event -->
+      <!-- Remove default browser events, add custom event -->
       <el-image :src="photo.url" class="image" :preview-src-list="[photo.url]"
         @contextmenu.prevent="onImageRightClick"></el-image>
     </el-card>
@@ -25,13 +27,47 @@ export default {
   },
   data() {
     return {
-      visible: false
+      visible: false,
+    }
+  },
+  computed: {
+    dateTimeStr() {
+      let dt = new Date(this.photo.createTime)
+      return `${dt.toLocaleDateString()} ${dt.toLocaleTimeString()}`
     }
   },
   methods: {
     onImageRightClick() {
       this.visible = !this.visible
     },
+    setFeatured() {
+      this.$api.photo.setFeatured(this.photo.id)
+        .then(res => this.$message.success('Successfully set featured'))
+        .catch(res => this.$message.error(`Operation failed. ${res.message}`))
+      this.onImageRightClick()
+    },
+    cancelFeatured() {
+      this.$api.photo.cancelFeatured(this.photo.id)
+        .then(res => this.$message.success('Successfully cancelled featured'))
+        .catch(res => this.$message.error(`Operation failed. ${res.message}`))
+      this.onImageRightClick()
+    },
+    deletePhoto() {
+      this.$confirm('This operation will permanently delete the photo. Are you sure?', 'Warning', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        this.$api.photo.deleteItem(this.photo.id)
+          .then(res => {
+            this.$message.success(`Deleted successfully. ${res.message}`)
+            // Delete completed, trigger item deleted event
+            this.$emit('onItemDeleted')
+          })
+          .catch(res => this.$message.error(`Operation failed. ${res.message}`))
+      }).catch(() => this.$message('Cancelling deletion'))
+      this.onImageRightClick()
+    }
   }
 }
 </script>
