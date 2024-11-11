@@ -4,27 +4,30 @@
       <el-row type="flex" justify="space-between">
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-input placeholder="Enter keyword" prefix-icon="el-icon-search"></el-input>
+            <el-input v-model="search" placeholder="Enter keyword" prefix-icon="el-icon-search"></el-input>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="10">
             <!-- Category selection -->
-            <!-- Add the filterable attribute to el-select to enable search functionality. By default, Select will find options whose label contains the input value. -->
+            <!-- Add the attribute filterable to enable search functionality. By default, Select will find all options whose label property contains the input value. -->
             <el-select v-model="currentCategoryName" filterable placeholder="Select category"
               v-on:change="handleCategoryChange">
               <el-option v-for="item in categories" :key="item.id" :label="item.name" :value="item.id">
               </el-option>
             </el-select>
           </el-col>
+          <el-col :span="2">
+            <el-button @click="handleSearchClick">Search</el-button>
+          </el-col>
         </el-row>
         <div>
           <el-button @click="addPost">Add</el-button>
           <el-button type="danger" :disabled="!hasSelection">Delete</el-button>
-          <el-button @click="toggleSelection()" :disabled="!hasSelection">Cancel selection</el-button>
+          <el-button @click="toggleSelection()" :disabled="!hasSelection">Cancel Selection</el-button>
         </div>
       </el-row>
     </el-header>
     <el-main>
-      <!-- Fixed table header can be achieved by defining height attribute on el-table element, without additional code. -->
+      <!-- Fixed table header can be achieved by defining the height attribute in the el-table element. No additional code is required. -->
       <el-table ref="table" :data="posts" height="730" stripe style="width: 100%"
         @selection-change="handleSelectionChange" :default-sort="{ prop: 'lastUpdateTime', order: 'descending' }">
         <el-table-column type="selection" width="30">
@@ -41,7 +44,7 @@
         </el-table-column>
         <el-table-column fixed="right" label="Operations" width="150">
           <template slot-scope="scope">
-            <el-link type="info" @click="onItemViewClick(scope.row)">Edit</el-link>
+            <el-link type="info" @click="onItemEditClick(scope.row)">Edit</el-link>
             <el-link type="danger" @click="onItemDeleteClick(scope.row)">Delete</el-link>
             <el-dropdown @command="cmd => onItemDropdownClick(scope.row, cmd)">
               <el-button type="text" size="small">
@@ -75,6 +78,8 @@ export default {
       currentPage: 1,
       pageSize: 20,
       totalCount: 1000,
+      search: '',
+      sortBy: null,
       posts: [],
       categories: [],
       currentCategoryId: 0,
@@ -90,25 +95,31 @@ export default {
     this.loadBlogPosts()
   },
   methods: {
+    // Load categories
     loadCategories() {
       this.$api.category.getAll().then(res => {
         let categories = [{ id: 0, name: 'All' }]
         categories = categories.concat(res.data)
         this.categories = categories
-      })
+      }).catch(res => this.$message.error(`Error loading category list: ${res.message}`))
     },
+    // Load blog posts
     loadBlogPosts() {
-      this.$api.blogPost.getList(this.currentCategoryId, this.currentPage, this.pageSize).then(res => {
+      this.$api.blogPost.getList(
+        this.currentCategoryId, this.search, this.sortBy,
+        this.currentPage, this.pageSize
+      ).then(res => {
         console.log(res)
         this.totalCount = res.pagination.totalItemCount
         this.posts = res.data
-      })
+      }).catch(res => this.$message.error(`Error fetching article list: ${res.message}`))
     },
+    // Add post button
     addPost() {
-      this.$message('Not implemented yet')
+      this.$router.push('/post/new')
     },
     // View button
-    onItemViewClick(post) {
+    onItemEditClick(post) {
       this.$router.push(`/post/edit/${post.id}`)
     },
     // Delete button
@@ -120,42 +131,38 @@ export default {
       }).then(() => {
         this.$api.blogPost.deleteItem(post.id)
           .then(res => this.$message.success(`Deleted successfully. ${res.message}`))
-          .catch(res => this.$message.error(`Operation failed. ${res.message}`))
+          .catch(res => this.$message.error(`Failed to operate. ${res.message}`))
         this.loadBlogPosts()
-      }).catch(() => this.$message('Cancelling deletion'))
+      }).catch(() => this.$message('Deletion cancelled'))
     },
     // Dropdown menu click
     onItemDropdownClick(post, command) {
       switch (command) {
         case 'setFeatured':
           this.$api.blogPost.setFeatured(post.id)
-            .then(res => this.$message.success('Successfully set featured'))
-            .catch(res => this.$message.error(`Operation failed. ${res.message}`))
+            .then(res => this.$message.success('Set Featured Successfully'))
+            .catch(res => this.$message.error(`Failed to operate. ${res.message}`))
           break
         case 'cancelFeatured':
           this.$api.blogPost.cancelFeatured(post.id)
-            .then(res => this.$message.success('Successfully cancelled featured'))
-            .catch(res => this.$message.error(`Operation failed. ${res.message}`))
+            .then(res => this.$message.success('Cancelled Featured Successfully'))
+            .catch(res => this.$message.error(`Failed to operate. ${res.message}`))
           break
         case 'setTop':
           this.$api.blogPost.setTop(post.id)
-            .then(res => this.$message.success(`Successfully set top. ${res.message}`))
+            .then(res => this.$message.success(`Set Top Successfully. ${res.message}`))
             .catch(res => this.$message.error(`Failed to set top. ${res.message}`))
           break
       }
     },
     handleCategoryChange(categoryId) {
-      console.log('categoryId', categoryId)
       this.currentCategoryId = categoryId
-      this.loadBlogPosts()
     },
     handlePageSizeChange(pageSize) {
-      console.log(pageSize)
       this.pageSize = pageSize
       this.loadBlogPosts()
     },
     handleCurrentPageChange(page) {
-      console.log(page)
       this.currentPage = page
       this.loadBlogPosts()
     },
@@ -171,7 +178,10 @@ export default {
     handleSelectionChange(val) {
       this.selectedPosts = val
       this.hasSelection = this.selectedPosts.length > 0
-    }
+    },
+    handleSearchClick() {
+      this.loadBlogPosts()
+    },
   }
 }
 </script>
