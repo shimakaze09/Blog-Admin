@@ -8,7 +8,7 @@
           </el-col>
           <el-col :span="12">
             <!-- Category selection -->
-            <!-- Add the filterable attribute to el-select to enable search functionality. By default, Select will find options whose label property contains the input value. -->
+            <!-- Add the filterable attribute to el-select to enable search functionality. By default, Select will find options whose label contains the input value. -->
             <el-select v-model="currentCategoryName" filterable placeholder="Select category"
               v-on:change="handleCategoryChange">
               <el-option v-for="item in categories" :key="item.id" :label="item.name" :value="item.id">
@@ -19,12 +19,12 @@
         <div>
           <el-button @click="addPost">Add</el-button>
           <el-button type="danger" :disabled="!hasSelection">Delete</el-button>
-          <el-button @click="toggleSelection()" :disabled="!hasSelection">Cancel Selection</el-button>
+          <el-button @click="toggleSelection()" :disabled="!hasSelection">Cancel selection</el-button>
         </div>
       </el-row>
     </el-header>
     <el-main>
-      <!-- Fixed table header is achieved by setting the height attribute on the el-table element. No additional code is required. -->
+      <!-- Fixed table header can be achieved by defining height attribute on el-table element, without additional code. -->
       <el-table ref="table" :data="posts" height="730" stripe style="width: 100%"
         @selection-change="handleSelectionChange" :default-sort="{ prop: 'lastUpdateTime', order: 'descending' }">
         <el-table-column type="selection" width="30">
@@ -107,31 +107,42 @@ export default {
     addPost() {
       this.$message('Not implemented yet')
     },
-    // View button click
+    // View button
     onItemViewClick(post) {
-      console.log(post)
+      this.$alert(post.content, post.title, {
+        confirmButtonText: 'OK'
+      })
     },
-    // Delete button click
+    // Delete button
     onItemDeleteClick(post) {
-      console.log(post)
+      this.$confirm('This operation will permanently delete the article. Are you sure?', 'Warning', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        this.$api.blogPost.deleteItem(post.id)
+          .then(res => this.$message.success(`Deleted successfully. ${res.message}`))
+          .catch(res => this.$message.error(`Operation failed. ${res.message}`))
+        this.loadBlogPosts()
+      }).catch(() => this.$message('Cancelling deletion'))
     },
     // Dropdown menu click
     onItemDropdownClick(post, command) {
       switch (command) {
         case 'setFeatured':
           this.$api.blogPost.setFeatured(post.id)
-            .then(res => this.$message.success('Set Featured Successfully'))
+            .then(res => this.$message.success('Successfully set featured'))
             .catch(res => this.$message.error(`Operation failed. ${res.message}`))
           break
         case 'cancelFeatured':
           this.$api.blogPost.cancelFeatured(post.id)
-            .then(res => this.$message.success('Cancel Featured Successfully'))
+            .then(res => this.$message.success('Successfully cancelled featured'))
             .catch(res => this.$message.error(`Operation failed. ${res.message}`))
           break
         case 'setTop':
-          this.$api.blogPost.setTop(123123)
-            .then(res => this.$message.success(`Set Top Successfully. ${res.message}`))
-            .catch(res => this.$message.error(`Set Top Failed. ${res.message}`))
+          this.$api.blogPost.setTop(post.id)
+            .then(res => this.$message.success(`Successfully set top. ${res.message}`))
+            .catch(res => this.$message.error(`Failed to set top. ${res.message}`))
           break
       }
     },
