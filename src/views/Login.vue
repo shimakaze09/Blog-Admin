@@ -1,16 +1,25 @@
 <template>
   <el-form :model="loginForm" :rules="fieldRules" ref="loginForm" label-position="left" label-width="0px"
     class="demo-ruleForm login-container">
-    <h2 class="title">System Login</h2>
+    <div class="title h2">
+      <h2>Blog</h2>
+      <h4>Admin Login</h4>
+    </div>
     <el-form-item prop="account">
       <el-input type="text" v-model="loginForm.username" auto-complete="off" placeholder="Username"></el-input>
     </el-form-item>
     <el-form-item prop="password">
       <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="Password"></el-input>
     </el-form-item>
-    <el-form-item style="width:100%;">
-      <el-button type="primary" style="width:48%;" @click="reset">Reset</el-button>
-      <el-button type="primary" style="width:48%;" @click="login" :loading="loading">Log In</el-button>
+    <el-form-item>
+      <el-row :gutter="8">
+        <el-col :span="12">
+          <el-button type="warning" plain class="w-100" @click="reset">Reset</el-button>
+        </el-col>
+        <el-col :span="12">
+          <el-button type="primary" class="w-100" @click="login" :loading="loading">Login</el-button>
+        </el-col>
+      </el-row>
     </el-form-item>
   </el-form>
 </template>
@@ -40,11 +49,12 @@ export default {
         .then(res => {  // Call login API
           // Save login information
           auth.login(res.data.token, this.loginForm.username, res.data.expiration)
-          // Redirect to home page on successful login
+
+          // Login successful, redirect to homepage
           this.$message.success('Login Successful')
           this.$router.push('/')
         })
-        .catch(err => this.$message.error(`Login Failed: ${err.message}`))
+        .catch(err => this.$message.error(`Login failed: ${err.message}`))
         .finally(() => this.loading = false)
     },
     reset() {

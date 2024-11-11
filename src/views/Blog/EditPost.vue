@@ -21,8 +21,9 @@
       </el-row>
     </el-header>
     <el-main>
-      <v-md-editor v-model="postContent" :default-show-toc="true" :codemirror-style-reset="true" :disabled-menus="[]"
-        @save="onEditorSave" @fullscreen-change="fullscreenChange" @upload-image="handleUploadImage" height="750px" />
+      <v-md-editor v-model="postContent" :default-show-toc="true" :codemirror-style-reset="true"
+        :disabled-menus="mode === 'edit' ? [] : ['image/upload-image']" @save="onEditorSave"
+        @fullscreen-change="fullscreenChange" @upload-image="handleUploadImage" height="750px" />
     </el-main>
   </el-container>
 </template>
@@ -100,6 +101,10 @@ export default {
       } else {
         this.mode = 'new'
         this.post = {}
+        this.$notify.warning({
+          title: 'Current mode: New Article',
+          message: 'Note: You cannot upload images until after saving the article!'
+        })
       }
     },
     loadCategories() {
@@ -130,8 +135,15 @@ export default {
 
       if (this.mode === 'new') {
         this.$api.blogPost.add(post)
-          .then(res => this.$message.success(`Saved successfully. ${res.message}`))
-          .catch(res => this.$message.error(`Operation failed. ${res.message}`))
+          .then(res => {
+            this.$message.success(`Save successful. ${res.message}`)
+            // Redirect to edit page after saving
+            this.$router.push(`/post/edit/${res.data.id}`)
+          })
+          .catch(res => {
+            console.log(res)
+            this.$message.error(`Operation failed. ${res.message}`)
+          })
       } else {
         this.$api.blogPost.update(post)
           .then(res => this.$message.success(`Saved successfully. ${res.message}`))
