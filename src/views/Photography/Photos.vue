@@ -62,7 +62,6 @@ export default {
           ...item,
           url: `${baseUrl}/media/photography/${item.id}.jpg`
         }))
-        console.log('photos', this.photos)
       })
     },
     handlePageSizeChange(pageSize) {
