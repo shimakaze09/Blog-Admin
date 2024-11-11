@@ -24,14 +24,14 @@ export const get = itemId => {
   })
 }
 
-// Generate category word cloud
+// Category word cloud
 export const wordCloud = () => {
   return axios({
     url: 'Category/WordCloud'
   })
 }
 
-// Set a category as featured
+// Set featured category
 export const setFeatured = (itemId, data) => {
   return axios({
     url: `Category/${itemId}/SetFeatured`,
@@ -40,10 +40,26 @@ export const setFeatured = (itemId, data) => {
   })
 }
 
-// Cancel a category's featured status
+// Cancel featured category
 export const cancelFeatured = itemId => {
   return axios({
     url: `Category/${itemId}/CancelFeatured`,
     method: 'post'
+  })
+}
+
+// Set visible
+export const setVisible = itemId => {
+  return axios({
+    url: `Category/${itemId}/SetVisible`,
+    method: 'post',
+  })
+}
+
+// Set invisible
+export const setInvisible = itemId => {
+  return axios({
+    url: `Category/${itemId}/SetInvisible`,
+    method: 'post',
   })
 }
