@@ -23,3 +23,9 @@ export const overview = () => {
   })
 }
 
+// Blog Status List
+export const getStatusList = () => {
+  return axios({
+    url: 'Blog/GetStatusList'
+  })
+}

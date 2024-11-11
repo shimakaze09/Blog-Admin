@@ -3,10 +3,10 @@
     <el-header height="30px">
       <el-row type="flex" justify="space-between">
         <el-row :gutter="10">
-          <el-col :span="12">
+          <el-col :span="7">
             <el-input v-model="search" placeholder="Enter keyword" prefix-icon="el-icon-search"></el-input>
           </el-col>
-          <el-col :span="10">
+          <el-col :span="7">
             <!-- Category selection -->
             <!-- Add the attribute filterable to enable search functionality. By default, Select will find all options whose label property contains the input value. -->
             <el-select v-model="currentCategoryName" filterable placeholder="Select category"
@@ -15,7 +15,13 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col :span="2">
+          <el-col :span="7">
+            <!-- TODO: Need to add a clear selection function -->
+            <el-select v-model="currentStatus" filterable placeholder="Please select article status">
+              <el-option v-for="item in statusList" :key="item" :label="item" :value="item" />
+            </el-select>
+          </el-col>
+          <el-col :span="3">
             <el-button @click="handleSearchClick">Search</el-button>
           </el-col>
         </el-row>
@@ -30,19 +36,13 @@
       <!-- Fixed table header can be achieved by defining the height attribute in the el-table element. No additional code is required. -->
       <el-table ref="table" :data="posts" height="730" stripe style="width: 100%"
         @selection-change="handleSelectionChange" :default-sort="{ prop: 'lastUpdateTime', order: 'descending' }">
-        <el-table-column type="selection" width="30">
-        </el-table-column>
-        <el-table-column prop="id" label="ID" width="180">
-        </el-table-column>
-        <el-table-column prop="status" label="Status" width="100" />
-        <el-table-column prop="title" label="Title" sortable :show-overflow-tooltip="true" width="600">
-        </el-table-column>
-        <el-table-column prop="creationTime" label="Creation Time" sortable width="150">
-        </el-table-column>
-        <el-table-column prop="lastUpdateTime" label="Last Updated" sortable width="150">
-        </el-table-column>
-        <el-table-column prop="category.name" label="Category">
-        </el-table-column>
+        <el-table-column type="selection" width="30" />
+        <el-table-column prop="id" label="ID" width="180" />
+        <el-table-column prop="status" label="Article Status" width="100" />
+        <el-table-column prop="title" label="Title" sortable :show-overflow-tooltip="true" width="600" />
+        <el-table-column prop="creationTime" label="Creation Time" sortable width="150" />
+        <el-table-column prop="lastUpdateTime" label="Last Updated" sortable width="150" />
+        <el-table-column prop="category.name" label="Category" />
         <el-table-column fixed="right" label="Operations" width="150">
           <template slot-scope="scope">
             <el-link type="info" @click="onItemEditClick(scope.row)">Edit</el-link>
@@ -83,8 +83,10 @@ export default {
       sortBy: null,
       posts: [],
       categories: [],
+      statusList: [],
       currentCategoryId: 0,
       currentCategoryName: '',
+      currentStatus: '',
       selectedPosts: [],
       hasSelection: false
     }
@@ -94,6 +96,8 @@ export default {
     this.loadCategories()
     // Load blog posts
     this.loadBlogPosts()
+    // Load article status list
+    this.loadStatusList()
   },
   methods: {
     dateTimeBeautify(dateTimeStr) {
@@ -113,6 +117,7 @@ export default {
     // Load blog posts
     loadBlogPosts() {
       this.$api.blogPost.getList(
+        false, this.currentStatus,
         this.currentCategoryId, this.search, this.sortBy,
         this.currentPage, this.pageSize
       ).then(res => {
@@ -124,6 +129,12 @@ export default {
           item.lastUpdateTime = this.dateTimeBeautify(item.lastUpdateTime)
         })
       }).catch(res => this.$message.error(`Error fetching article list: ${res.message}`))
+    },
+    // Load status list
+    loadStatusList() {
+      this.$api.blog.getStatusList().then(res => {
+        this.statusList = res.data
+      }).catch(res => this.$message.error(`Error loading status list: ${res.message}`))
     },
     // Add post button
     addPost() {
