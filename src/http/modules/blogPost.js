@@ -25,6 +25,24 @@ export const deleteItem = itemId => {
   })
 }
 
+// Add blog post
+export const add = data => {
+  return axios({
+    url: `BlogPost`,
+    method: 'post',
+    data
+  })
+}
+
+// Update blog post
+export const update = data => {
+  return axios({
+    url: `BlogPost/${data.id}/`,
+    method: 'put',
+    data
+  })
+}
+
 // Set a blog post as featured
 export const setFeatured = itemId => {
   return axios({
