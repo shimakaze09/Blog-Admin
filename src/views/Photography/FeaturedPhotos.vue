@@ -4,16 +4,16 @@
       <el-card :body-style="{ padding: '0px' }">
         <el-image :src="fp.photo.url" class="image" alt="" :preview-src-list="[fp.photo.url]"></el-image>
         <div style="padding: 14px;">
-          <div>Photo Title: {{ fp.photo.title }}</div>
+          <div>Image Title: {{ fp.photo.title }}</div>
           <div>Location: {{ fp.photo.location }}</div>
           <div style="margin-top: 3px;">
             <time class="time">{{ fp.photo.dateTimeStr }}</time>
           </div>
           <div class="bottom clearfix" style="margin-top: 3px;">
             <el-button-group>
-              <el-button type="info" icon="el-icon-warning-outline" plain @click="notImpl"></el-button>
-              <el-button type="primary" icon="el-icon-edit" plain @click="notImpl"></el-button>
-              <el-button type="danger" icon="el-icon-delete" plain @click="deleteItem(fp)"></el-button>
+              <el-button type="info" icon="el-icon-warning-outline" plain @click="notImpl">Not Implemented</el-button>
+              <el-button type="primary" icon="el-icon-edit" plain @click="notImpl">Edit</el-button>
+              <el-button type="danger" icon="el-icon-delete" plain @click="deleteItem(fp)">Delete</el-button>
             </el-button-group>
           </div>
         </div>
@@ -54,19 +54,14 @@ export default {
       this.$message('Not implemented yet!')
     },
     deleteItem(featuredPhoto) {
-      this.$confirm('Are you sure you want to delete this featured photo?', 'Warning', {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        type: 'warning'
-      }).then(() => {
-        this.$api.featuredPhoto.deleteItem(featuredPhoto.id)
-          .then(res => {
-            this.$message.success(`Deleted successfully. ${res.message}`)
-            // Delete completed, reload data
-            this.loadData()
-          })
-          .catch(res => this.$message.error(`Operation failed. ${res.message}`))
-      }).catch(() => this.$message('Delete cancelled'))
+      this.$confirm('This operation will delete this featured photo. Do you want to continue?', 'Warning', { type: 'warning' })
+        .then(() => {
+          this.$api.featuredPhoto.deleteItem(featuredPhoto.id)
+            .then(res => this.$message.success(`Deleted successfully. ${res.message}`))
+            .catch(res => this.$message.error(`Operation failed. ${res.message}`))
+            .finally(() => this.loadData())
+        })
+        .catch(() => this.$message('Delete cancelled'))
     }
   }
 }
