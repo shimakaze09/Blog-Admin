@@ -12,6 +12,8 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'font-awesome/css/font-awesome.min.css'
 import locale from 'element-ui/lib/locale/lang/en' // Import English locale
+import enUS from '@kangc/v-md-editor/lib/lang/en-US';
+
 
 import VMdEditor from '@kangc/v-md-editor/lib/codemirror-editor';
 import '@kangc/v-md-editor/lib/style/codemirror-editor.css';
