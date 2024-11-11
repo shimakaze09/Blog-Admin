@@ -41,7 +41,7 @@
         </el-table-column>
         <el-table-column fixed="right" label="Operations" width="150">
           <template slot-scope="scope">
-            <el-link type="info" @click="onItemViewClick(scope.row)">View</el-link>
+            <el-link type="info" @click="onItemViewClick(scope.row)">Edit</el-link>
             <el-link type="danger" @click="onItemDeleteClick(scope.row)">Delete</el-link>
             <el-dropdown @command="cmd => onItemDropdownClick(scope.row, cmd)">
               <el-button type="text" size="small">
@@ -109,9 +109,7 @@ export default {
     },
     // View button
     onItemViewClick(post) {
-      this.$alert(post.content, post.title, {
-        confirmButtonText: 'OK'
-      })
+      this.$router.push(`/post/edit/${post.id}`)
     },
     // Delete button
     onItemDeleteClick(post) {
