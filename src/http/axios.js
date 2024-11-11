@@ -2,6 +2,7 @@ import axios from 'axios';
 import config from './config';
 import Cookies from "js-cookie";
 import router from '@/router'
+import * as auth from '@/utils/auth'
 
 export default function $axios(options) {
   return new Promise((resolve, reject) => {
@@ -16,14 +17,15 @@ export default function $axios(options) {
     instance.interceptors.request.use(
       config => {
 
-        let token = Cookies.get('token')
-        // Send token with the request
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`
-        } else {
+        if (!auth.isLogin()) {
           // Redirect to login page
           router.push('/login')
         }
+
+        // Send request with token
+        let token = auth.getToken()
+        config.headers.Authorization = `Bearer ${token}`
+
         return config
       },
       error => {

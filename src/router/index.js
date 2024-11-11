@@ -12,7 +12,7 @@ import FeaturedPosts from "@/views/Blog/FeaturedPosts"
 import EditPost from "@/views/Blog/EditPost";
 import Photos from "@/views/Photography/Photos"
 import FeaturedPhotos from "@/views/Photography/FeaturedPhotos"
-import Cookies from "js-cookie";
+import * as auth from '@/utils/auth'
 
 // Override Vue Router's push method to catch errors
 const originalPush = Router.prototype.push
@@ -56,28 +56,17 @@ const router = new Router({
 
 // Route Guards
 router.beforeEach((to, from, next) => {
-  let userName = localStorage.getItem('user')
-  let expiration = localStorage.getItem('expiration')
-
-  // Token Expiration Check
-  if (expiration) {
-    let now = new Date()
-    let expirationTime = new Date(expiration)
-    if (now > expirationTime) {
-      console.log('token has expired, redirecting to login page')
-      localStorage.removeItem('user')
-      localStorage.removeItem('expiration')
-      Cookies.set('token', null)
-      router.push('/login')
-    }
+  if (auth.isExpired()) {
+    auth.logout()
+    router.push('/login')
   }
 
   if (to.path === '/login') {
-    // If accessing the login page, check if user session exists
-    if (userName) next({ path: '/' })
+    // Access the login page. If already logged in, redirect to the home page
+    if (auth.isLogin()) next({ path: '/' })
     else next()
   } else {
-    if (!userName) {
+    if (!auth.isLogin()) {
       // If not logged in and trying to access a protected route, redirect to login page
       next({ path: '/login' })
     }

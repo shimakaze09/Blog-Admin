@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import Cookies from "js-cookie"
+import * as auth from '@/utils/auth'
 
 export default {
   name: "Login",
@@ -38,11 +38,8 @@ export default {
       this.loading = true
       this.$api.auth.login(this.loginForm)
         .then(res => {  // Call login API
-          // Save token to Cookie
-          Cookies.set('token', res.data.token)
-          // Save login data to local storage
-          localStorage.setItem('user', this.loginForm.username)
-          localStorage.setItem('expiration', res.data.expiration)
+          // Save login information
+          auth.login(res.data.token, this.loginForm.username, res.data.expiration)
           // Redirect to home page on successful login
           this.$message.success('Login Successful')
           this.$router.push('/')
