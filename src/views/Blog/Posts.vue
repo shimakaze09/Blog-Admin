@@ -9,15 +9,14 @@
           <el-col :span="7">
             <!-- Category selection -->
             <!-- Add the attribute filterable to enable search functionality. By default, Select will find all options whose label property contains the input value. -->
-            <el-select v-model="currentCategoryName" filterable placeholder="Select category"
+            <el-select v-model="currentCategoryName" clearable filterable placeholder="Select category"
               v-on:change="handleCategoryChange">
               <el-option v-for="item in categories" :key="item.id" :label="item.name" :value="item.id">
               </el-option>
             </el-select>
           </el-col>
           <el-col :span="7">
-            <!-- TODO: Need to add a clear selection function -->
-            <el-select v-model="currentStatus" filterable placeholder="Please select article status">
+            <el-select v-model="currentStatus" clearable filterable placeholder="Please select article status">
               <el-option v-for="item in statusList" :key="item" :label="item" :value="item" />
             </el-select>
           </el-col>
