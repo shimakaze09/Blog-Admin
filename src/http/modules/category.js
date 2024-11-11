@@ -32,10 +32,11 @@ export const wordCloud = () => {
 }
 
 // Set a category as featured
-export const setFeatured = itemId => {
+export const setFeatured = (itemId, data) => {
   return axios({
     url: `Category/${itemId}/SetFeatured`,
-    method: 'post'
+    method: 'post',
+    data
   })
 }
 
