@@ -4,12 +4,12 @@
       <el-row type="flex" justify="space-between">
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-input placeholder="Please enter keywords" prefix-icon="el-icon-search"></el-input>
+            <el-input placeholder="Enter keyword" prefix-icon="el-icon-search"></el-input>
           </el-col>
           <el-col :span="12">
-            <!-- Category Filter -->
-            <!-- Enable search functionality by adding filterable attribute to el-select -->
-            <el-select v-model="currentCategoryName" filterable placeholder="Please select category"
+            <!-- Category selection -->
+            <!-- Add the filterable attribute to el-select to enable search functionality. By default, Select will find options whose label property contains the input value. -->
+            <el-select v-model="currentCategoryName" filterable placeholder="Select category"
               v-on:change="handleCategoryChange">
               <el-option v-for="item in categories" :key="item.id" :label="item.name" :value="item.id">
               </el-option>
@@ -18,13 +18,13 @@
         </el-row>
         <div>
           <el-button @click="addPost">Add</el-button>
-          <el-button type="danger" :disabled="cancelSelectionBtnDisabled">Delete</el-button>
-          <el-button @click="toggleSelection()" :disabled="cancelSelectionBtnDisabled">Cancel Selection</el-button>
+          <el-button type="danger" :disabled="!hasSelection">Delete</el-button>
+          <el-button @click="toggleSelection()" :disabled="!hasSelection">Cancel Selection</el-button>
         </div>
       </el-row>
     </el-header>
     <el-main>
-      <!-- Fixed table header can be achieved by setting height property on el-table element -->
+      <!-- Fixed table header is achieved by setting the height attribute on the el-table element. No additional code is required. -->
       <el-table ref="table" :data="posts" height="730" stripe style="width: 100%"
         @selection-change="handleSelectionChange" :default-sort="{ prop: 'lastUpdateTime', order: 'descending' }">
         <el-table-column type="selection" width="30">
@@ -41,16 +41,16 @@
         </el-table-column>
         <el-table-column fixed="right" label="Operations" width="150">
           <template slot-scope="scope">
-            <el-link type="info" @click="handleClick(scope.row)">View</el-link>
-            <el-link type="danger">Delete</el-link>
-            <el-dropdown>
+            <el-link type="info" @click="onItemViewClick(scope.row)">View</el-link>
+            <el-link type="danger" @click="onItemDeleteClick(scope.row)">Delete</el-link>
+            <el-dropdown @command="cmd => onItemDropdownClick(scope.row, cmd)">
               <el-button type="text" size="small">
                 More<i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>Set Recommended</el-dropdown-item>
-                <el-dropdown-item>Unset Recommended</el-dropdown-item>
-                <el-dropdown-item>Set Top</el-dropdown-item>
+                <el-dropdown-item command="setFeatured">Set Featured</el-dropdown-item>
+                <el-dropdown-item command="cancelFeatured">Cancel Featured</el-dropdown-item>
+                <el-dropdown-item command="setTop">Set Top</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -79,8 +79,8 @@ export default {
       categories: [],
       currentCategoryId: 0,
       currentCategoryName: '',
-      multipleSelection: [],
-      cancelSelectionBtnDisabled: true
+      selectedPosts: [],
+      hasSelection: false
     }
   },
   mounted() {
@@ -107,8 +107,33 @@ export default {
     addPost() {
       this.$message('Not implemented yet')
     },
-    handleClick(row) {
-      console.log(row)
+    // View button click
+    onItemViewClick(post) {
+      console.log(post)
+    },
+    // Delete button click
+    onItemDeleteClick(post) {
+      console.log(post)
+    },
+    // Dropdown menu click
+    onItemDropdownClick(post, command) {
+      switch (command) {
+        case 'setFeatured':
+          this.$api.blogPost.setFeatured(post.id)
+            .then(res => this.$message.success('Set Featured Successfully'))
+            .catch(res => this.$message.error(`Operation failed. ${res.message}`))
+          break
+        case 'cancelFeatured':
+          this.$api.blogPost.cancelFeatured(post.id)
+            .then(res => this.$message.success('Cancel Featured Successfully'))
+            .catch(res => this.$message.error(`Operation failed. ${res.message}`))
+          break
+        case 'setTop':
+          this.$api.blogPost.setTop(123123)
+            .then(res => this.$message.success(`Set Top Successfully. ${res.message}`))
+            .catch(res => this.$message.error(`Set Top Failed. ${res.message}`))
+          break
+      }
     },
     handleCategoryChange(categoryId) {
       console.log('categoryId', categoryId)
@@ -135,9 +160,8 @@ export default {
       }
     },
     handleSelectionChange(val) {
-      this.multipleSelection = val
-      console.log(this.multipleSelection)
-      this.cancelSelectionBtnDisabled = this.multipleSelection.length === 0
+      this.selectedPosts = val
+      this.hasSelection = this.selectedPosts.length > 0
     }
   }
 }
