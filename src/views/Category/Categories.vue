@@ -51,19 +51,19 @@ export default {
   methods: {
     loadData() {
       this.$api.category.getAll()
-        .then(res => {
-          this.data = res.data
-        })
+        .then(res => this.data = res.data)
     },
     setFeatured(index, item) {
-      console.log(this.$refs)
-      // console.log()
       this.$refs[`setFeaturedDialog_${index}`].show()
     },
     cancelFeatured(index, item) {
-      this.$api.category.cancelFeatured(item.id)
-        .then(res => this.$message.success(`Operation successful. ${res.message}`))
-        .catch(res => this.$message.error(`Operation failed. ${res.message}`))
+      this.$confirm('Are you sure?', 'Are you sure?', { type: 'warning' })
+        .then(() => {
+          this.$api.category.cancelFeatured(item.id)
+            .then(res => this.$message.success(`Operation successful. ${res.message}`))
+            .catch(res => this.$message.error(`Operation failed. ${res.message}`))
+        })
+        .catch(() => this.$message('Operation cancelled'))
     },
   }
 }
