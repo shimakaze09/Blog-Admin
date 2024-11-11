@@ -1,18 +1,16 @@
 <template>
   <el-form :model="loginForm" :rules="fieldRules" ref="loginForm" label-position="left" label-width="0px"
     class="demo-ruleForm login-container">
-    <span class="tool-bar">
-    </span>
     <h2 class="title">System Login</h2>
     <el-form-item prop="account">
-      <el-input type="text" v-model="loginForm.username" auto-complete="off" placeholder="Account"></el-input>
+      <el-input type="text" v-model="loginForm.username" auto-complete="off" placeholder="Username"></el-input>
     </el-form-item>
     <el-form-item prop="password">
       <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="Password"></el-input>
     </el-form-item>
     <el-form-item style="width:100%;">
-      <el-button type="primary" style="width:48%;" @click.native.prevent="reset">Reset</el-button>
-      <el-button type="primary" style="width:48%;" @click.native.prevent="login" :loading="loading">Login</el-button>
+      <el-button type="primary" style="width:48%;" @click="reset">Reset</el-button>
+      <el-button type="primary" style="width:48%;" @click="login" :loading="loading">Log In</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -26,47 +24,31 @@ export default {
     return {
       loading: false,
       loginForm: {
-        username: 'admin',
-        password: 'admin',
+        username: '',
+        password: '',
       },
       fieldRules: {
-        username: [
-          { required: true, message: 'Please enter username', trigger: 'blur' }
-        ],
-        password: [
-          { required: true, message: 'Please enter password', trigger: 'blur' }
-        ]
+        username: [{ required: true, message: 'Please enter username', trigger: 'blur' }],
+        password: [{ required: true, message: 'Please enter password', trigger: 'blur' }]
       },
-      checked: true
     }
   },
   methods: {
     login() {
       this.loading = true
-      let userInfo = {
-        username: this.loginForm.username,
-        password: this.loginForm.password,
-      }
-      this.$api.auth.login(userInfo)
+      this.$api.auth.login(this.loginForm)
         .then(res => {  // Call login API
-          if (res.successful) {
-            // Save token to Cookie
-            Cookies.set('token', res.data.token)
-            // Save login data to local storage
-            localStorage.setItem('user', userInfo.username)
-            localStorage.setItem('expiration', res.data.expiration)
-            // Redirect to home page after successful login
-            this.$router.push('/')
-            this.$message({ message: 'Login successful', type: 'success' })
-          } else {
-            this.$message({ message: `Login failed ${res.message}`, type: 'error' })
-          }
-          this.loading = false
+          // Save token to Cookie
+          Cookies.set('token', res.data.token)
+          // Save login data to local storage
+          localStorage.setItem('user', this.loginForm.username)
+          localStorage.setItem('expiration', res.data.expiration)
+          // Redirect to home page on successful login
+          this.$message.success('Login Successful')
+          this.$router.push('/')
         })
-        .catch(err => {
-          this.$message({ message: `Login failed: ${err.message}`, type: 'error' })
-          this.loading = false
-        })
+        .catch(err => this.$message.error(`Login Failed: ${err.message}`))
+        .finally(() => this.loading = false)
     },
     reset() {
       this.$refs.loginForm.resetFields()
