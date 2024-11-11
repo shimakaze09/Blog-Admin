@@ -1,5 +1,5 @@
 <template>
-  <div class="header" :style="{ 'background': themeColor }"
+  <div class="header" :style="{ 'background': themeColor, 'display': fullscreen ? 'none' : '' }"
     :class="collapse ? 'position-collapse-left' : 'position-left'">
     <!-- Navigation collapse -->
     <span class="hamburg">
@@ -114,7 +114,8 @@ export default {
   computed: {
     ...mapState({
       themeColor: state => state.app.themeColor,
-      collapse: state => state.app.collapse
+      collapse: state => state.app.collapse,
+      fullscreen: state => state.app.fullscreen,
     })
   }
 }

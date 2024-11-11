@@ -1,14 +1,15 @@
 <template>
   <div class="menu-bar-container">
     <!-- Logo -->
-    <div class="logo" :style="{'background':themeColor}" :class="collapse?'menu-bar-collapse-width':'menu-bar-width'"
-         @click="$router.push('/')">
-      <img v-if="collapse" src="@/assets/codelab.png"/>
+    <div class="logo" :style="{ 'background': themeColor, 'display': fullscreen ? 'none' : '' }"
+      :class="collapse ? 'menu-bar-collapse-width' : 'menu-bar-width'" @click="$router.push('/')">
+      <img v-if="collapse" src="@/assets/codelab.png" />
       <div>{{ collapse ? '' : appName }}</div>
     </div>
     <!-- Navigation Menu -->
-    <el-menu ref="navMenu" :default-active="$route.path" :class="collapse?'menu-bar-collapse-width':'menu-bar-width'"
-             :collapse="collapse" :collapse-transition="false" :unique-opened="false" router>
+    <el-menu ref="navMenu" :style="{ 'display': fullscreen ? 'none' : '' }" :default-active="$route.path"
+      :class="collapse ? 'menu-bar-collapse-width' : 'menu-bar-width'" :collapse="collapse" :collapse-transition="false"
+      :unique-opened="false" router>
       <el-menu-item index="/">
         <i class="el-icon-s-home"></i>
         <span slot="title">Home</span>
@@ -43,7 +44,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   computed: {
@@ -51,6 +52,7 @@ export default {
       appName: state => state.app.appName,
       themeColor: state => state.app.themeColor,
       collapse: state => state.app.collapse,
+      fullscreen: state => state.app.fullscreen,
     }),
     mainTabs: {
       get() {

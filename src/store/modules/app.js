@@ -1,26 +1,37 @@
 export default {
   state: {
-    appName: "Blog",  // Application name
-    themeColor: "#14889A",  // Theme color
-    oldThemeColor: "#14889A",   // Previous theme color
-    collapse: false,  // Navigation bar collapse state
-    menuRouteLoaded: false    // Whether menu and routes have been loaded
+    appName: "StarBlog",  // Application Name
+    themeColor: "#14889A",  // Theme Color
+    oldThemeColor: "#14889A",   // Previous Theme Color
+    collapse: false,  // Navigation bar collapse status
+    menuRouteLoaded: false,    // Whether menu and routes have been loaded
+    fullscreen: false,      // Fullscreen status
   },
   getters: {
-    collapse(state) {// Corresponding to the above state
+    collapse(state) {   // Corresponds to the state above
       return state.collapse
+    },
+    fullscreen(state) {
+      return state.fullscreen
     }
   },
   mutations: {
-    onCollapse(state) {  // Change collapse state
+    // Toggle collapse state
+    onCollapse(state) {
       state.collapse = !state.collapse
     },
-    setThemeColor(state, themeColor) {  // Change theme color
+    // Change theme color
+    setThemeColor(state, themeColor) {
       state.oldThemeColor = state.themeColor
       state.themeColor = themeColor
     },
-    menuRouteLoaded(state, menuRouteLoaded) {  // Change menu and route loading status
+    // Update menu and route load status
+    menuRouteLoaded(state, menuRouteLoaded) {
       state.menuRouteLoaded = menuRouteLoaded;
+    },
+    // Toggle fullscreen mode
+    onFullscreenChange(state) {
+      state.fullscreen = !state.fullscreen
     }
   },
   actions: {}

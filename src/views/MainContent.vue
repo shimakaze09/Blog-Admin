@@ -2,7 +2,7 @@
   <div id="main-container" class="main-container"
     :class="$store.state.app.collapse ? 'position-collapse-left' : 'position-left'">
     <!-- Tab Bar -->
-    <div class="tab-container">
+    <div class="tab-container" :style="{ 'display': fullscreen ? 'none' : '' }">
       <el-tabs class="tabs" :class="$store.state.app.collapse ? 'position-collapse-left' : 'position-left'"
         v-model="mainTabsActiveName" :closable="true" type="card" @tab-click="selectedTabHandle"
         @tab-remove="removeTabHandle">
@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: "MainContent",
   computed: {
@@ -49,7 +51,12 @@ export default {
       },
       set(val) {
         this.$store.commit('updateMainTabsActiveName', val)
-      }
+      },
+      ...mapState({
+        themeColor: state => state.app.themeColor,
+        collapse: state => state.app.collapse,
+        fullscreen: state => state.app.fullscreen,
+      })
     }
   },
   methods: {
