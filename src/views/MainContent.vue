@@ -61,10 +61,13 @@ export default {
   },
   methods: {
     // tabs, select tab
-    selectedTabHandle(tab) {
-      tab = this.mainTabs.filter(item => item.name === tab.name)
-      if (tab.length >= 1) {
-        this.$router.push({ name: tab[0].name })
+    selectedTabHandle(elTab) {
+      console.log(this.mainTabs)
+      console.log('选中tab:', elTab)
+      let tabSet = this.mainTabs.filter(item => item.name === elTab.name)
+      if (tabSet.length >= 1) {
+        let tab = tabSet[0]
+        this.$router.push({ name: tab.name, params: tab.params })
       }
     },
     // tabs, delete tab
@@ -96,7 +99,7 @@ export default {
     },
     // tabs, refresh current
     tabsRefreshCurrentHandle() {
-      var tempTabName = this.mainTabsActiveName
+      let tempTabName = this.mainTabsActiveName
       this.removeTabHandle(tempTabName)
       this.$nextTick(() => {
         this.$router.push({ name: tempTabName })
