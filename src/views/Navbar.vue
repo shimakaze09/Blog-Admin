@@ -25,6 +25,7 @@
         <el-menu-item-group title="Article Management">
           <el-menu-item index="/post/list">Article List</el-menu-item>
           <el-menu-item index="/post/featured">Featured Articles</el-menu-item>
+          <el-menu-item index="/post/top">Top Article</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="photography">

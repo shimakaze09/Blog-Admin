@@ -7,6 +7,7 @@ import Home from "@/views/Home"
 import Categories from "@/views/Category/Categories"
 import FeaturedCategories from "@/views/Category/FeaturedCategories"
 import Posts from "@/views/Blog/Posts"
+import TopPost from "@/views/Blog/TopPost"
 import FeaturedPosts from "@/views/Blog/FeaturedPosts"
 import Photos from "@/views/Photography/Photos"
 import FeaturedPhotos from "@/views/Photography/FeaturedPhotos"
@@ -54,6 +55,11 @@ const router = new Router({
           path: 'post/featured',
           name: 'Featured Articles',
           component: FeaturedPosts
+        },
+        {
+          path: 'post/top',
+          name: 'Top Post',
+          component: TopPost
         },
         {
           path: 'photo/list',
