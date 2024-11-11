@@ -1,135 +1,180 @@
 <template>
   <div>
-    <el-empty description="System Home Page"></el-empty>
-    <el-skeleton></el-skeleton>
+    <el-row :gutter="8">
+      <el-col :span="4">
+        <!-- Total Reads -->
+        <el-card>
+          <div slot="header">Total Reads</div>
+          <h1>10000</h1>
+          <div>
+            Today
+            <i class="el-icon-top text-primary"></i>
+            999
+          </div>
+        </el-card>
+        <!-- New Creations -->
+        <el-card class="mt-2">
+          <div slot="header">New Creations</div>
+          <el-row :gutter="8">
+            <el-col :span="12">
+              <el-button type="warning" plain class="w-100">
+                <div><i class="icon-lg el-icon-tickets"></i></div>
+                <div class="mt-2">Blogs</div>
+              </el-button>
+            </el-col>
+            <el-col :span="12">
+              <el-button type="primary" plain class="w-100">
+                <div><i class="icon-lg el-icon-folder"></i></div>
+                <div class="mt-2">Categories</div>
+              </el-button>
+            </el-col>
+          </el-row>
+          <el-row :gutter="8" class="mt-2">
+            <el-col :span="12">
+              <el-button type="primary" plain class="w-100">
+                <div><i class="icon-lg el-icon-picture-outline"></i></div>
+                <div class="mt-2">Photos</div>
+              </el-button>
+            </el-col>
+            <el-col :span="12">
+              <el-button type="primary" plain class="w-100">
+                <div><i class="icon-lg fa fa-code"></i></div>
+                <div class="mt-2">Code Snippets</div>
+              </el-button>
+            </el-col>
+          </el-row>
+        </el-card>
+        <!-- Quick Operations -->
+        <el-card class="mt-2">
+          <div slot="header">Quick Operations</div>
+          <div>
+            <el-button type="info" plain class="w-100">Bulk Import Articles</el-button>
+          </div>
+          <div class="mt-2">
+            <el-button type="info" plain class="w-100">Upload Article</el-button>
+          </div>
+          <div class="mt-2">
+            <el-button type="info" plain class="w-100">Bulk Import Photos</el-button>
+          </div>
+          <div class="mt-2">
+            <el-button type="info" plain class="w-100">Upload Photos</el-button>
+          </div>
+          <div class="mt-2">
+            <el-button type="info" plain class="w-100">Export Data</el-button>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="20">
+        <el-row :gutter="8">
+          <el-col :span="4">
+            <el-card>
+              <div slot="header">Article Count</div>
+              <h1>{{ overview['postsCount'] }}</h1>
+            </el-card>
+          </el-col>
+          <el-col :span="4">
+            <el-card>
+              <div slot="header">Category Count</div>
+              <h1>{{ overview['categoriesCount'] }}</h1>
+            </el-card>
+          </el-col>
+          <el-col :span="4">
+            <el-card>
+              <div slot="header">Photo Count</div>
+              <h1>{{ overview['photosCount'] }}</h1>
+            </el-card>
+          </el-col>
+          <el-col :span="4">
+            <el-card>
+              <div slot="header">Featured Posts</div>
+              <h1>{{ overview['featuredPostsCount'] }}</h1>
+            </el-card>
+          </el-col>
+          <el-col :span="4">
+            <el-card>
+              <div slot="header">Featured Categories</div>
+              <h1>{{ overview['featuredCategoriesCount'] }}</h1>
+            </el-card>
+          </el-col>
+          <el-col :span="4">
+            <el-card>
+              <div slot="header">Featured Photos</div>
+              <h1>{{ overview['featuredPhotosCount'] }}</h1>
+            </el-card>
+          </el-col>
+        </el-row>
+        <el-card class="mt-2">
+          <div slot="header">Data Trends</div>
+          <dv-charts class="mt-2" :style="'height: 550px'" :option="option1" />
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
 export default {
   components: {},
-  methods: {}
+  data() {
+    return {
+      overview: null,
+      option1: {
+        xAxis: {
+          name: 'First Week',
+          data: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+          nameTextStyle: {
+            fill: '#333',
+            fontSize: 20
+          },
+          axisLabel: {
+            style: {
+              fill: '#333',
+              fontSize: 16,
+              rotate: 0
+            }
+          }
+        },
+        yAxis: {
+          name: 'Reads',
+          data: 'value',
+          nameTextStyle: {
+            fill: '#333',
+            fontSize: 20
+          },
+          axisLabel: {
+            style: {
+              fill: '#333',
+              fontSize: 16,
+              rotate: 0
+            }
+          }
+        },
+        series: [
+          {
+            data: [1200, 2230, 1900, 2100, 3500, 4200, 3985],
+            type: 'line'
+          }
+        ]
+      }
+    }
+  },
+  mounted() {
+    this.load()
+  },
+  methods: {
+    load() {
+      this.$api.blog.overview()
+        .then(res => {
+          this.overview = res.data
+        })
+        .catch(res => this.$message.error(`Failed to fetch! ${res.message}`))
+    }
+  }
 }
 </script>
 
 <style>
-.carousel {
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-right: 20px;
-}
-
-.carousel img {
-  width: 200px;
-  height: 200px;
-  padding-top: 15px;
-}
-
-.carousel h2 {
-  color: #475669;
-  font-size: 22px;
-  opacity: 1.75;
-  line-height: 100px;
-  margin: 0;
-}
-
-.carousel ul {
-  color: #475669;
-  font-size: 15px;
-  opacity: 1.75;
-  line-height: 40px;
-  margin: 0;
-}
-
-.carousel-item-intro h2 {
-  color: #ffffff;
-  font-size: 22px;
-  opacity: 1.75;
-  line-height: 80px;
-  margin: 0;
-}
-
-.carousel-item-intro ul {
-  color: #ffffff;
-  font-size: 15px;
-  opacity: 1.75;
-  line-height: 65px;
-  padding: 5px;
-  margin: 0;
-}
-
-.carousel-item-func h2 {
-  color: #3f393b;
-  font-size: 22px;
-  opacity: 1.75;
-  line-height: 50px;
-  margin: 0;
-}
-
-.carousel-item-func ul {
-  color: #3f393b;
-  font-size: 15px;
-  opacity: 1.75;
-  line-height: 30px;
-  text-align: left;
-  padding-left: 90px;
-  margin: 0;
-}
-
-.carousel-item-env h2 {
-  color: #475669;
-  font-size: 22px;
-  opacity: 1.75;
-  line-height: 50px;
-  margin: 0;
-}
-
-.carousel-item-env ul {
-  color: #475669;
-  font-size: 15px;
-  opacity: 1.75;
-  line-height: 35px;
-  text-align: left;
-  padding-left: 110px;
-  margin: 0;
-}
-
-.carousel-item-intro {
-  background-color: #19aaaf73;
-  -webkit-border-radius: 25px;
-  border-radius: 25px;
-  -moz-border-radius: 15px;
-  background-clip: padding-box;
-  box-shadow: 0 0 25px #a3b3b965;
-}
-
-.carousel-item-func {
-  background-color: #19aaaf73;
-  -webkit-border-radius: 25px;
-  border-radius: 25px;
-  -moz-border-radius: 15px;
-  background-clip: padding-box;
-  box-shadow: 0 0 25px #a3b3b965;
-}
-
-.carousel-item-env {
-  background-color: #19aaaf73;
-  -webkit-border-radius: 25px;
-  border-radius: 25px;
-  -moz-border-radius: 15px;
-  background-clip: padding-box;
-  box-shadow: 0 0 25px #a3b3b965;
-}
-
-.carousel-item-intro {
-  background-color: #b95e5e;
-}
-
-.carousel-item-func {
-  background-color: #52c578;
-}
-
-.carousel-item-env {
-  background-color: #41a7b9;
+.icon-lg {
+  font-size: 40px;
 }
 </style>

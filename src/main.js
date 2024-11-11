@@ -1,6 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+
 import App from './App'
 import router from './router'
 import api from './http'
@@ -8,13 +9,23 @@ import Exceptionless from './utils/exceptionless'
 import ErrorHandler from "./utils/errorHandler"
 import global from './utils/global'
 import store from './store'
+
+// Import Bootstrap CSS files
+import 'bootstrap/dist/css/bootstrap-reboot.css'
+import 'bootstrap/dist/css/bootstrap-utilities.css'
+
+// ElementUI
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'font-awesome/css/font-awesome.min.css'
-import locale from 'element-ui/lib/locale/lang/en' // Import English locale
-import enUS from '@kangc/v-md-editor/lib/lang/en-US';
 
+// Import English locale
+import locale from 'element-ui/lib/locale/lang/en'
 
+// DataV charts
+import dataV from '@jiaminghi/data-view'
+
+// Markdown editor
 import VMdEditor from '@kangc/v-md-editor/lib/codemirror-editor';
 import '@kangc/v-md-editor/lib/style/codemirror-editor.css';
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
@@ -51,8 +62,9 @@ Vue.use(VMdEditor);
 
 Vue.config.productionTip = false
 
+Vue.use(dataV)
 // Import Element UI
-Vue.use(ElementUI, { locale }) // Set locale globally
+Vue.use(ElementUI, { locale })
 // Import API module
 Vue.use(api)
 // Exceptionless module
