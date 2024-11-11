@@ -15,20 +15,9 @@ export default function $axios(options) {
     // Request interceptor
     instance.interceptors.request.use(
       config => {
-        let expiration = localStorage.getItem('expiration')
-        if (expiration) {
-          let now = new Date()
-          let expirationTime = new Date(expiration)
-          if (now > expirationTime) {
-            console.log('Token has expired, redirecting to login')
-            localStorage.removeItem('user')
-            localStorage.removeItem('expiration')
-            Cookies.set('token', null)
-            router.push('/login')
-          }
-        }
+
         let token = Cookies.get('token')
-        // Send request with token
+        // Send token with the request
         if (token) {
           config.headers.Authorization = `Bearer ${token}`
         } else {
@@ -42,19 +31,19 @@ export default function $axios(options) {
         console.log('request:', error)
         // Check for timeout
         if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
-          console.log('Request timed out')
+          console.log('timeout request timed out')
         }
-        // Redirect to error page
+        // Redirect to error page if needed
         const errorInfo = error.response
         console.log(errorInfo)
         if (errorInfo) {
-          error = errorInfo.data  // Page-side catch can retrieve detailed error information
+          error = errorInfo.data  // Page can catch detailed error info
           const errorStatus = errorInfo.status; // 404 403 500 ...
           router.push({
             path: `/error/${errorStatus}`
           })
         }
-        return Promise.reject(error) // Error information can be retrieved in the calling side (catch)
+        return Promise.reject(error) // Return error information for catching in the calling side
       }
     )
 
@@ -69,37 +58,37 @@ export default function $axios(options) {
           // Wrap default error message
           switch (err.response.status) {
             case 400:
-              err.message = 'Invalid request'
+              err.message = 'Request Error'
               break
             case 401:
-              err.message = 'Unauthorized, please log in'
+              err.message = 'Please log in before accessing'
               break
             case 403:
-              err.message = 'Access denied'
+              err.message = 'Access Denied, No Access Permission'
               break
             case 404:
-              err.message = `URL error: ${err.response.config.url}`
+              err.message = `URL Error: ${err.response.config.url}`
               break
             case 408:
-              err.message = 'Request timed out'
+              err.message = 'Request Timed Out'
               break
             case 500:
-              err.message = 'Server internal error'
+              err.message = 'Server Internal Error'
               break
             case 501:
-              err.message = 'Service not implemented'
+              err.message = 'Service Not Implemented'
               break
             case 502:
-              err.message = 'Gateway error'
+              err.message = 'Gateway Error'
               break
             case 503:
-              err.message = 'Service unavailable'
+              err.message = 'Service Unavailable'
               break
             case 504:
-              err.message = 'Gateway timed out'
+              err.message = 'Gateway Timed Out'
               break
             case 505:
-              err.message = 'HTTP version not supported'
+              err.message = 'HTTP Version Not Supported'
               break
             default:
           }
@@ -114,7 +103,7 @@ export default function $axios(options) {
       }
     )
 
-    // Request processing
+    // Process request
     instance(options).then(res => {
       resolve(res)
       return false

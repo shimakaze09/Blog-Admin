@@ -11,8 +11,9 @@ import TopPost from "@/views/Blog/TopPost"
 import FeaturedPosts from "@/views/Blog/FeaturedPosts"
 import Photos from "@/views/Photography/Photos"
 import FeaturedPhotos from "@/views/Photography/FeaturedPhotos"
+import Cookies from "js-cookie";
 
-// Override the default push method to catch errors
+// Override Vue Router's push method to catch errors
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
@@ -29,48 +30,20 @@ const router = new Router({
       children: [
         {
           path: '',
-          name: 'System Home Page',
+          name: 'Home Page',
           component: Home,
           meta: {
             icon: 'fa fa-home fa-lg',
             index: 0
           }
         },
-        {
-          path: 'category/list',
-          name: 'Category List',
-          component: Categories
-        },
-        {
-          path: 'category/featured',
-          name: 'Featured Categories',
-          component: FeaturedCategories
-        },
-        {
-          path: 'post/list',
-          name: 'Article List',
-          component: Posts
-        },
-        {
-          path: 'post/featured',
-          name: 'Featured Articles',
-          component: FeaturedPosts
-        },
-        {
-          path: 'post/top',
-          name: 'Top Post',
-          component: TopPost
-        },
-        {
-          path: 'photo/list',
-          name: 'Photo List',
-          component: Photos
-        },
-        {
-          path: 'photo/featured',
-          name: 'Featured Photos',
-          component: FeaturedPhotos
-        }
+        { path: 'category/list', name: 'Category List', component: Categories },
+        { path: 'category/featured', name: 'Featured Category', component: FeaturedCategories },
+        { path: 'post/list', name: 'Post List', component: Posts },
+        { path: 'post/featured', name: 'Featured Post', component: FeaturedPosts },
+        { path: 'post/top', name: 'Top Post', component: TopPost },
+        { path: 'photo/list', name: 'Photo List', component: Photos },
+        { path: 'photo/featured', name: 'Featured Photo', component: FeaturedPhotos },
       ]
     },
     { path: '/Login', name: 'Login', component: Login },
@@ -78,18 +51,31 @@ const router = new Router({
   ]
 })
 
-// Global navigation guard
+// Route Guards
 router.beforeEach((to, from, next) => {
-  // Check if the user is logged in
   let userName = localStorage.getItem('user')
+  let expiration = localStorage.getItem('expiration')
+
+  // Token Expiration Check
+  if (expiration) {
+    let now = new Date()
+    let expirationTime = new Date(expiration)
+    if (now > expirationTime) {
+      console.log('token has expired, redirecting to login page')
+      localStorage.removeItem('user')
+      localStorage.removeItem('expiration')
+      Cookies.set('token', null)
+      router.push('/login')
+    }
+  }
 
   if (to.path === '/login') {
-    // Redirect to home if user is already logged in
+    // If accessing the login page, check if user session exists
     if (userName) next({ path: '/' })
     else next()
   } else {
     if (!userName) {
-      // Redirect to login if not logged in
+      // If not logged in and trying to access a protected route, redirect to login page
       next({ path: '/login' })
     }
     next()
