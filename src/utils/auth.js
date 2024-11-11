@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-import fa from "element-ui/src/locale/lang/fa";
 
 /**
  * Check if logged in
@@ -53,7 +52,7 @@ export const login = (token, username, expiration) => {
 
 // Logout
 export const logout = () => {
-  Cookies.set('token', '')
+  Cookies.set('token', null)
   localStorage.removeItem('user')
   localStorage.removeItem('expiration')
 }
