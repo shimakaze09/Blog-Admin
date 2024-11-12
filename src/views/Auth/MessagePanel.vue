@@ -32,35 +32,35 @@ export default {
           key: "1",
           avatar: '@/assets/user.png',
           content: 'You changed the user password',
-          sender: 'Zhuge Liang',
+          sender: 'User 1',
           time: '5 minutes ago'
         },
         {
           key: "2",
           avatar: '@/assets/user.png',
           content: 'You changed the user profile picture',
-          sender: 'Wu Zetian',
+          sender: 'User 2',
           time: '2 hours ago'
         },
         {
           key: "3",
           avatar: '@/assets/user.png',
           content: '25 new members joined today',
-          sender: 'Wang Yuyan',
+          sender: 'User 3',
           time: 'Yesterday'
         },
         {
           key: "4",
           avatar: '@/assets/user.png',
           content: 'You published a new article',
-          sender: 'Aoi Miyazaki',
+          sender: 'User 4',
           time: 'Yesterday'
         },
         {
           key: "5",
           avatar: '@/assets/user.png',
           content: 'You published a new article',
-          sender: 'Shangguan Waner',
+          sender: 'User 5',
           time: 'Two days ago'
         }]
     }
