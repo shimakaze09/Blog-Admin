@@ -6,7 +6,7 @@
         <span class="notice-icon">
           <li :class="item.icon"></li>
         </span>
-        <span class="notice-cotent">
+        <span class="notice-content">
           {{ item.content }}
         </span>
       </div>
@@ -61,7 +61,7 @@ export default {
 <style scoped>
 .notice-panel {
   font-size: 15px;
-  width: 250px;
+  width: 300px;
   margin: -12px;
 }
 
