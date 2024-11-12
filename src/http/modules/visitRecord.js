@@ -27,6 +27,15 @@ export const getOverview = () => {
   return axios({ url: 'VisitRecord/Overview' })
 }
 
+// Get trend data
+export const getTrend = (days = 7) => {
+  return axios({
+    url: 'VisitRecord/Trend',
+    method: 'get',
+    params: { days }
+  })
+}
+
 // Get statistics
 export const getStats = (date = null) => {
   return axios({

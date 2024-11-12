@@ -105,7 +105,7 @@
         </el-row>
         <el-card class="mt-2">
           <div slot="header">Data Trends</div>
-          <dv-charts class="mt-2" :style="'height: 550px'" :option="option1" />
+          <dv-charts class="mt-2" :style="'height: 550px'" :option="trendChartOption" />
         </el-card>
       </el-col>
     </el-row>
@@ -113,18 +113,21 @@
 </template>
 
 <script>
-import * as visitRecord from "@/http/modules/visitRecord";
-
 export default {
   components: {},
   data() {
     return {
       overview: null,
       visitRecordOverview: null,
-      option1: {
+      trend: null,
+    }
+  },
+  computed: {
+    trendChartOption() {
+      return {
         xAxis: {
-          name: 'First Week',
-          data: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+          name: 'Date',
+          data: this.trend.map(item => item.date),
           nameTextStyle: {
             fill: '#333',
             fontSize: 20
@@ -154,8 +157,17 @@ export default {
         },
         series: [
           {
-            data: [1200, 2230, 1900, 2100, 3500, 4200, 3985],
-            type: 'line'
+            data: this.trend.map(item => item.count),
+            type: 'line',
+            smooth: true,
+            lineArea: {
+              show: true,
+              gradient: ['rgba(55, 162, 218, 0.6)', 'rgba(55, 162, 218, 0)']
+            },
+            label: {
+              show: true,
+              formatter: '{value} times'
+            }
           }
         ]
       }
@@ -173,6 +185,10 @@ export default {
       this.$api.visitRecord.getOverview()
         .then(res => this.visitRecordOverview = res.data)
         .catch(res => this.$message.error(`Failed to retrieve visit record data! ${res.message}`))
+
+      this.$api.visitRecord.getTrend(14)
+        .then(res => this.trend = res.data)
+        .catch(res => this.$message.error(`Failed to retrieve visit trend data! ${res.message}`))
     }
   }
 }
