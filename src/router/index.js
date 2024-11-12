@@ -12,6 +12,7 @@ import FeaturedPosts from "@/views/Blog/FeaturedPosts"
 import EditPost from "@/views/Blog/EditPost";
 import Photos from "@/views/Photography/Photos"
 import FeaturedPhotos from "@/views/Photography/FeaturedPhotos"
+import VisitRecordList from "@/views/VisitRecord/List"
 import * as auth from '@/utils/auth'
 
 // Override Vue Router's push method to catch errors
@@ -47,6 +48,7 @@ const router = new Router({
         { path: 'post/new', name: 'New Article', component: EditPost },
         { path: 'photo/list', name: 'Photo List', component: Photos },
         { path: 'photo/featured', name: 'Featured Photo', component: FeaturedPhotos },
+        { path: 'visit_record/list', name: 'Visit Record', component: VisitRecordList },
       ]
     },
     { path: '/Login', name: 'Login', component: Login },

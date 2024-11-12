@@ -16,7 +16,7 @@
       </el-menu-item>
       <el-submenu index="blog">
         <template slot="title">
-          <i class="el-icon-location"></i>
+          <i class="el-icon-s-grid"></i>
           <span>Blogs</span>
         </template>
         <el-menu-item-group title="Category Management">
@@ -31,7 +31,7 @@
       </el-submenu>
       <el-submenu index="photography">
         <template slot="title">
-          <i class="el-icon-location"></i>
+          <i class="el-icon-camera"></i>
           <span>Photography</span>
         </template>
         <el-menu-item-group title="Photo Management">
@@ -39,6 +39,10 @@
           <el-menu-item index="/photo/featured">Featured Photo</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
+      <el-menu-item index="/visit_record/list">
+        <i class="el-icon-menu"></i>
+        <span slot="title">Visit Record</span>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
