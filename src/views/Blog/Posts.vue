@@ -71,6 +71,8 @@
 </template>
 
 <script>
+import * as utils from '@/utils/dateTime'
+
 export default {
   name: 'Posts',
   data() {
@@ -99,12 +101,6 @@ export default {
     this.loadStatusList()
   },
   methods: {
-    dateTimeBeautify(dateTimeStr) {
-      let dateObj = new Date(dateTimeStr)
-      let dateStr = `${dateObj.getFullYear()}-${dateObj.getMonth()}-${dateObj.getDay()}`
-      let timeStr = `${dateObj.getHours()}:${dateObj.getMinutes()}`
-      return `${dateStr} ${timeStr}`
-    },
     // Load categories
     loadCategories() {
       this.$api.category.getAll().then(res => {
@@ -124,8 +120,8 @@ export default {
         this.totalCount = res.pagination.totalItemCount
         this.posts = res.data
         this.posts.forEach(item => {
-          item.creationTime = this.dateTimeBeautify(item.creationTime)
-          item.lastUpdateTime = this.dateTimeBeautify(item.lastUpdateTime)
+          item.creationTime = utils.dateTimeBeautify(item.creationTime)
+          item.lastUpdateTime = utils.dateTimeBeautify(item.lastUpdateTime)
         })
       }).catch(res => this.$message.error(`Error fetching article list: ${res.message}`))
     },
