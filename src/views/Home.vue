@@ -5,11 +5,11 @@
         <!-- Total Reads -->
         <el-card>
           <div slot="header">Total Reads</div>
-          <h1>10000</h1>
+          <h1>{{ visitRecordOverview.totalVisit }}</h1>
           <div>
             Today
             <i class="el-icon-top text-primary"></i>
-            999
+            {{ visitRecordOverview.todayVisit }}
           </div>
         </el-card>
         <!-- New Creations -->
@@ -113,11 +113,14 @@
 </template>
 
 <script>
+import * as visitRecord from "@/http/modules/visitRecord";
+
 export default {
   components: {},
   data() {
     return {
       overview: null,
+      visitRecordOverview: null,
       option1: {
         xAxis: {
           name: 'First Week',
@@ -164,10 +167,12 @@ export default {
   methods: {
     load() {
       this.$api.blog.overview()
-        .then(res => {
-          this.overview = res.data
-        })
+        .then(res => this.overview = res.data)
         .catch(res => this.$message.error(`Failed to fetch! ${res.message}`))
+
+      this.$api.visitRecord.getOverview()
+        .then(res => this.visitRecordOverview = res.data)
+        .catch(res => this.$message.error(`Failed to retrieve visit record data! ${res.message}`))
     }
   }
 }
