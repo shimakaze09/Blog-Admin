@@ -2,9 +2,9 @@
   <div>
     <el-row :gutter="8">
       <el-col :span="4">
-        <!-- Total Reads -->
-        <el-card>
-          <div slot="header">Total Reads</div>
+        <!-- Total Views -->
+        <el-card v-loading="loading">
+          <div slot="header">Total Views</div>
           <h1>{{ visitRecordOverview.totalVisit }}</h1>
           <div>
             Today
@@ -19,13 +19,13 @@
             <el-col :span="12">
               <el-button type="warning" plain class="w-100">
                 <div><i class="icon-lg el-icon-tickets"></i></div>
-                <div class="mt-2">Blogs</div>
+                <div class="mt-2">Blog Posts</div>
               </el-button>
             </el-col>
             <el-col :span="12">
               <el-button type="primary" plain class="w-100">
                 <div><i class="icon-lg el-icon-folder"></i></div>
-                <div class="mt-2">Categories</div>
+                <div class="mt-2">Post Categories</div>
               </el-button>
             </el-col>
           </el-row>
@@ -44,20 +44,20 @@
             </el-col>
           </el-row>
         </el-card>
-        <!-- Quick Operations -->
+        <!-- Quick Actions -->
         <el-card class="mt-2">
-          <div slot="header">Quick Operations</div>
+          <div slot="header">Quick Actions</div>
           <div>
-            <el-button type="info" plain class="w-100">Bulk Import Articles</el-button>
+            <el-button type="info" plain class="w-100">Batch Import Articles</el-button>
           </div>
           <div class="mt-2">
-            <el-button type="info" plain class="w-100">Upload Article</el-button>
+            <el-button type="info" plain class="w-100">Upload Post</el-button>
           </div>
           <div class="mt-2">
-            <el-button type="info" plain class="w-100">Bulk Import Photos</el-button>
+            <el-button type="info" plain class="w-100">Batch Import Images</el-button>
           </div>
           <div class="mt-2">
-            <el-button type="info" plain class="w-100">Upload Photos</el-button>
+            <el-button type="info" plain class="w-100">Upload Image</el-button>
           </div>
           <div class="mt-2">
             <el-button type="info" plain class="w-100">Export Data</el-button>
@@ -65,10 +65,10 @@
         </el-card>
       </el-col>
       <el-col :span="20">
-        <el-row :gutter="8">
+        <el-row :gutter="8" v-loading="loading">
           <el-col :span="4">
             <el-card>
-              <div slot="header">Article Count</div>
+              <div slot="header">Post Count</div>
               <h1>{{ overview['postsCount'] }}</h1>
             </el-card>
           </el-col>
@@ -103,7 +103,7 @@
             </el-card>
           </el-col>
         </el-row>
-        <el-card class="mt-2">
+        <el-card class="mt-2" v-loading="loading">
           <div slot="header">Data Trends</div>
           <dv-charts class="mt-2" :style="'height: 550px'" :option="trendChartOption" />
         </el-card>
@@ -119,58 +119,67 @@ export default {
     return {
       overview: {},
       visitRecordOverview: {},
-      trend: {},
+      trend: null,
+      loadStage: 0
     }
   },
   computed: {
     trendChartOption() {
-      return {
-        xAxis: {
-          name: 'Date',
-          data: this.trend.map(item => item.date),
-          nameTextStyle: {
-            fill: '#333',
-            fontSize: 20
-          },
-          axisLabel: {
-            style: {
+      let data = {}
+      if (this.trend !== null) {
+        data = {
+          xAxis: {
+            name: 'Date',
+            data: this.trend.map(item => item.date),
+            nameTextStyle: {
               fill: '#333',
-              fontSize: 16,
-              rotate: 0
-            }
-          }
-        },
-        yAxis: {
-          name: 'Reads',
-          data: 'value',
-          nameTextStyle: {
-            fill: '#333',
-            fontSize: 20
-          },
-          axisLabel: {
-            style: {
-              fill: '#333',
-              fontSize: 16,
-              rotate: 0
-            }
-          }
-        },
-        series: [
-          {
-            data: this.trend.map(item => item.count),
-            type: 'line',
-            smooth: true,
-            lineArea: {
-              show: true,
-              gradient: ['rgba(55, 162, 218, 0.6)', 'rgba(55, 162, 218, 0)']
+              fontSize: 20
             },
-            label: {
-              show: true,
-              formatter: '{value} times'
+            axisLabel: {
+              style: {
+                fill: '#333',
+                fontSize: 16,
+                rotate: 0
+              }
             }
-          }
-        ]
+          },
+          yAxis: {
+            name: 'Views',
+            data: 'value',
+            nameTextStyle: {
+              fill: '#333',
+              fontSize: 20
+            },
+            axisLabel: {
+              style: {
+                fill: '#333',
+                fontSize: 16,
+                rotate: 0
+              }
+            }
+          },
+          series: [
+            {
+              data: this.trend.map(item => item.count),
+              type: 'line',
+              smooth: true,
+              lineArea: {
+                show: true,
+                gradient: ['rgba(55, 162, 218, 0.6)', 'rgba(55, 162, 218, 0)']
+              },
+              label: {
+                show: true,
+                formatter: '{value} times'
+              },
+            }
+          ]
+        }
       }
+      return data
+    },
+    loading() {
+      console.log(this.loadStage)
+      return this.loadStage < 3
     }
   },
   created() {
@@ -182,6 +191,7 @@ export default {
         .then(res => {
           this.overview = null
           this.overview = res.data
+          this.loadStage++
         })
         .catch(res => this.$message.error(`Failed to fetch! ${res.message}`))
 
@@ -189,15 +199,17 @@ export default {
         .then(res => {
           this.visitRecordOverview = null
           this.visitRecordOverview = res.data
+          this.loadStage++
         })
-        .catch(res => this.$message.error(`Failed to retrieve visit record data! ${res.message}`))
+        .catch(res => this.$message.error(`Failed to fetch visit statistics! ${res.message}`))
 
       this.$api.visitRecord.getTrend(14)
         .then(res => {
           this.trend = null
           this.trend = res.data
+          this.loadStage++
         })
-        .catch(res => this.$message.error(`Failed to retrieve visit trend data! ${res.message}`))
+        .catch(res => this.$message.error(`Failed to fetch visit trends! ${res.message}`))
     }
   }
 }
