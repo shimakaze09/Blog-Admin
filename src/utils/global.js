@@ -5,7 +5,7 @@
  */
 
 // Backend management system server address
-export const baseUrl = 'http://localhost:5205'
+export const baseUrl = process.env.BASE_URL
 
 export default {
   baseUrl

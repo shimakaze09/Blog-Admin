@@ -1,7 +1,7 @@
 import {ExceptionlessClient} from 'exceptionless/dist/exceptionless';
 
 const exLessClient = ExceptionlessClient.default;
-exLessClient.config.apiKey = '1L1zCqr7PW4JnKlpz7Lr4CgYIdLAf7CDn01TtxFM';
+exLessClient.config.apiKey = process.env.EXCEPTION_LESS_API_KEY
 
 const install = Vue => {
   if (install.installed)
