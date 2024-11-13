@@ -17,13 +17,13 @@
           <div slot="header">New Creations</div>
           <el-row :gutter="8">
             <el-col :span="12">
-              <el-button type="warning" plain class="w-100">
+              <el-button type="warning" plain class="w-100" @click="$router.push('/post/new')">
                 <div><i class="icon-lg el-icon-tickets"></i></div>
                 <div class="mt-2">Blog Posts</div>
               </el-button>
             </el-col>
             <el-col :span="12">
-              <el-button type="primary" plain class="w-100">
+              <el-button type="primary" plain class="w-100" @click="$router.push('/category/list')">
                 <div><i class="icon-lg el-icon-folder"></i></div>
                 <div class="mt-2">Post Categories</div>
               </el-button>
@@ -31,13 +31,13 @@
           </el-row>
           <el-row :gutter="8" class="mt-2">
             <el-col :span="12">
-              <el-button type="primary" plain class="w-100">
+              <el-button type="primary" plain class="w-100" @click="$router.push('/photo/list')">
                 <div><i class="icon-lg el-icon-picture-outline"></i></div>
                 <div class="mt-2">Photos</div>
               </el-button>
             </el-col>
             <el-col :span="12">
-              <el-button type="primary" plain class="w-100">
+              <el-button type="primary" plain class="w-100" @click="notImpl">
                 <div><i class="icon-lg fa fa-code"></i></div>
                 <div class="mt-2">Code Snippets</div>
               </el-button>
@@ -48,19 +48,19 @@
         <el-card class="mt-2">
           <div slot="header">Quick Actions</div>
           <div>
-            <el-button type="info" plain class="w-100">Batch Import Articles</el-button>
+            <el-button type="info" plain class="w-100" @click="notImpl">Batch Import Articles</el-button>
           </div>
           <div class="mt-2">
-            <el-button type="info" plain class="w-100">Upload Post</el-button>
+            <el-button type="info" plain class="w-100" @click="$router.push('post/upload')">Upload Post</el-button>
           </div>
           <div class="mt-2">
-            <el-button type="info" plain class="w-100">Batch Import Images</el-button>
+            <el-button type="info" plain class="w-100" @click="notImpl">Batch Import Images</el-button>
           </div>
           <div class="mt-2">
-            <el-button type="info" plain class="w-100">Upload Image</el-button>
+            <el-button type="info" plain class="w-100" @click="$router.push('/photo/list')">Upload Image</el-button>
           </div>
           <div class="mt-2">
-            <el-button type="info" plain class="w-100">Export Data</el-button>
+            <el-button type="info" plain class="w-100" @click="notImpl">Export Data</el-button>
           </div>
         </el-card>
       </el-col>
@@ -209,6 +209,9 @@ export default {
           this.loadStage++
         })
         .catch(res => this.$message.error(`Failed to fetch visit trends! ${res.message}`))
+    },
+    notImpl() {
+      this.$message.warning('Function is under implementation!')
     }
   }
 }

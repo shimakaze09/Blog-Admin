@@ -29,6 +29,9 @@
           <el-menu-item index="/post/top">Top Article</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
+      <el-menu-item-group title="tools">
+        <el-menu-item index="/post/upload">Batch upload</el-menu-item>
+      </el-menu-item-group>
       <el-submenu index="photography">
         <template slot="title">
           <i class="el-icon-camera"></i>
