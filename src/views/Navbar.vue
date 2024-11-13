@@ -46,6 +46,10 @@
         <i class="el-icon-menu"></i>
         <span slot="title">Visit Record</span>
       </el-menu-item>
+      <el-menu-item index="/config/list">
+        <i class="el-icon-s-tools"></i>
+        <span slot="title">Configuration Center</span>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
