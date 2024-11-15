@@ -50,6 +50,10 @@
         <i class="el-icon-s-tools"></i>
         <span slot="title">Configuration Center</span>
       </el-menu-item>
+      <el-menu-item index="/link/list">
+        <i class="el-icon-link"></i>
+        <span slot="title">Link Management</span>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>

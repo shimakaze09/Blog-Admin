@@ -15,6 +15,7 @@ import Photos from "@/views/Photography/Photos"
 import FeaturedPhotos from "@/views/Photography/FeaturedPhotos"
 import VisitRecordList from "@/views/VisitRecord/List"
 import ConfigList from "@/views/Config/List"
+import LinkList from '@/views/Link/List'
 import * as auth from '@/utils/auth'
 
 // Override Vue Router's push method to catch errors
@@ -53,6 +54,7 @@ const router = new Router({
         { path: 'photo/featured', name: 'Featured Photo', component: FeaturedPhotos },
         { path: 'visit_record/list', name: 'Visit Record', component: VisitRecordList },
         {path: 'config/list', name: 'Configuration Center', component: ConfigList},
+        {path: 'link/list', name: 'Friend Link Management', component: LinkList},
       ]
     },
     { path: '/Login', name: 'Login', component: Login },
