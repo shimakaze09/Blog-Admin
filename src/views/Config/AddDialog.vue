@@ -1,6 +1,6 @@
 <template>
   <el-dialog title="Add Configuration" :visible.sync="dialogFormVisible" width="30%">
-    <el-form ref="uploadForm" :model="form" :rules="formRules" label-width="80px">
+    <el-form ref="uploadForm" :model="form" :rules="formRules" label-width="100px">
       <el-form-item label="Key" prop="key">
         <el-input v-model="form.key" autocomplete="off"></el-input>
       </el-form-item>
@@ -45,6 +45,14 @@ export default {
     }
   },
   methods: {
+    resetForm() {
+      this.$refs.uploadForm.resetFields()
+      this.form = {
+        key: '',
+        value: '',
+        description: null
+      }
+    },
     show() {
       this.dialogFormVisible = true
     },
@@ -52,8 +60,8 @@ export default {
       this.dialogFormVisible = false
     },
     close() {
+      this.resetForm()
       this.hide()
-      this.$refs.uploadForm.resetFields()
     },
     edit(item) {
       this.mode = 'edit'

@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col :span="8">
-      <el-form ref="uploadForm" :model="form" :rules="formRules" label-width="80px">
+      <el-form ref="uploadForm" :model="form" :rules="formRules" label-width="120px">
         <el-form-item label="Post Title" prop="title">
           <el-input v-model="form.title" autocomplete="off"></el-input>
         </el-form-item>

@@ -52,7 +52,7 @@ const router = new Router({
         { path: 'photo/list', name: 'Photo List', component: Photos },
         { path: 'photo/featured', name: 'Featured Photo', component: FeaturedPhotos },
         { path: 'visit_record/list', name: 'Visit Record', component: VisitRecordList },
-        {path: 'config/list', name: '配置中心', component: ConfigList},
+        {path: 'config/list', name: 'Configuration Center', component: ConfigList},
       ]
     },
     { path: '/Login', name: 'Login', component: Login },

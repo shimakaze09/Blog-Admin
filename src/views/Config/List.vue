@@ -3,7 +3,7 @@
     <el-header height="30px">
       <el-row type="flex" justify="start">
         <div>
-          <el-button @click="$refs.addConfigDialog.show()">Add</el-button>
+          <el-button @click="handleAdd">Add</el-button>
           <add-config-dialog ref="addConfigDialog" @onAddSucceed="onAddSucceed"
             @onUpdateSucceed="onUpdateSucceed"></add-config-dialog>
         </div>
@@ -49,6 +49,9 @@ export default {
       this.$api.config.getAll()
         .then(res => this.data = res.data)
         .catch(res => this.$message.error(`Error fetching config list: ${res.message}`))
+    },
+    handleAdd() {
+      this.$refs.addConfigDialog.show()
     },
     onItemEditClick(item) {
       this.$refs.addConfigDialog.edit(item)
