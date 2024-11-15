@@ -1,6 +1,6 @@
 <template>
   <el-dialog title="Upload Image" :visible.sync="dialogFormVisible" width="30%">
-    <el-form ref="uploadForm" :model="form" :rules="formRules" label-width="80px">
+    <el-form ref="uploadForm" :model="form" :rules="formRules" label-width="105px">
       <el-form-item label="Image Name" prop="title">
         <el-input v-model="form.title" autocomplete="off"></el-input>
       </el-form-item>

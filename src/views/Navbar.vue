@@ -50,10 +50,16 @@
         <i class="el-icon-s-tools"></i>
         <span slot="title">Configuration Center</span>
       </el-menu-item>
-      <el-menu-item index="/link/list">
-        <i class="el-icon-link"></i>
-        <span slot="title">Link Management</span>
-      </el-menu-item>
+      <el-submenu index="link">
+        <template slot="title">
+          <i class="el-icon-link"></i>
+          <span>Friend Links</span>
+        </template>
+        <el-menu-item-group title="Friend Links Management">
+          <el-menu-item index="/link/list">Friend Links</el-menu-item>
+          <el-menu-item index="/link_exchange/list">Friend Link Application Management</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
     </el-menu>
   </div>
 </template>

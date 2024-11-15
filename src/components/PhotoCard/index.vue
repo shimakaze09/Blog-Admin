@@ -1,5 +1,5 @@
 <template>
-  <el-popover placement="bottom" width="230" trigger="manual" v-model="visible">
+  <el-popover placement="bottom" width="270" trigger="manual" v-model="visible">
     <p>Photo name: {{ photo.title }}</p>
     <p>Location: {{ photo.location }}</p>
     <p>Upload time: {{ dateTimeStr }}</p>

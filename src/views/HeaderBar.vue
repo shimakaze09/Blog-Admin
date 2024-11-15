@@ -15,9 +15,7 @@
       <el-menu :default-active="activeIndex" class="el-menu-demo" :background-color="themeColor" text-color="#fff"
         active-text-color="#ffd04b" mode="horizontal" @select="selectNavBar()">
         <el-menu-item index="1" @click="$router.push('/')">Home</el-menu-item>
-        <el-menu-item index="2" @click="openWindow('https://github.com/shimakaze09')">Menu
-          1</el-menu-item>
-        <el-menu-item index="3" @click="openWindow('https://google.com')">Menu 2</el-menu-item>
+        <el-menu-item index="2" @click="openWindow('https://github.com/shimakaze09')">GitHub</el-menu-item>
       </el-menu>
     </span>
     <!-- Toolbar -->
@@ -28,24 +26,6 @@
           <!-- Theme switcher -->
           <theme-picker class="theme-picker" :default="themeColor" @onThemeChange="onThemeChange">
           </theme-picker>
-        </el-menu-item>
-        <el-menu-item index="2" v-popover:popover-message>
-          <!-- My Messages -->
-          <el-badge :value="5" :max="99" class="badge" type="danger">
-            <li style="color:#fff;" class="fa fa-envelope-o fa-lg"></li>
-          </el-badge>
-          <el-popover ref="popover-message" placement="bottom-end" trigger="click">
-            <message-panel></message-panel>
-          </el-popover>
-        </el-menu-item>
-        <el-menu-item index="3" v-popover:popover-notice>
-          <!-- System Notifications -->
-          <el-badge :value="4" :max="99" class="badge" type="danger">
-            <li style="color:#fff;" class="fa fa-bell-o fa-lg"></li>
-          </el-badge>
-          <el-popover ref="popover-notice" placement="bottom-end" trigger="click">
-            <notice-panel></notice-panel>
-          </el-popover>
         </el-menu-item>
         <el-menu-item index="4" v-popover:popover-personal>
           <!-- User Information -->
