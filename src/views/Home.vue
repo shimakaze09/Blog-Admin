@@ -25,7 +25,7 @@
             <el-col :span="12">
               <el-button type="primary" plain class="w-100" @click="$router.push('/category/list')">
                 <div><i class="icon-lg el-icon-folder"></i></div>
-                <div class="mt-2">Post Categories</div>
+                <div class="mt-2">Categories</div>
               </el-button>
             </el-col>
           </el-row>
@@ -39,7 +39,7 @@
             <el-col :span="12">
               <el-button type="primary" plain class="w-100" @click="notImpl">
                 <div><i class="icon-lg fa fa-code"></i></div>
-                <div class="mt-2">Code Snippets</div>
+                <div class="mt-2">Snippets</div>
               </el-button>
             </el-col>
           </el-row>

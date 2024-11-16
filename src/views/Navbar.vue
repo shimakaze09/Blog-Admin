@@ -57,7 +57,7 @@
         </template>
         <el-menu-item-group title="Friend Links Management">
           <el-menu-item index="/link/list">Friend Links</el-menu-item>
-          <el-menu-item index="/link_exchange/list">Friend Link Application Management</el-menu-item>
+          <el-menu-item index="/link_exchange/list">Apply Management</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>

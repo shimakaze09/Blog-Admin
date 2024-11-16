@@ -15,6 +15,11 @@
           </el-select>
         </el-form-item>
       </el-form>
+      <el-form-item label="ZIP File Encoding" prop="zipEncoding">
+        <el-select v-model="form.zipEncoding" clearable filterable placeholder="ZIP File Encoding">
+          <el-option v-for="item in zipCodings" :key="item" :label="item" :value="item" />
+        </el-select>
+      </el-form-item>
       <el-upload ref="upload" drag action="" accept="application/x-zip-compressed,.zip" :file-list="fileList"
         :on-change="onUploadChange" :auto-upload="false">
         <i class="el-icon-upload"></i>
@@ -39,10 +44,12 @@ export default {
       categories: [],
       currentCategoryName: '',
       currentCategoryId: 0,
+      zipCodings: ['utf-8', 'utf-16', 'gbk', 'gb2312'],
       form: {
         title: '',
         summary: '',
         categoryId: null,
+        zipEncoding: 'utf-8',
         file: null
       },
       formRules: {
@@ -85,13 +92,14 @@ export default {
       this.$refs.uploadForm.validate((valid) => {
         if (!valid) return false
 
-        this.$api.blog.upload(this.form.title, this.form.summary, this.form.categoryId, this.form.file.raw)
+        this.$api.blog.upload(this.form.title, this.form.summary, this.form.categoryId, this.form.file.raw, this.form.zipEncoding)
           .then(res => {
             if (res.successful) {
               this.$message({ message: 'Post uploaded successfully', type: 'success' })
               this.$router.push('/post/list')
             }
           })
+          .catch(res => this.$message.error(`Failed to upload post: ${res.message}`))
       })
     },
   }
