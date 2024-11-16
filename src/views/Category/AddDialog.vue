@@ -1,14 +1,14 @@
 <template>
-  <el-dialog title="Add Friend Link" :visible.sync="dialogFormVisible" width="30%">
-    <el-form ref="uploadForm" :model="form" :rules="formRules" label-width="100px">
+  <el-dialog title="Add Category" :visible.sync="dialogFormVisible" width="30%">
+    <el-form ref="uploadForm" :model="form" :rules="formRules" label-width="80px" label-position="left">
       <el-form-item label="Name" prop="name">
         <el-input v-model="form.name" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="URL" prop="url">
-        <el-input v-model="form.url" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="Description" prop="description">
-        <el-input v-model="form.description" autocomplete="off"></el-input>
+      <el-form-item label="Parent" prop="parentId">
+        <el-select v-model="form.parentId" placeholder="Please select">
+          <el-option v-for="item in categories" :key="item.id" :label="item.name" :value="item.id">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="Visible" prop="visible">
         <el-switch v-model="form.visible" />
@@ -22,8 +22,10 @@
 </template>
 
 <script>
+import { getAll } from "@/http/modules/category";
+
 export default {
-  name: "AddLinkDialog",
+  name: "addCategoryDialog",
   props: {
     onAddSucceed: {
       type: Function
@@ -36,6 +38,7 @@ export default {
     return {
       dialogFormVisible: false,
       mode: 'add',
+      categories: [],
       form: {
         name: '',
         url: '',
@@ -43,10 +46,14 @@ export default {
         visible: 1
       },
       formRules: {
-        name: [{ required: true, message: 'Please enter name', trigger: 'blur' }],
-        url: [{ required: true, message: 'Please enter URL', trigger: 'blur' }],
+        name: [{ required: true, message: 'Please enter name', trigger: 'blur' },],
+        parentId: [{ required: true, message: 'Please enter parent category', trigger: 'blur' },],
+        visible: [{ required: true, message: 'Please enter visibility', trigger: 'blur' },],
       }
     }
+  },
+  created() {
+    this.loadCategories()
   },
   methods: {
     resetForm() {
@@ -81,12 +88,24 @@ export default {
       this.form = item
       this.show()
     },
+    loadCategories() {
+      getAll()
+        .then(res => {
+          this.categories = [
+            { id: 0, name: '[Top Level Category]' },
+            ...res.data
+          ]
+        })
+        .catch(res => {
+          this.$message({ message: `${res.message}`, type: 'error' })
+        })
+    },
     submitUpload() {
       this.$refs.uploadForm.validate((valid) => {
         if (!valid) return false
 
         if (this.mode === 'add') {
-          this.$api.link.add(this.form)
+          this.$api.category.add(this.form)
             .then(res => {
               if (res.successful) {
                 this.$message({ message: 'Added successfully', type: 'success' })
@@ -95,12 +114,12 @@ export default {
               }
             })
             .catch(res => {
-              this.$message({ message: `Add failed! ${res.message}`, type: 'error' })
+              this.$message({ message: `Failed to add! ${res.message}`, type: 'error' })
             })
         }
 
         if (this.mode === 'edit') {
-          this.$api.link.update(this.form)
+          this.$api.category.update(this.form)
             .then(res => {
               if (res.successful) {
                 this.$message({ message: 'Updated successfully', type: 'success' })
@@ -109,7 +128,7 @@ export default {
               }
             })
             .catch(res => {
-              this.$message({ message: `Update failed! ${res.message}`, type: 'error' })
+              this.$message({ message: `Failed to update! ${res.message}`, type: 'error' })
             })
         }
       })

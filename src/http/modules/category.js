@@ -24,6 +24,31 @@ export const get = itemId => {
   })
 }
 
+// Add category
+export const add = data => {
+  return axios({
+    url: `Category`,
+    method: 'post',
+    data
+  })
+}
+
+// Update category
+export const update = data => {
+  return axios({
+    url: `Category/${data.id}/`,
+    method: 'put',
+    data
+  })
+}
+
+export const deleteItem = itemId => {
+  return axios({
+    url: `Category/${itemId}/`,
+    method: 'delete'
+  })
+}
+
 // Category word cloud
 export const wordCloud = () => {
   return axios({
