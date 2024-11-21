@@ -1,5 +1,11 @@
 import axios from "../axios"
 
+export const getNodes = () => {
+  return axios({
+    url: `Category/Nodes`,
+  })
+}
+
 // Get all categories
 export const getAll = () => {
   return axios({

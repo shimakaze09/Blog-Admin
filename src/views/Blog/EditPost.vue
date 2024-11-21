@@ -1,31 +1,45 @@
 <template>
-  <el-container>
-    <el-header height="30px">
-      <el-row :gutter="6">
-        <el-col :span="3">
-          <el-select v-model="postCategoryName" filterable placeholder="Please select a category"
-            v-on:change="categoryChange">
-            <el-option v-for="item in categories" :key="item.id" :label="item.name" :value="item.id">
-            </el-option>
-          </el-select>
+  <div class="pb-5">
+    <el-input v-model="postTitle" placeholder="Post Title"></el-input>
+
+    <v-md-editor class="mb-3" v-model="postContent" :default-show-toc="true" :codemirror-style-reset="true"
+      :disabled-menus="mode === 'edit' ? [] : ['image/upload-image']" @save="onEditorSave"
+      @fullscreen-change="fullscreenChange" @upload-image="handleUploadImage" height="750px" />
+
+    <el-form label-position="top" label-width="80px" :model="form" class="text-start mt-5">
+      <el-form-item label="Post Options" prop="isPublish">
+        <el-radio v-model="form.isPublish" :label="true">Publish</el-radio>
+        <el-radio v-model="form.isPublish" :label="false">Save as Draft</el-radio>
+      </el-form-item>
+
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item
+            label="URL Slug (Friendly URL, only letters, numbers, hyphens, and underscores, up to 150 characters)"
+            prop="slug">
+            <el-input v-model="form.slug" maxlength="150" show-word-limit placeholder="Slug"></el-input>
+          </el-form-item>
         </el-col>
-        <el-col :span="18">
-          <el-input v-model="postTitle" placeholder="Article title"></el-input>
-        </el-col>
-        <el-col :span="2">
-          <el-button type="warning" plain @click="onSummaryClick" :style="'width:100%'">Summary</el-button>
-        </el-col>
-        <el-col :span="1">
-          <el-button type="primary" plain @click="onSaveClick">Save</el-button>
+        <el-col :span="12">
+          <el-form-item label="Category" prop="category">
+            <el-cascader class="w-100" :options="categoryTree" :props="{
+              checkStrictly: true,
+              expandTrigger: 'hover',
+              emitPath: false,
+            }" v-model="form.category" filterable></el-cascader>
+          </el-form-item>
         </el-col>
       </el-row>
-    </el-header>
-    <el-main>
-      <v-md-editor v-model="postContent" :default-show-toc="true" :codemirror-style-reset="true"
-        :disabled-menus="mode === 'edit' ? [] : ['image/upload-image']" @save="onEditorSave"
-        @fullscreen-change="fullscreenChange" @upload-image="handleUploadImage" height="750px" />
-    </el-main>
-  </el-container>
+
+      <el-form-item label="Summary" prop="summary">
+        <el-input type="textarea" v-model="form.summary" :rows="8" maxlength="200" show-word-limit
+          placeholder="Summary"></el-input>
+      </el-form-item>
+    </el-form>
+
+    <el-button type="primary" plain @click="onSaveClick">Save</el-button>
+
+  </div>
 </template>
 
 <script>
@@ -43,12 +57,16 @@ export default {
       // Edit mode: new / edit
       mode: 'new',
       postTitle: '',
-      postCategoryName: '',
-      postCategoryId: 0,
       postContent: '',
-      postSummary: '',
       post: null,
       categories: [],
+      categoryTree: [],
+      form: {
+        isPublish: false,
+        slug: '',
+        summary: '',
+        category: 0,
+      }
     }
   },
   mounted() {
@@ -78,10 +96,6 @@ export default {
         })
         .catch(res => this.$message.error(`Failed to upload image. ${res.message}`))
     },
-    // Category selection
-    categoryChange(categoryId) {
-      this.postCategoryId = categoryId
-    },
     // Initialization
     init() {
       let id = this.$route.params.id
@@ -92,9 +106,10 @@ export default {
             this.post = res.data
             this.postTitle = this.post.title
             this.postContent = this.post.content
-            this.postSummary = this.post.summary
-            this.postCategoryId = this.post.categoryId
-            this.postCategoryName = this.post.category.name
+            this.form.slug = this.post.slug
+            this.form.isPublish = this.post.isPublish
+            this.form.summary = this.post.summary
+            this.form.category = this.post.categoryId
             this.$notify.info({ title: 'Current mode: Edit article', message: `Loaded article: ${this.postTitle}` })
           })
           .catch(res => this.$message.error(`Failed to retrieve information. ${res.message}`))
@@ -108,6 +123,20 @@ export default {
       }
     },
     loadCategories() {
+      const mapNodes = (nodes) => {
+        let items = []
+        if (!nodes) return null
+        for (const node of nodes) {
+          items.push({
+            label: `${node.text} (${node.tags[0]})`,
+            value: node.id,
+            children: mapNodes(node.nodes)
+          })
+        }
+        return items
+      }
+
+      this.$api.category.getNodes().then(res => this.categoryTree = mapNodes(res.data))
       this.$api.category.getAll().then(res => this.categories = res.data)
     },
     onEditorSave(text, html) {
@@ -116,22 +145,14 @@ export default {
     onSaveClick() {
       this.save()
     },
-    onSummaryClick() {
-      this.$prompt('Please enter the article summary', 'Prompt', {
-        inputValue: this.postSummary
-      })
-        .then(({ value }) => {
-          this.postSummary = value
-          this.$notify.success(`Summary edited successfully: ${value}`)
-        })
-        .catch(() => this.$message.info('Input cancelled'));
-    },
     save() {
       let post = this.post
       post.title = this.postTitle
       post.content = this.postContent
-      post.summary = this.postSummary
-      post.categoryId = this.postCategoryId
+      post.isPublish = this.form.isPublish
+      post.slug = this.form.slug
+      post.summary = this.form.summary
+      post.categoryId = this.form.category
 
       if (this.mode === 'new') {
         this.$api.blogPost.add(post)
