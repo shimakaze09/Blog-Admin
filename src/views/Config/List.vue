@@ -1,22 +1,22 @@
 <template>
   <el-container>
     <el-header height="30px">
-      <el-row type="flex" justify="start">
+      <el-row justify="start" type="flex">
         <div>
           <el-button @click="handleAdd">Add</el-button>
           <add-config-dialog ref="addConfigDialog" @onAddSucceed="onAddSucceed"
-            @onUpdateSucceed="onUpdateSucceed"></add-config-dialog>
+                             @onUpdateSucceed="onUpdateSucceed"></add-config-dialog>
         </div>
       </el-row>
     </el-header>
     <el-main>
-      <el-table ref="table" :data="data" height="730" stripe style="width: 100%"
-        :default-sort="{ prop: 'time', order: 'descending' }">
-        <el-table-column type="selection" width="30" />
-        <el-table-column prop="id" label="ID" width="100" />
-        <el-table-column prop="key" label="Key" :show-overflow-tooltip="true" />
-        <el-table-column prop="value" label="Value" :show-overflow-tooltip="true" />
-        <el-table-column prop="description" label="Description" :show-overflow-tooltip="true" />
+      <el-table ref="table" :data="data" :default-sort="{ prop: 'time', order: 'descending' }" height="730" stripe
+                style="width: 100%">
+        <el-table-column type="selection" width="30"/>
+        <el-table-column label="ID" prop="id" width="100"/>
+        <el-table-column :show-overflow-tooltip="true" label="Key" prop="key"/>
+        <el-table-column :show-overflow-tooltip="true" label="Value" prop="value"/>
+        <el-table-column :show-overflow-tooltip="true" label="Description" prop="description"/>
         <el-table-column fixed="right" label="Actions" width="150">
           <template slot-scope="scope">
             <el-link type="info" @click="onItemEditClick(scope.row)">Edit</el-link>

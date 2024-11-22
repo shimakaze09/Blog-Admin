@@ -2,20 +2,20 @@
   <el-row>
     <el-col :span="24">
       <el-table :data="tableData" :height="790" style="width: 100%;">
-        <el-table-column prop="id" label="ID" width="50">
+        <el-table-column label="ID" prop="id" width="50">
         </el-table-column>
-        <el-table-column prop="post.id" label="Article ID" width="150">
+        <el-table-column label="Article ID" prop="post.id" width="150">
         </el-table-column>
-        <el-table-column prop="post.category.name" label="Article Category" width="250">
+        <el-table-column label="Article Category" prop="post.category.name" width="250">
         </el-table-column>
-        <el-table-column prop="post.title" label="Article Title" width="400" :show-overflow-tooltip="true">
+        <el-table-column :show-overflow-tooltip="true" label="Article Title" prop="post.title" width="400">
         </el-table-column>
         <el-table-column align="right">
           <template slot="header" slot-scope="scope">
-            <el-input v-model="search" size="mini" placeholder="Enter keyword to search" />
+            <el-input v-model="search" placeholder="Enter keyword to search" size="mini"/>
           </template>
           <template slot-scope="scope">
-            <el-button size="mini" type="warning" plain @click="cancelFeatured(scope.$index, scope.row)">Cancel Featured
+            <el-button plain size="mini" type="warning" @click="cancelFeatured(scope.$index, scope.row)">Cancel Featured
             </el-button>
           </template>
         </el-table-column>
@@ -48,7 +48,7 @@ export default {
         .then(res => this.data = res.data)
     },
     cancelFeatured(index, item) {
-      this.$confirm('Are you sure?', 'Warning', { type: 'warning' })
+      this.$confirm('Are you sure?', 'Warning', {type: 'warning'})
         .then(() => {
           this.$api.featuredPost.deleteItem(item.id)
             .then(res => this.$message.success(`Operation successful. ${res.message}`))

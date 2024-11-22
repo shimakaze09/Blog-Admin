@@ -10,24 +10,24 @@
         </el-form-item>
         <el-form-item label="Post Category" prop="categoryId">
           <el-select v-model="form.categoryId" clearable filterable placeholder="Please select a category"
-            v-on:change="handleCategoryChange">
-            <el-option v-for="item in categories" :key="item.id" :label="item.name" :value="item.id" />
+                     v-on:change="handleCategoryChange">
+            <el-option v-for="item in categories" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
       </el-form>
       <el-form-item label="ZIP File Encoding" prop="zipEncoding">
         <el-select v-model="form.zipEncoding" clearable filterable placeholder="ZIP File Encoding">
-          <el-option v-for="item in zipCodings" :key="item" :label="item" :value="item" />
+          <el-option v-for="item in zipCodings" :key="item" :label="item" :value="item"/>
         </el-select>
       </el-form-item>
-      <el-upload ref="upload" drag action="" accept="application/x-zip-compressed,.zip" :file-list="fileList"
-        :on-change="onUploadChange" :auto-upload="false">
+      <el-upload ref="upload" :auto-upload="false" :file-list="fileList" :on-change="onUploadChange" accept="application/x-zip-compressed,.zip"
+                 action="" drag>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">Drag the file here, or <em>click to upload</em></div>
-        <div class="el-upload__tip" slot="tip">Only zip files can be uploaded</div>
+        <div slot="tip" class="el-upload__tip">Only zip files can be uploaded</div>
       </el-upload>
 
-      <el-row type="flex" justify="end">
+      <el-row justify="end" type="flex">
         <el-button type="primary" @click="submitUpload">Submit</el-button>
       </el-row>
     </el-col>
@@ -54,11 +54,11 @@ export default {
       },
       formRules: {
         title: [
-          { required: true, message: 'Please enter the post title', trigger: 'blur' },
-          { min: 1, max: 200, message: 'Length should be between 1 to 200 characters', trigger: 'blur' }
+          {required: true, message: 'Please enter the post title', trigger: 'blur'},
+          {min: 1, max: 200, message: 'Length should be between 1 to 200 characters', trigger: 'blur'}
         ],
-        summary: [{ required: true, message: 'Please enter the post summary', trigger: 'blur' }],
-        categoryId: [{ required: true, message: 'Please select a post category', trigger: 'blur' }],
+        summary: [{required: true, message: 'Please enter the post summary', trigger: 'blur'}],
+        categoryId: [{required: true, message: 'Please select a post category', trigger: 'blur'}],
       }
     }
   },
@@ -95,7 +95,7 @@ export default {
         this.$api.blog.upload(this.form.title, this.form.summary, this.form.categoryId, this.form.file.raw, this.form.zipEncoding)
           .then(res => {
             if (res.successful) {
-              this.$message({ message: 'Post uploaded successfully', type: 'success' })
+              this.$message({message: 'Post uploaded successfully', type: 'success'})
               this.$router.push('/post/list')
             }
           })

@@ -1,23 +1,23 @@
 <template>
   <div>
     <reason-dialog ref="addReasonDialog" @addReason="addReason"></reason-dialog>
-    <el-table ref="table" :data="data" height="730" stripe style="width: 100%"
-      :default-sort="{ prop: 'time', order: 'descending' }">
-      <el-table-column type="selection" width="30" />
-      <el-table-column prop="id" label="ID" width="100" />
-      <el-table-column prop="name" label="Name" :show-overflow-tooltip="true" />
-      <el-table-column prop="description" label="Description" :show-overflow-tooltip="true" />
-      <el-table-column prop="url" label="URL" :show-overflow-tooltip="true" />
-      <el-table-column prop="webMaster" label="Web Master" :show-overflow-tooltip="true" />
-      <el-table-column prop="email" label="Email" :show-overflow-tooltip="true" />
-      <el-table-column prop="verified" label="Verified">
+    <el-table ref="table" :data="data" :default-sort="{ prop: 'time', order: 'descending' }" height="730" stripe
+              style="width: 100%">
+      <el-table-column type="selection" width="30"/>
+      <el-table-column label="ID" prop="id" width="100"/>
+      <el-table-column :show-overflow-tooltip="true" label="Name" prop="name"/>
+      <el-table-column :show-overflow-tooltip="true" label="Description" prop="description"/>
+      <el-table-column :show-overflow-tooltip="true" label="URL" prop="url"/>
+      <el-table-column :show-overflow-tooltip="true" label="Web Master" prop="webMaster"/>
+      <el-table-column :show-overflow-tooltip="true" label="Email" prop="email"/>
+      <el-table-column label="Verified" prop="verified">
         <template slot-scope="scope">
-          <el-tag size="medium" v-if="scope.row.verified">{{ scope.row.verified }}</el-tag>
-          <el-tag size="medium" v-else type="danger">{{ scope.row.verified }}</el-tag>
+          <el-tag v-if="scope.row.verified" size="medium">{{ scope.row.verified }}</el-tag>
+          <el-tag v-else size="medium" type="danger">{{ scope.row.verified }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="reason" label="Reason" :show-overflow-tooltip="true" />
-      <el-table-column prop="applyTimeStr" label="Application Time" :show-overflow-tooltip="true" />
+      <el-table-column :show-overflow-tooltip="true" label="Reason" prop="reason"/>
+      <el-table-column :show-overflow-tooltip="true" label="Application Time" prop="applyTimeStr"/>
       <el-table-column fixed="right" label="Actions" width="150">
         <template slot-scope="scope">
           <el-link type="primary" @click="accept(scope.row)">Accept</el-link>

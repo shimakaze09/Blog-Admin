@@ -44,25 +44,25 @@ const router = new Router({
             index: 0
           }
         },
-        { path: 'category/list', name: 'Category List', component: Categories },
-        { path: 'category/featured', name: 'Featured Category', component: FeaturedCategories },
+        {path: 'category/list', name: 'Category List', component: Categories},
+        {path: 'category/featured', name: 'Featured Category', component: FeaturedCategories},
         {path: 'comment/need-audit', name: 'Recommended Category', component: CommentNeedAuditList},
-        { path: 'post/list', name: 'Post List', component: Posts },
-        { path: 'post/featured', name: 'Featured Post', component: FeaturedPosts },
-        { path: 'post/top', name: 'Top Post', component: TopPost },
-        { path: 'post/edit/:id', name: 'Edit Post', component: EditPost },
-        { path: 'post/new', name: 'New Post', component: EditPost },
-        { path: 'post/upload', name: 'Upload Post', component: UploadPost },
-        { path: 'photo/list', name: 'Photo List', component: Photos },
-        { path: 'photo/featured', name: 'Featured Photo', component: FeaturedPhotos },
-        { path: 'visit_record/list', name: 'Visit Record', component: VisitRecordList },
-        { path: 'config/list', name: 'Configuration Center', component: ConfigList },
-        { path: 'link/list', name: 'Friend Link Management', component: LinkList },
-        { path: 'link_exchange/list', name: 'Link Exchange Application', component: LinkExchangeList },
+        {path: 'post/list', name: 'Post List', component: Posts},
+        {path: 'post/featured', name: 'Featured Post', component: FeaturedPosts},
+        {path: 'post/top', name: 'Top Post', component: TopPost},
+        {path: 'post/edit/:id', name: 'Edit Post', component: EditPost},
+        {path: 'post/new', name: 'New Post', component: EditPost},
+        {path: 'post/upload', name: 'Upload Post', component: UploadPost},
+        {path: 'photo/list', name: 'Photo List', component: Photos},
+        {path: 'photo/featured', name: 'Featured Photo', component: FeaturedPhotos},
+        {path: 'visit_record/list', name: 'Visit Record', component: VisitRecordList},
+        {path: 'config/list', name: 'Configuration Center', component: ConfigList},
+        {path: 'link/list', name: 'Friend Link Management', component: LinkList},
+        {path: 'link_exchange/list', name: 'Link Exchange Application', component: LinkExchangeList},
       ]
     },
-    { path: '/Login', name: 'Login', component: Login },
-    { path: '/404', name: 'NotFound', component: NotFound },
+    {path: '/Login', name: 'Login', component: Login},
+    {path: '/404', name: 'NotFound', component: NotFound},
   ]
 })
 
@@ -75,12 +75,12 @@ router.beforeEach((to, from, next) => {
 
   if (to.path === '/login') {
     // Access the login page. If already logged in, redirect to the home page
-    if (auth.isLogin()) next({ path: '/' })
+    if (auth.isLogin()) next({path: '/'})
     else next()
   } else {
     if (!auth.isLogin()) {
       // If not logged in and trying to access a protected route, redirect to login page
-      next({ path: '/login' })
+      next({path: '/login'})
     }
     next()
   }

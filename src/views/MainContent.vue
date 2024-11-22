@@ -1,12 +1,12 @@
 <template>
-  <div id="main-container" class="main-container"
-    :class="$store.state.app.collapse ? 'position-collapse-left' : 'position-left'">
+  <div id="main-container" :class="$store.state.app.collapse ? 'position-collapse-left' : 'position-left'"
+       class="main-container">
     <!-- Tab Bar -->
-    <div class="tab-container" :style="{ 'display': fullscreen ? 'none' : '' }">
-      <el-tabs class="tabs" :class="$store.state.app.collapse ? 'position-collapse-left' : 'position-left'"
-        v-model="mainTabsActiveName" :closable="true" type="card" @tab-click="selectedTabHandle"
-        @tab-remove="removeTabHandle">
-        <el-dropdown class="tabs-tools" :show-timeout="0" trigger="hover">
+    <div :style="{ 'display': fullscreen ? 'none' : '' }" class="tab-container">
+      <el-tabs v-model="mainTabsActiveName" :class="$store.state.app.collapse ? 'position-collapse-left' : 'position-left'"
+               :closable="true" class="tabs" type="card" @tab-click="selectedTabHandle"
+               @tab-remove="removeTabHandle">
+        <el-dropdown :show-timeout="0" class="tabs-tools" trigger="hover">
           <div style="font-size:20px;width:50px;"><i class="el-icon-arrow-down"></i></div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="tabsCloseCurrentHandle">Close Current Tab</el-dropdown-item>
@@ -23,7 +23,7 @@
     <!-- Main content area -->
     <div class="main-content">
       <keep-alive>
-        <transition name="fade" mode="out-in">
+        <transition mode="out-in" name="fade">
           <router-view></router-view>
         </transition>
       </keep-alive>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import {mapState} from 'vuex'
 
 export default {
   name: "MainContent",
@@ -67,7 +67,7 @@ export default {
       let tabSet = this.mainTabs.filter(item => item.name === elTab.name)
       if (tabSet.length >= 1) {
         let tab = tabSet[0]
-        this.$router.push({ name: tab.name, params: tab.params })
+        this.$router.push({name: tab.name, params: tab.params})
       }
     },
     // tabs, delete tab
@@ -76,7 +76,7 @@ export default {
       if (this.mainTabs.length >= 1) {
         // Current selected tab is deleted
         if (tabName === this.mainTabsActiveName) {
-          this.$router.push({ name: this.mainTabs[this.mainTabs.length - 1].name }, () => {
+          this.$router.push({name: this.mainTabs[this.mainTabs.length - 1].name}, () => {
             this.mainTabsActiveName = this.$route.name
           })
         }
@@ -102,7 +102,7 @@ export default {
       let tempTabName = this.mainTabsActiveName
       this.removeTabHandle(tempTabName)
       this.$nextTick(() => {
-        this.$router.push({ name: tempTabName })
+        this.$router.push({name: tempTabName})
       })
     }
   }

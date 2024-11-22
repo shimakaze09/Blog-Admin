@@ -23,7 +23,7 @@ export const getList = (
   return axios({
     url: 'BlogPost',
     method: 'get',
-    params: { onlyPublished, status, categoryId, search, sortBy, page, pageSize }
+    params: {onlyPublished, status, categoryId, search, sortBy, page, pageSize}
   })
 }
 
@@ -73,7 +73,7 @@ export const uploadImage = (itemId, file) => {
   return axios({
     url: `BlogPost/${itemId}/UploadImage`,
     method: 'post',
-    headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' },
+    headers: {'Content-Type': 'multipart/form-data;charset=UTF-8'},
     data: formData
   })
 }

@@ -65,7 +65,7 @@ Vue.config.productionTip = false
 
 Vue.use(dataV)
 // Import Element UI
-Vue.use(ElementUI, { locale })
+Vue.use(ElementUI, {locale})
 // Import API module
 Vue.use(api)
 // Exceptionless module
@@ -81,6 +81,6 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
+  components: {App},
   template: '<App/>'
 })

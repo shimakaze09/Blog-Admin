@@ -5,7 +5,7 @@ export const getList = (page = 1, pageSize = 10) => {
   return axios({
     url: 'VisitRecord',
     method: 'get',
-    params: { page, pageSize }
+    params: {page, pageSize}
   })
 }
 
@@ -19,12 +19,12 @@ export const get = photoId => {
 
 // Get all items
 export const getAll = () => {
-  return axios({ url: 'VisitRecord/All' })
+  return axios({url: 'VisitRecord/All'})
 }
 
 // Get overview data
 export const getOverview = () => {
-  return axios({ url: 'VisitRecord/Overview' })
+  return axios({url: 'VisitRecord/Overview'})
 }
 
 // Get trend data
@@ -32,7 +32,7 @@ export const getTrend = (days = 7) => {
   return axios({
     url: 'VisitRecord/Trend',
     method: 'get',
-    params: { days }
+    params: {days}
   })
 }
 
@@ -41,6 +41,6 @@ export const getStats = (date = null) => {
   return axios({
     url: 'VisitRecord/Stats',
     method: 'get',
-    params: date === null ? null : { ...date }
+    params: date === null ? null : {...date}
   })
 }

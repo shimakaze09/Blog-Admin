@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="Upload Image" :visible.sync="dialogFormVisible" width="30%">
+  <el-dialog :visible.sync="dialogFormVisible" title="Upload Image" width="30%">
     <el-form ref="uploadForm" :model="form" :rules="formRules" label-width="105px">
       <el-form-item label="Image Name" prop="title">
         <el-input v-model="form.title" autocomplete="off"></el-input>
@@ -8,11 +8,11 @@
         <el-input v-model="form.location" autocomplete="off"></el-input>
       </el-form-item>
     </el-form>
-    <el-upload ref="upload" drag action="" accept="image/jpeg,image/png" :file-list="fileList"
-      :on-change="onUploadChange" :auto-upload="false">
+    <el-upload ref="upload" :auto-upload="false" :file-list="fileList" :on-change="onUploadChange" accept="image/jpeg,image/png"
+               action="" drag>
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">Drag files here or <em>click to upload</em></div>
-      <div class="el-upload__tip" slot="tip">Only JPG/PNG files are allowed, and they should not exceed 500KB</div>
+      <div slot="tip" class="el-upload__tip">Only JPG/PNG files are allowed, and they should not exceed 500KB</div>
     </el-upload>
     <div slot="footer" class="dialog-footer">
       <el-button @click="close">Cancel</el-button>
@@ -40,10 +40,10 @@ export default {
       },
       formRules: {
         title: [
-          { required: true, message: 'Please enter image title', trigger: 'blur' },
-          { min: 1, max: 200, message: 'Length between 1 to 200 characters', trigger: 'blur' }
+          {required: true, message: 'Please enter image title', trigger: 'blur'},
+          {min: 1, max: 200, message: 'Length between 1 to 200 characters', trigger: 'blur'}
         ],
-        location: [{ required: true, message: 'Please enter location', trigger: 'blur' }],
+        location: [{required: true, message: 'Please enter location', trigger: 'blur'}],
       }
     }
   },
@@ -78,7 +78,7 @@ export default {
         this.$api.photo.add(this.form.title, this.form.location, this.form.file.raw)
           .then(res => {
             if (res.successful) {
-              this.$message({ message: 'Image uploaded successfully', type: 'success' })
+              this.$message({message: 'Image uploaded successfully', type: 'success'})
               this.$emit('onAddPhotoSucceed')
               this.close()
             }

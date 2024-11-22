@@ -1,31 +1,31 @@
 <template>
   <el-table :data="tableData" :height="800" style="width: 100%;">
-    <el-table-column prop="id" label="ID" width="50">
+    <el-table-column label="ID" prop="id" width="50">
     </el-table-column>
-    <el-table-column prop="name" label="Name" width="250">
+    <el-table-column label="Name" prop="name" width="250">
     </el-table-column>
-    <el-table-column prop="parentId" label="Parent Category" width="130">
+    <el-table-column label="Parent Category" prop="parentId" width="130">
     </el-table-column>
     <el-table-column align="right">
       <template slot="header" slot-scope="scope">
-        <add-category-dialog ref="addDialog" @onAddSucceed="onAddSucceed" @onUpdateSucceed="onUpdateSucceed" />
-        <el-input v-model="search" size="mini" placeholder="Enter keyword to search" style="width: 30%" />
-        <el-button size="mini" icon="el-icon-circle-plus-outline" @click="handleAdd">Add Category</el-button>
+        <add-category-dialog ref="addDialog" @onAddSucceed="onAddSucceed" @onUpdateSucceed="onUpdateSucceed"/>
+        <el-input v-model="search" placeholder="Enter keyword to search" size="mini" style="width: 30%"/>
+        <el-button icon="el-icon-circle-plus-outline" size="mini" @click="handleAdd">Add Category</el-button>
       </template>
       <template slot-scope="scope">
-        <el-button size="mini" plain @click="handleEdit(scope.row)">Edit</el-button>
-        <el-button size="mini" type="success" plain @click="setFeatured(scope.$index, scope.row)">
+        <el-button plain size="mini" @click="handleEdit(scope.row)">Edit</el-button>
+        <el-button plain size="mini" type="success" @click="setFeatured(scope.$index, scope.row)">
           Set Featured
         </el-button>
-        <el-button size="mini" type="warning" plain @click="cancelFeatured(scope.$index, scope.row)">
+        <el-button plain size="mini" type="warning" @click="cancelFeatured(scope.$index, scope.row)">
           Cancel Featured
         </el-button>
-        <el-button size="mini" type="danger" plain @click="handleDelete(scope.row)">Delete</el-button>
-        <el-button v-if="scope.row.visible === true" size="mini" type="primary" plain @click="setInvisible(scope.row)">
-          <i class="fa fa-eye-slash fa-lg" aria-hidden="true"></i>
+        <el-button plain size="mini" type="danger" @click="handleDelete(scope.row)">Delete</el-button>
+        <el-button v-if="scope.row.visible === true" plain size="mini" type="primary" @click="setInvisible(scope.row)">
+          <i aria-hidden="true" class="fa fa-eye-slash fa-lg"></i>
         </el-button>
-        <el-button v-if="scope.row.visible === false" size="mini" type="danger" plain @click="setVisible(scope.row)">
-          <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
+        <el-button v-if="scope.row.visible === false" plain size="mini" type="danger" @click="setVisible(scope.row)">
+          <i aria-hidden="true" class="fa fa-eye fa-lg"></i>
         </el-button>
         <set-featured-dialog :ref="`setFeaturedDialog_${scope.$index}`" :category="scope.row"></set-featured-dialog>
       </template>
@@ -95,7 +95,7 @@ export default {
       this.$refs[`setFeaturedDialog_${index}`].show()
     },
     cancelFeatured(index, item) {
-      this.$confirm('Are you sure?', 'Warning', { type: 'warning' })
+      this.$confirm('Are you sure?', 'Warning', {type: 'warning'})
         .then(() => {
           this.$api.category.cancelFeatured(item.id)
             .then(res => this.$message.success(`Operation successful. ${res.message}`))

@@ -1,13 +1,13 @@
 <template>
-  <el-dialog title="Featured Category Information" :visible.sync="dialogFormVisible">
+  <el-dialog :visible.sync="dialogFormVisible" title="Featured Category Information">
     <el-form ref="form" :model="form">
-      <el-form-item label="Featured Name" :label-width="formLabelWidth">
+      <el-form-item :label-width="formLabelWidth" label="Featured Name">
         <el-input v-model="form.name" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="Description" :label-width="formLabelWidth">
+      <el-form-item :label-width="formLabelWidth" label="Description">
         <el-input v-model="form.description" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="Icon Class Name" :label-width="formLabelWidth">
+      <el-form-item :label-width="formLabelWidth" label="Icon Class Name">
         <el-input v-model="form.iconCssClass" autocomplete="off"></el-input>
       </el-form-item>
     </el-form>
@@ -37,12 +37,12 @@ export default {
       },
       formRules: {
         name: [
-          { required: true, message: 'Please enter the featured name', trigger: 'blur' },
-          { min: 1, max: 20, message: 'Length should be between 1 to 20 characters', trigger: 'blur' }
+          {required: true, message: 'Please enter the featured name', trigger: 'blur'},
+          {min: 1, max: 20, message: 'Length should be between 1 to 20 characters', trigger: 'blur'}
         ],
         description: [
-          { required: true, message: 'Please enter a description', trigger: 'blur' },
-          { min: 1, max: 300, message: 'Length should be between 1 to 300 characters', trigger: 'blur' }
+          {required: true, message: 'Please enter a description', trigger: 'blur'},
+          {min: 1, max: 300, message: 'Length should be between 1 to 300 characters', trigger: 'blur'}
         ],
       }
     }

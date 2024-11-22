@@ -42,7 +42,7 @@ export const upload = (title, summary, categoryId, file, zipEncoding = 'utf-8') 
   return axios({
     url: 'Blog/Upload',
     method: 'post',
-    headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' },
+    headers: {'Content-Type': 'multipart/form-data;charset=UTF-8'},
     data: formData
   })
 }

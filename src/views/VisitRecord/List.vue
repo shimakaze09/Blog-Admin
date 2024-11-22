@@ -1,23 +1,24 @@
 <template>
   <el-container>
     <el-main>
-      <el-table ref="table" :data="data" height="730" stripe style="width: 100%"
-        :default-sort="{ prop: 'time', order: 'descending' }">
-        <el-table-column type="selection" width="30" />
-        <el-table-column prop="ip" label="IP Address" width="100" />
-        <el-table-column prop="requestPath" label="Request Path" sortable :show-overflow-tooltip="true" />
-        <el-table-column prop="requestQueryString" label="Query Parameters" width="300" />
-        <el-table-column prop="requestMethod" label="HTTP Method" sortable width="150" />
-        <el-table-column prop="userAgent" label="User Agent" sortable :show-overflow-tooltip="true" width="600" />
-        <el-table-column prop="timeStr" label="Time" sortable width="200" />
+      <el-table ref="table" :data="data" :default-sort="{ prop: 'time', order: 'descending' }" height="730" stripe
+                style="width: 100%">
+        <el-table-column type="selection" width="30"/>
+        <el-table-column label="IP Address" prop="ip" width="100"/>
+        <el-table-column :show-overflow-tooltip="true" label="Request Path" prop="requestPath" sortable/>
+        <el-table-column label="Query Parameters" prop="requestQueryString" width="300"/>
+        <el-table-column label="HTTP Method" prop="requestMethod" sortable width="150"/>
+        <el-table-column :show-overflow-tooltip="true" label="User Agent" prop="userAgent" sortable width="600"/>
+        <el-table-column label="Time" prop="timeStr" sortable width="200"/>
       </el-table>
     </el-main>
     <el-footer>
       <el-footer height="30px">
         <!-- Pagination -->
-        <el-pagination @size-change="handlePageSizeChange" @current-change="handleCurrentPageChange"
-          :current-page="currentPage" :page-sizes="[10, 20, 40, 60, 80, 100]" :page-size="pageSize" background
-          layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
+        <el-pagination :current-page="currentPage" :page-size="pageSize"
+                       :page-sizes="[10, 20, 40, 60, 80, 100]" :total="totalCount" background
+                       layout="total, sizes, prev, pager, next, jumper"
+                       @size-change="handlePageSizeChange" @current-change="handleCurrentPageChange">
         </el-pagination>
       </el-footer>
     </el-footer>

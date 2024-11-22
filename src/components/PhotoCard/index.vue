@@ -1,18 +1,18 @@
 <template>
-  <el-popover placement="bottom" width="270" trigger="manual" v-model="visible">
+  <el-popover v-model="visible" placement="bottom" trigger="manual" width="270">
     <p>Photo name: {{ photo.title }}</p>
     <p>Location: {{ photo.location }}</p>
     <p>Upload time: {{ dateTimeStr }}</p>
     <el-button-group>
-      <el-button type="" icon="el-icon-edit"></el-button>
-      <el-button type="warning" icon="el-icon-check" @click="setFeatured"></el-button>
-      <el-button type="info" icon="el-icon-close" @click="cancelFeatured"></el-button>
-      <el-button type="danger" icon="el-icon-delete" @click="deletePhoto"></el-button>
+      <el-button icon="el-icon-edit" type=""></el-button>
+      <el-button icon="el-icon-check" type="warning" @click="setFeatured"></el-button>
+      <el-button icon="el-icon-close" type="info" @click="cancelFeatured"></el-button>
+      <el-button icon="el-icon-delete" type="danger" @click="deletePhoto"></el-button>
     </el-button-group>
     <el-card slot="reference" :body-style="{ padding: '0px' }" style="margin: 5px;">
       <!-- Remove default browser events, add custom event -->
-      <el-image :src="photo.url" class="image" :preview-src-list="[photo.url]"
-        @contextmenu.prevent="onImageRightClick"></el-image>
+      <el-image :preview-src-list="[photo.url]" :src="photo.url" class="image"
+                @contextmenu.prevent="onImageRightClick"></el-image>
     </el-card>
   </el-popover>
 </template>

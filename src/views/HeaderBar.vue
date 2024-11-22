@@ -1,10 +1,10 @@
 <template>
-  <div class="header" :style="{ 'background': themeColor, 'display': fullscreen ? 'none' : '' }"
-    :class="collapse ? 'position-collapse-left' : 'position-left'">
+  <div :class="collapse ? 'position-collapse-left' : 'position-left'" :style="{ 'background': themeColor, 'display': fullscreen ? 'none' : '' }"
+       class="header">
     <!-- Navigation collapse -->
     <span class="hamburg">
-      <el-menu class="el-menu-demo" :background-color="themeColor" text-color="#fff" :active-text-color="themeColor"
-        mode="horizontal">
+      <el-menu :active-text-color="themeColor" :background-color="themeColor" class="el-menu-demo" mode="horizontal"
+               text-color="#fff">
         <el-menu-item index="1" @click="onCollapse">
           <hamburger :isActive="collapse"></hamburger>
         </el-menu-item>
@@ -12,25 +12,25 @@
     </span>
     <!-- Navigation Menu -->
     <span class="navbar">
-      <el-menu :default-active="activeIndex" class="el-menu-demo" :background-color="themeColor" text-color="#fff"
-        active-text-color="#ffd04b" mode="horizontal" @select="selectNavBar()">
+      <el-menu :background-color="themeColor" :default-active="activeIndex" active-text-color="#ffd04b" class="el-menu-demo"
+               mode="horizontal" text-color="#fff" @select="selectNavBar()">
         <el-menu-item index="1" @click="$router.push('/')">Home</el-menu-item>
         <el-menu-item index="2" @click="openWindow('https://github.com/shimakaze09')">GitHub</el-menu-item>
       </el-menu>
     </span>
     <!-- Toolbar -->
     <span class="toolbar">
-      <el-menu class="el-menu-demo" :background-color="themeColor" text-color="#14889A" :active-text-color="themeColor"
-        mode="horizontal">
+      <el-menu :active-text-color="themeColor" :background-color="themeColor" class="el-menu-demo" mode="horizontal"
+               text-color="#14889A">
         <el-menu-item index="1">
           <!-- Theme switcher -->
-          <theme-picker class="theme-picker" :default="themeColor" @onThemeChange="onThemeChange">
+          <theme-picker :default="themeColor" class="theme-picker" @onThemeChange="onThemeChange">
           </theme-picker>
         </el-menu-item>
-        <el-menu-item index="4" v-popover:popover-personal>
+        <el-menu-item v-popover:popover-personal index="4">
           <!-- User Information -->
-          <span class="user-info"><img :src="user.avatar" />{{ user.name }}</span>
-          <el-popover ref="popover-personal" placement="bottom-end" trigger="click" :visible-arrow="false">
+          <span class="user-info"><img :src="user.avatar"/>{{ user.name }}</span>
+          <el-popover ref="popover-personal" :visible-arrow="false" placement="bottom-end" trigger="click">
             <personal-panel :user="user"></personal-panel>
           </el-popover>
         </el-menu-item>
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import {mapState} from 'vuex'
 import Hamburger from "@/components/Hamburger"
 import ThemePicker from "@/components/ThemePicker"
 import NoticePanel from "./Auth/NoticePanel"

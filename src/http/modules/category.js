@@ -18,7 +18,7 @@ export const getList = (page = 1, pageSize = 10) => {
   return axios({
     url: 'Category',
     method: 'get',
-    params: { page, pageSize }
+    params: {page, pageSize}
   })
 }
 

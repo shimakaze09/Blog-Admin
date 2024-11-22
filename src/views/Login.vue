@@ -1,23 +1,23 @@
 <template>
-  <el-form :model="loginForm" :rules="fieldRules" ref="loginForm" label-position="left" label-width="0px"
-    class="demo-ruleForm login-container">
+  <el-form ref="loginForm" :model="loginForm" :rules="fieldRules" class="demo-ruleForm login-container" label-position="left"
+           label-width="0px">
     <div class="title h2">
       <h2>Blog</h2>
       <h4>Admin Login</h4>
     </div>
     <el-form-item prop="account">
-      <el-input type="text" v-model="loginForm.username" auto-complete="off" placeholder="Username"></el-input>
+      <el-input v-model="loginForm.username" auto-complete="off" placeholder="Username" type="text"></el-input>
     </el-form-item>
     <el-form-item prop="password">
-      <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="Password"></el-input>
+      <el-input v-model="loginForm.password" auto-complete="off" placeholder="Password" type="password"></el-input>
     </el-form-item>
     <el-form-item>
       <el-row :gutter="8">
         <el-col :span="12">
-          <el-button type="warning" plain class="w-100" @click="reset">Reset</el-button>
+          <el-button class="w-100" plain type="warning" @click="reset">Reset</el-button>
         </el-col>
         <el-col :span="12">
-          <el-button type="primary" class="w-100" @click="login" :loading="loading">Login</el-button>
+          <el-button :loading="loading" class="w-100" type="primary" @click="login">Login</el-button>
         </el-col>
       </el-row>
     </el-form-item>
@@ -37,8 +37,8 @@ export default {
         password: '',
       },
       fieldRules: {
-        username: [{ required: true, message: 'Please enter username', trigger: 'blur' }],
-        password: [{ required: true, message: 'Please enter password', trigger: 'blur' }]
+        username: [{required: true, message: 'Please enter username', trigger: 'blur'}],
+        password: [{required: true, message: 'Please enter password', trigger: 'blur'}]
       },
     }
   },

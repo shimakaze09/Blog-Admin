@@ -1,10 +1,10 @@
 <template>
-  <el-result icon="info" title="Top Post" subTitle="Current top post information">
+  <el-result icon="info" subTitle="Current top post information" title="Top Post">
     <template slot="extra">
       <p>ID: {{ data.id }}</p>
       <p>Title: {{ data.title }}</p>
       <p>Category: {{ data.category.name }}</p>
-      <el-button type="primary" size="medium" @click="viewPost" plain>View Post</el-button>
+      <el-button plain size="medium" type="primary" @click="viewPost">View Post</el-button>
     </template>
   </el-result>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header height="30px">
-      <el-row type="flex" justify="start">
+      <el-row justify="start" type="flex">
         <div>
           <el-button @click="$refs.addPhotoDialog.show()">Add</el-button>
           <el-button type="danger">Bulk Delete</el-button>
@@ -9,9 +9,9 @@
       </el-row>
     </el-header>
     <el-main>
-      <Waterfall align="center" :line-gap="300" :min-line-gap="250" :max-line-gap="400" :watch="photos">
-        <waterfall-slot v-for="(photo, index) in photos" :height="photo.height" :width="photo.width" :order="index"
-          :key="photo.id" move-class="item-move">
+      <Waterfall :line-gap="300" :max-line-gap="400" :min-line-gap="250" :watch="photos" align="center">
+        <waterfall-slot v-for="(photo, index) in photos" :key="photo.id" :height="photo.height" :order="index"
+                        :width="photo.width" move-class="item-move">
           <photo-card :photo="photo" v-on:onItemDeleted="loadPhotos"></photo-card>
         </waterfall-slot>
       </Waterfall>
@@ -19,16 +19,17 @@
     </el-main>
     <el-footer height="30px">
       <!-- Pagination -->
-      <el-pagination @size-change="handlePageSizeChange" @current-change="handleCurrentPageChange"
-        :current-page="currentPage" :page-sizes="[10, 20, 40, 60, 80, 100]" :page-size="pageSize" background
-        layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
+      <el-pagination :current-page="currentPage" :page-size="pageSize"
+                     :page-sizes="[10, 20, 40, 60, 80, 100]" :total="totalCount" background
+                     layout="total, sizes, prev, pager, next, jumper"
+                     @size-change="handlePageSizeChange" @current-change="handleCurrentPageChange">
       </el-pagination>
     </el-footer>
   </el-container>
 </template>
 
 <script>
-import { baseUrl } from "@/utils/global"
+import {baseUrl} from "@/utils/global"
 import addPhotoDialog from "@/views/Photography/AddPhotoDialog"
 import Waterfall from 'vue-waterfall/lib/waterfall'
 import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'

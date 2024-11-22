@@ -5,7 +5,7 @@
         <h2 class="not-found-title">404</h2>
         <p class="not-found-desc">Sorry! The page you visited <em>is disconnected</em>...</p>
         <el-button @click="$router.go(-1)">Go Back</el-button>
-        <el-button type="primary" class="not-found-btn-gohome" @click="$router.push('/')">Go Home</el-button>
+        <el-button class="not-found-btn-gohome" type="primary" @click="$router.push('/')">Go Home</el-button>
       </div>
     </div>
   </div>
@@ -55,7 +55,7 @@ export default {
     text-transform: uppercase;
     color: rgb(118, 131, 143);
 
-    >em {
+    > em {
       font-style: normal;
       color: #ee8145;
     }

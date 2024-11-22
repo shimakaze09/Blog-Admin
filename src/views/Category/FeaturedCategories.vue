@@ -1,23 +1,23 @@
 <template>
   <el-table :data="tableData" :height="790" stripe style="width: 100%;">
-    <el-table-column prop="id" label="ID" width="50">
+    <el-table-column label="ID" prop="id" width="50">
     </el-table-column>
-    <el-table-column prop="name" label="Featured Name" width="250">
+    <el-table-column label="Featured Name" prop="name" width="250">
     </el-table-column>
-    <el-table-column prop="description" label="Featured Description" width="500" :show-overflow-tooltip="true">
+    <el-table-column :show-overflow-tooltip="true" label="Featured Description" prop="description" width="500">
     </el-table-column>
-    <el-table-column prop="iconCssClass" label="Icon" width="200">
+    <el-table-column label="Icon" prop="iconCssClass" width="200">
     </el-table-column>
-    <el-table-column prop="category.id" label="Category ID" width="120">
+    <el-table-column label="Category ID" prop="category.id" width="120">
     </el-table-column>
-    <el-table-column prop="category.name" label="Category Name">
+    <el-table-column label="Category Name" prop="category.name">
     </el-table-column>
     <el-table-column align="right">
       <template slot="header" slot-scope="scope">
-        <el-input v-model="search" size="mini" placeholder="Enter keyword to search" />
+        <el-input v-model="search" placeholder="Enter keyword to search" size="mini"/>
       </template>
       <template slot-scope="scope">
-        <el-button size="mini" type="warning" plain @click="cancelFeatured(scope.$index, scope.row)">Cancel Featured
+        <el-button plain size="mini" type="warning" @click="cancelFeatured(scope.$index, scope.row)">Cancel Featured
         </el-button>
       </template>
     </el-table-column>
@@ -48,7 +48,7 @@ export default {
         .then(res => this.data = res.data)
     },
     cancelFeatured(index, item) {
-      this.$confirm('Are you sure?', 'Confirmation', { type: 'warning' })
+      this.$confirm('Are you sure?', 'Confirmation', {type: 'warning'})
         .then(() => {
           this.$api.featuredCategory.deleteItem(item.id)
             .then(res => this.$message.success(`Operation successful. ${res.message}`))

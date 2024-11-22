@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="Add Configuration" :visible.sync="dialogFormVisible" width="30%">
+  <el-dialog :visible.sync="dialogFormVisible" title="Add Configuration" width="30%">
     <el-form ref="uploadForm" :model="form" :rules="formRules" label-width="100px">
       <el-form-item label="Key" prop="key">
         <el-input v-model="form.key" autocomplete="off"></el-input>
@@ -39,8 +39,8 @@ export default {
         description: null
       },
       formRules: {
-        key: [{ required: true, message: 'Please enter key', trigger: 'blur' },],
-        value: [{ required: true, message: 'Please enter value', trigger: 'blur' }],
+        key: [{required: true, message: 'Please enter key', trigger: 'blur'},],
+        value: [{required: true, message: 'Please enter value', trigger: 'blur'}],
       }
     }
   },
@@ -76,13 +76,13 @@ export default {
           this.$api.config.add(this.form)
             .then(res => {
               if (res.successful) {
-                this.$message({ message: 'Configuration added successfully', type: 'success' })
+                this.$message({message: 'Configuration added successfully', type: 'success'})
                 this.$emit('onAddSucceed')
                 this.close()
               }
             })
             .catch(res => {
-              this.$message({ message: `Failed to add configuration! ${res.message}`, type: 'error' })
+              this.$message({message: `Failed to add configuration! ${res.message}`, type: 'error'})
             })
         }
 
@@ -90,13 +90,13 @@ export default {
           this.$api.config.update(this.form)
             .then(res => {
               if (res.successful) {
-                this.$message({ message: 'Configuration updated successfully', type: 'success' })
+                this.$message({message: 'Configuration updated successfully', type: 'success'})
                 this.$emit('onUpdateSucceed')
                 this.close()
               }
             })
             .catch(res => {
-              this.$message({ message: `Failed to update configuration! ${res.message}`, type: 'error' })
+              this.$message({message: `Failed to update configuration! ${res.message}`, type: 'error'})
             })
         }
       })

@@ -1,11 +1,11 @@
 <template>
-  <el-dialog title="Additional Information" :visible.sync="dialogFormVisible" width="30%">
+  <el-dialog :visible.sync="dialogFormVisible" title="Additional Information" width="30%">
     <el-form ref="uploadForm" :model="form" label-width="80px">
       <el-form-item label="ID" prop="id">
-        <el-input v-model="form.id" readonly="readonly" autocomplete="off"></el-input>
+        <el-input v-model="form.id" autocomplete="off" readonly="readonly"></el-input>
       </el-form-item>
       <el-form-item label="Action" prop="action">
-        <el-input v-model="form.action" readonly="readonly" autocomplete="off"></el-input>
+        <el-input v-model="form.action" autocomplete="off" readonly="readonly"></el-input>
       </el-form-item>
       <el-form-item label="Reason" prop="reason">
         <el-input v-model="form.reason" autocomplete="off" placeholder="Enter approval/rejection reason"></el-input>
@@ -42,7 +42,7 @@ export default {
   methods: {
     resetForm() {
       this.$refs.uploadForm.resetFields()
-      this.form = { reason: '' }
+      this.form = {reason: ''}
     },
     show(id, action) {
       this.form.id = id

@@ -1,6 +1,6 @@
 <template>
-  <el-dialog title="Add Category" :visible.sync="dialogFormVisible" width="30%">
-    <el-form ref="uploadForm" :model="form" :rules="formRules" label-width="80px" label-position="left">
+  <el-dialog :visible.sync="dialogFormVisible" title="Add Category" width="30%">
+    <el-form ref="uploadForm" :model="form" :rules="formRules" label-position="left" label-width="80px">
       <el-form-item label="Name" prop="name">
         <el-input v-model="form.name" autocomplete="off"></el-input>
       </el-form-item>
@@ -11,7 +11,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="Visible" prop="visible">
-        <el-switch v-model="form.visible" />
+        <el-switch v-model="form.visible"/>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { getAll } from "@/http/modules/category";
+import {getAll} from "@/http/modules/category";
 
 export default {
   name: "addCategoryDialog",
@@ -46,9 +46,9 @@ export default {
         visible: 1
       },
       formRules: {
-        name: [{ required: true, message: 'Please enter name', trigger: 'blur' },],
-        parentId: [{ required: true, message: 'Please enter parent category', trigger: 'blur' },],
-        visible: [{ required: true, message: 'Please enter visibility', trigger: 'blur' },],
+        name: [{required: true, message: 'Please enter name', trigger: 'blur'},],
+        parentId: [{required: true, message: 'Please enter parent category', trigger: 'blur'},],
+        visible: [{required: true, message: 'Please enter visibility', trigger: 'blur'},],
       }
     }
   },
@@ -92,12 +92,12 @@ export default {
       getAll()
         .then(res => {
           this.categories = [
-            { id: 0, name: '[Top Level Category]' },
+            {id: 0, name: '[Top Level Category]'},
             ...res.data
           ]
         })
         .catch(res => {
-          this.$message({ message: `${res.message}`, type: 'error' })
+          this.$message({message: `${res.message}`, type: 'error'})
         })
     },
     submitUpload() {
@@ -108,13 +108,13 @@ export default {
           this.$api.category.add(this.form)
             .then(res => {
               if (res.successful) {
-                this.$message({ message: 'Added successfully', type: 'success' })
+                this.$message({message: 'Added successfully', type: 'success'})
                 this.$emit('onAddSucceed')
                 this.close()
               }
             })
             .catch(res => {
-              this.$message({ message: `Failed to add! ${res.message}`, type: 'error' })
+              this.$message({message: `Failed to add! ${res.message}`, type: 'error'})
             })
         }
 
@@ -122,13 +122,13 @@ export default {
           this.$api.category.update(this.form)
             .then(res => {
               if (res.successful) {
-                this.$message({ message: 'Updated successfully', type: 'success' })
+                this.$message({message: 'Updated successfully', type: 'success'})
                 this.$emit('onUpdateSucceed')
                 this.close()
               }
             })
             .catch(res => {
-              this.$message({ message: `Failed to update! ${res.message}`, type: 'error' })
+              this.$message({message: `Failed to update! ${res.message}`, type: 'error'})
             })
         }
       })

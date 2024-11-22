@@ -1,8 +1,8 @@
 <template>
   <div class="personal-panel">
-    <div class="personal-desc" :style="{ 'background': this.$store.state.app.themeColor }">
+    <div :style="{ 'background': this.$store.state.app.themeColor }" class="personal-desc">
       <div class="avatar-container">
-        <img class="avatar" :src="require('@/assets/user.png')" />
+        <img :src="require('@/assets/user.png')" class="avatar"/>
       </div>
       <div class="name-role">
         <span class="sender">{{ user.name }} - {{ user.role }}</span>
@@ -21,10 +21,10 @@
     </div>
     <div class="main-operation">
       <span class="main-operation-item">
-        <el-button size="small" icon="fa fa-male"> Personal Center</el-button>
+        <el-button icon="fa fa-male" size="small"> Personal Center</el-button>
       </span>
       <span class="main-operation-item">
-        <el-button size="small" icon="fa fa-key"> Change Password</el-button>
+        <el-button icon="fa fa-key" size="small"> Change Password</el-button>
       </span>
     </div>
     <div class="other-operation">

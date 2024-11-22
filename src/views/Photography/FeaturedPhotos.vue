@@ -1,8 +1,8 @@
 <template>
   <el-row v-if="featuredPhotos.length > 0" :gutter="10">
-    <el-col :span="4" v-for="fp in featuredPhotos" :key="fp.id">
+    <el-col v-for="fp in featuredPhotos" :key="fp.id" :span="4">
       <el-card :body-style="{ padding: '0px' }">
-        <el-image :src="fp.photo.url" class="image" alt="" :preview-src-list="[fp.photo.url]"></el-image>
+        <el-image :preview-src-list="[fp.photo.url]" :src="fp.photo.url" alt="" class="image"></el-image>
         <div style="padding: 14px;">
           <div>Image Title: {{ fp.photo.title }}</div>
           <div>Location: {{ fp.photo.location }}</div>
@@ -11,9 +11,9 @@
           </div>
           <div class="bottom clearfix" style="margin-top: 3px;">
             <el-button-group>
-              <el-button type="info" icon="el-icon-warning-outline" plain @click="notImpl">Not Implemented</el-button>
-              <el-button type="primary" icon="el-icon-edit" plain @click="notImpl">Edit</el-button>
-              <el-button type="danger" icon="el-icon-delete" plain @click="deleteItem(fp)">Delete</el-button>
+              <el-button icon="el-icon-warning-outline" plain type="info" @click="notImpl">Not Implemented</el-button>
+              <el-button icon="el-icon-edit" plain type="primary" @click="notImpl">Edit</el-button>
+              <el-button icon="el-icon-delete" plain type="danger" @click="deleteItem(fp)">Delete</el-button>
             </el-button-group>
           </div>
         </div>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { baseUrl } from "@/utils/global"
+import {baseUrl} from "@/utils/global"
 
 export default {
   name: "FeaturedPhotos",
@@ -54,7 +54,7 @@ export default {
       this.$message('Not implemented yet!')
     },
     deleteItem(featuredPhoto) {
-      this.$confirm('This operation will delete this featured photo. Do you want to continue?', 'Warning', { type: 'warning' })
+      this.$confirm('This operation will delete this featured photo. Do you want to continue?', 'Warning', {type: 'warning'})
         .then(() => {
           this.$api.featuredPhoto.deleteItem(featuredPhoto.id)
             .then(res => this.$message.success(`Deleted successfully. ${res.message}`))

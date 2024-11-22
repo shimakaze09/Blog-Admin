@@ -1,5 +1,5 @@
 <template>
-  <el-color-picker class="theme-picker" popper-class="theme-picker-dropdown" v-model="theme" :size="size">
+  <el-color-picker v-model="theme" :size="size" class="theme-picker" popper-class="theme-picker-dropdown">
   </el-color-picker>
 </template>
 
@@ -68,14 +68,14 @@ export default {
           return new RegExp(oldVal, 'i').test(text) && !/Chalk Variables/.test(text)
         })
       styles.forEach(style => {
-        const { innerText } = style
+        const {innerText} = style
         if (typeof innerText !== 'string') return
         style.innerText = this.updateStyle(innerText, originalCluster, themeCluster)
       })
       // Respond to external operations
       this.$emit('onThemeChange', val)
       if (this.showSuccess) {
-        this.$message({ message: 'Theme changed successfully', type: 'success' })
+        this.$message({message: 'Theme changed successfully', type: 'success'})
       } else {
         this.showSuccess = true
       }

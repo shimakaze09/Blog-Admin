@@ -1,26 +1,26 @@
 <template>
   <el-container>
     <el-header height="30px">
-      <el-row type="flex" justify="start">
+      <el-row justify="start" type="flex">
         <div>
           <el-button @click="handleAdd">Add</el-button>
           <add-link-dialog ref="addDialog" @onAddSucceed="onAddSucceed"
-            @onUpdateSucceed="onUpdateSucceed"></add-link-dialog>
+                           @onUpdateSucceed="onUpdateSucceed"></add-link-dialog>
         </div>
       </el-row>
     </el-header>
     <el-main>
-      <el-table ref="table" :data="data" height="730" stripe style="width: 100%"
-        :default-sort="{ prop: 'time', order: 'descending' }">
-        <el-table-column type="selection" width="30" />
-        <el-table-column prop="id" label="ID" width="100" />
-        <el-table-column prop="name" label="Name" :show-overflow-tooltip="true" />
-        <el-table-column prop="url" label="URL" :show-overflow-tooltip="true" />
-        <el-table-column prop="description" label="Description" :show-overflow-tooltip="true" />
-        <el-table-column prop="visible" label="Visible">
+      <el-table ref="table" :data="data" :default-sort="{ prop: 'time', order: 'descending' }" height="730" stripe
+                style="width: 100%">
+        <el-table-column type="selection" width="30"/>
+        <el-table-column label="ID" prop="id" width="100"/>
+        <el-table-column :show-overflow-tooltip="true" label="Name" prop="name"/>
+        <el-table-column :show-overflow-tooltip="true" label="URL" prop="url"/>
+        <el-table-column :show-overflow-tooltip="true" label="Description" prop="description"/>
+        <el-table-column label="Visible" prop="visible">
           <template slot-scope="scope">
-            <el-tag size="medium" v-if="scope.row.visible">{{ scope.row.visible }}</el-tag>
-            <el-tag size="medium" v-else type="danger">{{ scope.row.visible }}</el-tag>
+            <el-tag v-if="scope.row.visible" size="medium">{{ scope.row.visible }}</el-tag>
+            <el-tag v-else size="medium" type="danger">{{ scope.row.visible }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="Actions" width="150">
