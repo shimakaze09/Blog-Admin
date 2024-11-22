@@ -1,6 +1,6 @@
 <template>
   <el-dialog :visible.sync="dialogFormVisible" title="Add Friend Link" width="30%">
-    <el-form ref="uploadForm" :model="form" :rules="formRules" label-width="100px">
+    <el-form ref="uploadForm" :model="form" :rules="formRules" label-position="left" label-width="auto">
       <el-form-item label="Name" prop="name">
         <el-input v-model="form.name" autocomplete="off"></el-input>
       </el-form-item>

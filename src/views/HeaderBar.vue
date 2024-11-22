@@ -1,5 +1,6 @@
 <template>
-  <div :class="collapse ? 'position-collapse-left' : 'position-left'" :style="{ 'background': themeColor, 'display': fullscreen ? 'none' : '' }"
+  <div :class="collapse ? 'position-collapse-left' : 'position-left'"
+       :style="{ 'background': themeColor, 'display': fullscreen ? 'none' : '' }"
        class="header">
     <!-- Navigation collapse -->
     <span class="hamburg">
@@ -12,7 +13,8 @@
     </span>
     <!-- Navigation Menu -->
     <span class="navbar">
-      <el-menu :background-color="themeColor" :default-active="activeIndex" active-text-color="#ffd04b" class="el-menu-demo"
+      <el-menu :background-color="themeColor" :default-active="activeIndex" active-text-color="#ffd04b"
+               class="el-menu-demo"
                mode="horizontal" text-color="#fff" @select="selectNavBar()">
         <el-menu-item index="1" @click="$router.push('/')">Home</el-menu-item>
         <el-menu-item index="2" @click="openWindow('https://github.com/shimakaze09')">GitHub</el-menu-item>
@@ -22,11 +24,6 @@
     <span class="toolbar">
       <el-menu :active-text-color="themeColor" :background-color="themeColor" class="el-menu-demo" mode="horizontal"
                text-color="#14889A">
-        <el-menu-item index="1">
-          <!-- Theme switcher -->
-          <theme-picker :default="themeColor" class="theme-picker" @onThemeChange="onThemeChange">
-          </theme-picker>
-        </el-menu-item>
         <el-menu-item v-popover:popover-personal index="4">
           <!-- User Information -->
           <span class="user-info"><img :src="user.avatar"/>{{ user.name }}</span>

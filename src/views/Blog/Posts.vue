@@ -33,7 +33,7 @@
     </el-header>
     <el-main>
       <!-- Fixed table header can be achieved by defining the height attribute in the el-table element. No additional code is required. -->
-      <el-table ref="table" :data="posts" :default-sort="{ prop: 'lastUpdateTime', order: 'descending' }" height="730" stripe
+      <el-table ref="table" :data="posts" :default-sort="{ prop: 'lastUpdateTime', order: 'descending' }" stripe
                 style="width: 100%"
                 @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="30"/>
@@ -60,15 +60,14 @@
           </template>
         </el-table-column>
       </el-table>
-    </el-main>
-    <el-footer height="30px">
+
       <!-- Pagination -->
-      <el-pagination :current-page="currentPage" :page-size="pageSize"
+      <el-pagination :current-page="currentPage" :page-size="pageSize" class="py-3 text-center"
                      :page-sizes="[10, 20, 40, 60, 80, 100]" :total="totalCount" background
                      layout="total, sizes, prev, pager, next, jumper"
                      @size-change="handlePageSizeChange" @current-change="handleCurrentPageChange">
       </el-pagination>
-    </el-footer>
+    </el-main>
   </el-container>
 </template>
 

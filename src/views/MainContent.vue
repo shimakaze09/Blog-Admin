@@ -117,7 +117,7 @@ export default {
   left: 1px;
   right: 1px;
   bottom: 0;
-  background: rgba(67, 69, 70, 0.1);
+  //background: rgba(67, 69, 70, 0.1);
 
   .tabs {
     position: fixed;

@@ -1,31 +1,47 @@
 <template>
-  <el-container>
-    <el-header height="30px">
-      <el-row justify="start" type="flex">
-        <div>
-          <el-button @click="handleAdd">Add</el-button>
-          <add-config-dialog ref="addConfigDialog" @onAddSucceed="onAddSucceed"
-                             @onUpdateSucceed="onUpdateSucceed"></add-config-dialog>
-        </div>
-      </el-row>
-    </el-header>
-    <el-main>
-      <el-table ref="table" :data="data" :default-sort="{ prop: 'time', order: 'descending' }" height="730" stripe
-                style="width: 100%">
-        <el-table-column type="selection" width="30"/>
-        <el-table-column label="ID" prop="id" width="100"/>
-        <el-table-column :show-overflow-tooltip="true" label="Key" prop="key"/>
-        <el-table-column :show-overflow-tooltip="true" label="Value" prop="value"/>
-        <el-table-column :show-overflow-tooltip="true" label="Description" prop="description"/>
-        <el-table-column fixed="right" label="Actions" width="150">
-          <template slot-scope="scope">
-            <el-link type="info" @click="onItemEditClick(scope.row)">Edit</el-link>
-            <el-link type="danger" @click="onItemDeleteClick(scope.row)">Delete</el-link>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-main>
-  </el-container>
+  <div>
+    <add-config-dialog ref="addConfigDialog" @onAddSucceed="onAddSucceed"
+                       @onUpdateSucceed="onUpdateSucceed"></add-config-dialog>
+    <el-table
+      ref="table"
+      :data="data"
+      :default-sort="{prop: 'time', order:'descending'}"
+      stripe
+      style="width: 100%">
+      <el-table-column
+        type="selection"
+        width="30"/>
+      <el-table-column
+        label="ID"
+        prop="id"
+        width="100"/>
+      <el-table-column
+        :show-overflow-tooltip="true"
+        label="Key"
+        prop="key"
+      />
+      <el-table-column
+        :show-overflow-tooltip="true"
+        label="Value"
+        prop="value"
+      />
+      <el-table-column
+        :show-overflow-tooltip="true"
+        label="Description"
+        prop="description"
+      />
+      <el-table-column
+        align="right">
+        <template slot="header" slot-scope="scope">
+          <el-button size="mini" @click="handleAdd">Add Configuration Item</el-button>
+        </template>
+        <template slot-scope="scope">
+          <el-link type="info" @click="onItemEditClick(scope.row)">Edit</el-link>
+          <el-link type="danger" @click="onItemDeleteClick(scope.row)">Delete</el-link>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
 </template>
 
 <script>

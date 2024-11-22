@@ -46,7 +46,7 @@ const router = new Router({
         },
         {path: 'category/list', name: 'Category List', component: Categories},
         {path: 'category/featured', name: 'Featured Category', component: FeaturedCategories},
-        {path: 'comment/need-audit', name: 'Recommended Category', component: CommentNeedAuditList},
+        {path: 'comment/need-audit', name: 'Review Comments', component: CommentNeedAuditList},
         {path: 'post/list', name: 'Post List', component: Posts},
         {path: 'post/featured', name: 'Featured Post', component: FeaturedPosts},
         {path: 'post/top', name: 'Top Post', component: TopPost},

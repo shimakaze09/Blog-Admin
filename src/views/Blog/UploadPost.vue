@@ -1,7 +1,7 @@
 <template>
   <el-row>
-    <el-col :span="8">
-      <el-form ref="uploadForm" :model="form" :rules="formRules" label-width="120px">
+    <el-col :offset="8" :span="8">
+      <el-form ref="uploadForm" :model="form" :rules="formRules" label-position="top" label-width="auto">
         <el-form-item label="Post Title" prop="title">
           <el-input v-model="form.title" autocomplete="off"></el-input>
         </el-form-item>
@@ -20,14 +20,20 @@
           <el-option v-for="item in zipCodings" :key="item" :label="item" :value="item"/>
         </el-select>
       </el-form-item>
-      <el-upload ref="upload" :auto-upload="false" :file-list="fileList" :on-change="onUploadChange" accept="application/x-zip-compressed,.zip"
-                 action="" drag>
+      <el-upload
+        ref="upload"
+        :auto-upload="false" :file-list="fileList" :on-change="onUploadChange"
+        accept="application/x-zip-compressed,.zip"
+        action=""
+        class="w-100"
+        drag
+      >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">Drag the file here, or <em>click to upload</em></div>
         <div slot="tip" class="el-upload__tip">Only zip files can be uploaded</div>
       </el-upload>
 
-      <el-row justify="end" type="flex">
+      <el-row class="py-3" justify="end" type="flex">
         <el-button type="primary" @click="submitUpload">Submit</el-button>
       </el-row>
     </el-col>
@@ -106,8 +112,12 @@ export default {
 }
 </script>
 
-<style scoped>
-.el-select {
-  width: 100%;
+<style lang="scss">
+.el-upload {
+  width: 100% !important;
+}
+
+.el-upload-dragger {
+  width: 100% !important;
 }
 </style>
