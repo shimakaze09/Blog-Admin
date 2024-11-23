@@ -3,7 +3,7 @@ import axios from '../axios'
 /**
  * Get blog list
  * @param categoryId Category ID
- * @param onlyPublished
+ * @param isPublish
  * @param status
  * @param search Search term
  * @param sortBy Sorting field

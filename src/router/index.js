@@ -6,7 +6,7 @@ import NotFound from '@/views/404'
 import Home from "@/views/Home"
 import Categories from "@/views/Category/Categories"
 import FeaturedCategories from "@/views/Category/FeaturedCategories"
-import CommentNeedAuditList from '@/views/Comment/CommentNeedAuditList.vue'
+import Comments from '@/views/Comment/Comments.vue'
 import Posts from "@/views/Blog/Posts"
 import TopPost from "@/views/Blog/TopPost"
 import FeaturedPosts from "@/views/Blog/FeaturedPosts"
@@ -46,7 +46,7 @@ const router = new Router({
         },
         {path: 'category/list', name: 'Category List', component: Categories},
         {path: 'category/featured', name: 'Featured Category', component: FeaturedCategories},
-        {path: 'comment/need-audit', name: 'Review Comments', component: CommentNeedAuditList},
+        {path: 'comment/list', name: 'Review Comments', component: Comments},
         {path: 'post/list', name: 'Post List', component: Posts},
         {path: 'post/featured', name: 'Featured Post', component: FeaturedPosts},
         {path: 'post/top', name: 'Top Post', component: TopPost},

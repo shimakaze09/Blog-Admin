@@ -1,6 +1,5 @@
 <template>
   <div>
-    <audit-reason-dialog ref="auditReasonDialog" @onAccept="onAccept" @onReject="onReject"/>
     <el-table
       ref="table"
       v-loading="loading"
@@ -17,14 +16,12 @@
         prop="id"/>
       <el-table-column
         :show-overflow-tooltip="true"
-        label="Username"
-        prop="anonymousUser.name"
-      />
-      <el-table-column
-        :show-overflow-tooltip="true"
-        label="Email"
-        prop="anonymousUser.email"
-      />
+        label="User Info"
+      >
+        <template v-slot="scope">
+          <el-link type="text" @click="showUserInfo(scope.row)">{{ scope.row.anonymousUser.email }}</el-link>
+        </template>
+      </el-table-column>
       <el-table-column
         :show-overflow-tooltip="true"
         label="Article"
@@ -47,11 +44,24 @@
         prop="content"
       />
       <el-table-column
+        :show-overflow-tooltip="true"
+        label="Supplementary Reason"
+        prop="reason"/>
+      <el-table-column
         label="Is Displayed"
         prop="visible"
       >
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-tag v-if="scope.row.visible" size="medium">Yes</el-tag>
+          <el-tag v-else size="medium" type="danger">No</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="Requires Audit"
+        prop="isNeedAudit"
+      >
+        <template #default="scope">
+          <el-tag v-if="scope.row.isNeedAudit" size="medium">Yes</el-tag>
           <el-tag v-else size="medium" type="danger">No</el-tag>
         </template>
       </el-table-column>
@@ -83,21 +93,23 @@
 
 <script>
 import {dateTimeBeautify} from "@/utils/dateTime";
-import AuditReasonDialog from '@/views/Comment/AuditReasonDialog.vue'
 import {baseUrl} from '@/utils/global'
 
 export default {
-  name: "CommentNeedAuditList",
-  components: {
-    AuditReasonDialog,
-  },
+  name: "Comment",
   data() {
     return {
       data: [],
-      pagination: null,
+      postId: null,
+      pagination: {
+        pageNumber: 1,
+        pageSize: 10,
+      },
       loading: false,
       isRefreshLoading: false,
-      baseUrl: baseUrl
+      baseUrl: baseUrl,
+      search: '',
+      sortBy: null,
     }
   },
   mounted() {
@@ -107,7 +119,13 @@ export default {
     async loadData() {
       return new Promise((resolve, reject) => {
         this.loading = true
-        this.$api.comment.getNeedAuditList()
+        this.$api.comment.getList(
+          this.postId,
+          this.search,
+          this.sortBy,
+          this.pagination.pageNumber,
+          this.pagination.pageSize,
+        )
           .then(res => {
             this.pagination = res.pagination
             this.data = res.data
@@ -130,35 +148,39 @@ export default {
       this.isRefreshLoading = false
     },
     handleAccept(item) {
-      this.$refs.auditReasonDialog.accept(item.id)
-    },
-    onAccept(itemId, reason) {
-      this.loading = true;
-
-      this.$api.comment.accept(itemId, reason)
-        .then(res => {
-          this.$message.success('Operation successful!');
-        })
-        .catch(res => {
-          console.error(res);
-          this.$message.warning(`Operation failed! ${res.message}`);
-        })
-        .finally(() => this.loadData());
+      this.$prompt('Please enter the reason', 'Audit Comment - Additional Reason', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+      }).then(({value}) => {
+        this.$api.comment.accept(item.id, value)
+          .then(res => {
+            this.$message.success('Operation successful!')
+          })
+          .catch(res => {
+            console.error(res)
+            this.$message.warning(`Operation failed! ${res.message}`)
+          })
+          .finally(() => this.loadData())
+      }).catch(() => {
+      })
     },
     handleReject(item) {
-      this.$refs.auditReasonDialog.reject(item.id)
-    },
-    onReject(itemId, reason) {
-      this.loading = true
-      this.$api.comment.reject(itemId, reason)
-        .then(res => {
-          this.$message.info('Operation successful!')
+      this.$prompt('Please enter the reason', 'Audit Comment - Additional Reason', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+      }).then(({value}) => {
+        this.$api.comment.reject(item.id, value)
+          .then(res => {
+            this.$message.success('Operation successful!')
+          })
+          .catch(res => {
+            console.error(res)
+            this.$message.warning(`Operation failed! ${res.message}`)
+          })
+          .finally(() => this.loadData())
+      })
+        .catch(() => {
         })
-        .catch(res => {
-          console.error(res)
-          this.$message.warning(`Operation failed! ${res.message}`)
-        })
-        .finally(() => this.loadData())
     },
     onItemDeleteClick(item) {
       this.$confirm('This action will delete the link, do you want to continue?', 'Warning', {
@@ -180,6 +202,24 @@ export default {
       this.pagination.pageNumber = page
       this.loadData()
     },
+    showUserInfo(comment) {
+      let user = comment.anonymousUser;
+      const h = this.$createElement;
+      this.$msgbox({
+        title: 'User Information',
+        message: h('div', null, [
+          h('p', null, `ID: ${user.id}`),
+          h('p', null, `Username: ${user.name}`),
+          h('p', null, `Email: ${user.email}`),
+          h('p', null, `Website: ${user.url}`),
+          h('p', null, `IP Address: ${user.ip}`),
+          h('p', null, `Creation Time: ${dateTimeBeautify(user.createdTime)}`),
+          h('p', null, `User Agent Identifier: ${comment.userAgent}`),
+        ]),
+        showCancelButton: false,
+        showConfirmButton: false,
+      });
+    }
   }
 }
 </script>

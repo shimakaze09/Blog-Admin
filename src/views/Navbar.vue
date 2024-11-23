@@ -32,7 +32,7 @@
         </el-menu-item-group>
       </el-submenu>
       <el-menu-item-group title="Comment Management">
-        <el-menu-item index="/comment/need-audit">Audit Comments</el-menu-item>
+        <el-menu-item index="/comment/list">Comment Management</el-menu-item>
       </el-menu-item-group>
       <el-menu-item-group title="Tools">
         <el-menu-item index="/post/upload">Batch Upload</el-menu-item>
