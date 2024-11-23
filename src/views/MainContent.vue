@@ -3,8 +3,9 @@
        class="main-container">
     <!-- Tab Bar -->
     <div :style="{ 'display': fullscreen ? 'none' : '' }" class="tab-container">
-      <el-tabs v-model="mainTabsActiveName" :class="$store.state.app.collapse ? 'position-collapse-left' : 'position-left'"
-               :closable="true" class="tabs" type="card" @tab-click="selectedTabHandle"
+      <el-tabs v-model="mainTabsActiveName"
+               :class="$store.state.app.collapse ? 'position-collapse-left' : 'position-left'"
+               :closable="true" class="tabs text-center" type="card" @tab-click="selectedTabHandle"
                @tab-remove="removeTabHandle">
         <el-dropdown :show-timeout="0" class="tabs-tools" trigger="hover">
           <div style="font-size:20px;width:50px;"><i class="el-icon-arrow-down"></i></div>

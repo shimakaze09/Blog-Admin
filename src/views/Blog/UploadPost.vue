@@ -9,14 +9,14 @@
           <el-input v-model="form.summary" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="Post Category" prop="categoryId">
-          <el-select v-model="form.categoryId" clearable filterable placeholder="Please select a category"
-                     v-on:change="handleCategoryChange">
+          <el-select v-model="form.categoryId" class="w-100" clearable filterable
+                     placeholder="Please select category" v-on:change="handleCategoryChange">
             <el-option v-for="item in categories" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
       </el-form>
       <el-form-item label="ZIP File Encoding" prop="zipEncoding">
-        <el-select v-model="form.zipEncoding" clearable filterable placeholder="ZIP File Encoding">
+        <el-select v-model="form.zipEncoding" class="w-100" clearable filterable placeholder="ZIP File Encoding">
           <el-option v-for="item in zipCodings" :key="item" :label="item" :value="item"/>
         </el-select>
       </el-form-item>

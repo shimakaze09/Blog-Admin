@@ -1,5 +1,6 @@
 <template>
-  <el-form ref="loginForm" :model="loginForm" :rules="fieldRules" class="demo-ruleForm login-container" label-position="left"
+  <el-form ref="loginForm" :model="loginForm" :rules="fieldRules" class="demo-ruleForm login-container"
+           label-position="left"
            label-width="0px">
     <div class="title h2">
       <h2>Blog</h2>

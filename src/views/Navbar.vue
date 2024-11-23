@@ -1,7 +1,8 @@
 <template>
   <div class="menu-bar-container">
     <!-- Logo -->
-    <div :class="collapse ? 'menu-bar-collapse-width' : 'menu-bar-width'" :style="{ 'background': themeColor, 'display': fullscreen ? 'none' : '' }"
+    <div :class="collapse ? 'menu-bar-collapse-width' : 'menu-bar-width'"
+         :style="{ 'background': themeColor, 'display': fullscreen ? 'none' : '' }"
          class="logo" @click="$router.push('/')">
       <img v-if="collapse" src="@/assets/codelab.png"/>
       <div>{{ collapse ? '' : appName }}</div>

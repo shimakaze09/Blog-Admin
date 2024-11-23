@@ -33,9 +33,14 @@
     </el-header>
     <el-main>
       <!-- Fixed table header can be achieved by defining the height attribute in the el-table element. No additional code is required. -->
-      <el-table ref="table" :data="posts" :default-sort="{ prop: 'lastUpdateTime', order: 'descending' }" stripe
-                style="width: 100%"
-                @selection-change="handleSelectionChange">
+      <el-table
+        ref="table"
+        v-loading="loading"
+        :data="posts"
+        :default-sort="{ prop: 'lastUpdateTime', order: 'descending' }"
+        stripe
+        style="width: 100%"
+        @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="30"/>
         <el-table-column label="ID" prop="id" width="180"/>
         <el-table-column label="Article Status" prop="status" width="100"/>
@@ -62,8 +67,8 @@
       </el-table>
 
       <!-- Pagination -->
-      <el-pagination :current-page="currentPage" :page-size="pageSize" class="py-3 text-center"
-                     :page-sizes="[10, 20, 40, 60, 80, 100]" :total="totalCount" background
+      <el-pagination :current-page="currentPage" :page-size="pageSize" :page-sizes="[10, 20, 40, 60, 80, 100]"
+                     :total="totalCount" background class="py-3 text-center"
                      layout="total, sizes, prev, pager, next, jumper"
                      @size-change="handlePageSizeChange" @current-change="handleCurrentPageChange">
       </el-pagination>
@@ -78,6 +83,7 @@ export default {
   name: 'Posts',
   data() {
     return {
+      loading: false,
       currentPage: 1,
       pageSize: 20,
       totalCount: 1000,
@@ -112,6 +118,7 @@ export default {
     },
     // Load blog posts
     loadBlogPosts() {
+      this.loading = true
       this.$api.blogPost.getList(
         false, this.currentStatus,
         this.currentCategoryId, this.search, this.sortBy,
@@ -125,6 +132,7 @@ export default {
           item.lastUpdateTime = utils.dateTimeBeautify(item.lastUpdateTime)
         })
       }).catch(res => this.$message.error(`Error fetching article list: ${res.message}`))
+        .finally(() => this.loading = false)
     },
     // Load status list
     loadStatusList() {

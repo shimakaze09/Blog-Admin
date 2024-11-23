@@ -1,20 +1,25 @@
 <template>
   <el-result icon="info" subTitle="Current top post information" title="Top Post">
     <template slot="extra">
-      <p>ID: {{ data.id }}</p>
-      <p>Title: {{ data.title }}</p>
       <p>Category: {{ data.category.name }}</p>
-      <el-button plain size="medium" type="primary" @click="viewPost">View Post</el-button>
+      <p>ID：{{ data.id }}</p>
+      <el-link :href="`${baseUrl}/Blog/Post/${data.id}`" target="_blank" type="primary">Title: {{
+          data.title
+        }}
+      </el-link>
     </template>
   </el-result>
 </template>
 
 <script>
+import {baseUrl} from "@/utils/global";
+
 export default {
   name: "TopPost",
   data() {
     return {
-      data: null
+      data: null,
+      baseUrl: baseUrl
     }
   },
   mounted() {
@@ -25,9 +30,6 @@ export default {
       this.$api.blog.top()
         .then(res => this.data = res.data)
     },
-    viewPost() {
-      this.$message('Function not implemented')
-    }
   }
 }
 </script>

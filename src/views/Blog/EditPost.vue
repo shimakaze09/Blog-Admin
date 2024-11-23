@@ -2,7 +2,8 @@
   <div class="pb-5">
     <el-input v-model="postTitle" placeholder="Post Title"></el-input>
 
-    <v-md-editor v-model="postContent" :codemirror-style-reset="true" :default-show-toc="true" :disabled-menus="mode === 'edit' ? [] : ['image/upload-image']"
+    <v-md-editor v-model="postContent" :codemirror-style-reset="true" :default-show-toc="true"
+                 :disabled-menus="mode === 'edit' ? [] : ['image/upload-image']"
                  class="mb-3" height="750px"
                  @save="onEditorSave" @fullscreen-change="fullscreenChange" @upload-image="handleUploadImage"/>
 

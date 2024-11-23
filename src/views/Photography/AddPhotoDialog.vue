@@ -8,7 +8,8 @@
         <el-input v-model="form.location" autocomplete="off"></el-input>
       </el-form-item>
     </el-form>
-    <el-upload ref="upload" :auto-upload="false" :file-list="fileList" :on-change="onUploadChange" accept="image/jpeg,image/png"
+    <el-upload ref="upload" :auto-upload="false" :file-list="fileList" :on-change="onUploadChange"
+               accept="image/jpeg,image/png"
                action="" drag>
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">Drag files here or <em>click to upload</em></div>
