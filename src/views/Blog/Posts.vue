@@ -6,7 +6,7 @@
           <el-col :span="8">
             <el-input v-model="search" placeholder="Enter keyword" prefix-icon="el-icon-search"></el-input>
           </el-col>
-          <el-col :span="9">
+          <el-col :span="8">
             <el-cascader v-model="currentCategoryId" :options="categoriesTree" :props="{
                     checkStrictly:true,
                     expandTrigger: 'hover',
@@ -15,12 +15,18 @@
                          filterable
                          placeholder="Category Filter"></el-cascader>
           </el-col>
-          <el-col :span="4">
-            <el-select v-model="currentStatus" clearable filterable placeholder="Article Status">
+          <el-col :span="3">
+            <el-select v-model="currentStatus" clearable filterable placeholder="Article Tag">
               <el-option v-for="item in statusList" :key="item" :label="item" :value="item"/>
             </el-select>
           </el-col>
           <el-col :span="3">
+            <el-select v-model="currentIsPublish" clearable placeholder="Article Status">
+              <el-option :value="true" label="Published"/>
+              <el-option :value="false" label="Draft"/>
+            </el-select>
+          </el-col>
+          <el-col :span="2">
             <el-button @click="handleSearchClick">Search</el-button>
           </el-col>
         </el-row>
@@ -42,17 +48,25 @@
         style="width: 100%"
         @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="30"/>
-        <el-table-column label="ID" prop="id" width="180"/>
-        <el-table-column label="Article Status" prop="status" width="100"/>
-        <el-table-column :show-overflow-tooltip="true" label="Title" prop="title" sortable width="600">
+        <el-table-column :show-overflow-tooltip="true" label="ID" prop="id"/>
+        <el-table-column label="Article Status" prop="isPublish">
+          <template v-slot="scope">
+            <el-tag v-if="scope.row.isPublish">Published</el-tag>
+            <el-tag v-else type="info">Draft</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column :show-overflow-tooltip="true" label="Title" prop="title" sortable width="500">
           <template v-slot="scope">
             <el-link :href="`${baseUrl}/Blog/Post/${scope.row.id}`" target="_blank">{{ scope.row.title }}</el-link>
           </template>
         </el-table-column>
-        <el-table-column label="Creation Time" prop="creationTime" sortable width="150"/>
-        <el-table-column label="Last Updated" prop="lastUpdateTime" sortable width="150"/>
+        <el-table-column
+          label="Article Mark"
+          prop="status"/>
+        <el-table-column label="Creation Time" prop="creationTime" sortable/>
+        <el-table-column label="Last Updated" prop="lastUpdateTime" sortable/>
         <el-table-column label="Category" prop="category.name"/>
-        <el-table-column fixed="right" label="Operations" width="150">
+        <el-table-column fixed="right" label="Operations">
           <template v-slot="scope">
             <el-link type="info" @click="onItemEditClick(scope.row)">Edit</el-link>
             <el-link type="danger" @click="onItemDeleteClick(scope.row)">Delete</el-link>
@@ -100,6 +114,7 @@ export default {
       statusList: [],
       currentCategoryId: 0,
       currentStatus: '',
+      currentIsPublish: null,
       selectedPosts: [],
       hasSelection: false
     }

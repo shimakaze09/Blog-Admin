@@ -12,7 +12,7 @@
 
     <div class="d-flex justify-content-between mb-1">
       <div>Title</div>
-      <el-link target="_blank" type="primary">{{ `${baseUrl}/Blog/Post/${post.id}` }}</el-link>
+      <el-link v-if="post!==null" target="_blank" type="primary">{{ `${baseUrl}/Blog/Post/${post.id}` }}</el-link>
     </div>
     <el-input v-model="postTitle" class="mb-3" placeholder="Article Title"></el-input>
 
@@ -78,14 +78,17 @@
 // TODO: Add a page close warning or auto-save feature
 import {baseUrl} from "@/utils/global";
 import {dateTimeBeautify} from "@/utils/dateTime";
+import VMdEditor from "@kangc/v-md-editor/lib/codemirror-editor";
 
-import VMdEditor from '@kangc/v-md-editor';
 import enUS from '@kangc/v-md-editor/lib/lang/en-US';
 
 VMdEditor.lang.use('en-US', enUS);
 
 export default {
   name: "EditPost",
+  components: {
+    VMdEditor
+  },
   data() {
     return {
       baseUrl: baseUrl,
