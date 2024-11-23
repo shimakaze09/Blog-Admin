@@ -29,7 +29,7 @@
         :show-overflow-tooltip="true"
         label="Article"
       >
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-link :href="`${baseUrl}/Blog/Post/${scope.row.post.id}`" target="_blank">{{
               scope.row.post.title
             }}

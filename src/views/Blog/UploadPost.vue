@@ -9,10 +9,13 @@
           <el-input v-model="form.summary" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="Post Category" prop="categoryId">
-          <el-select v-model="form.categoryId" class="w-100" clearable filterable
-                     placeholder="Please select category" v-on:change="handleCategoryChange">
-            <el-option v-for="item in categories" :key="item.id" :label="item.name" :value="item.id"/>
-          </el-select>
+          <el-cascader v-model="form.categoryId" :options="categoriesTree" :props="{
+                    checkStrictly:true,
+                    expandTrigger: 'hover',
+                    emitPath:false,
+                 }" class="w-100" clearable
+                       filterable
+                       placeholder="Category Filter"></el-cascader>
         </el-form-item>
       </el-form>
       <el-form-item label="ZIP File Encoding" prop="zipEncoding">
@@ -34,7 +37,7 @@
       </el-upload>
 
       <el-row class="py-3" justify="end" type="flex">
-        <el-button type="primary" @click="submitUpload">Submit</el-button>
+        <el-button :loading="loading" type="primary" @click="submitUpload">Submit</el-button>
       </el-row>
     </el-col>
   </el-row>
@@ -45,11 +48,10 @@ export default {
   name: "UploadPost",
   data() {
     return {
+      loading: false,
       dialogFormVisible: false,
       fileList: [],
-      categories: [],
-      currentCategoryName: '',
-      currentCategoryId: 0,
+      categoriesTree: [],
       zipCodings: ['utf-8', 'utf-16', 'gbk', 'gb2312'],
       form: {
         title: '',
@@ -73,12 +75,22 @@ export default {
   },
   methods: {
     loadCategories() {
-      this.$api.category.getAll()
-        .then(res => this.categories = res.data)
-        .catch(res => this.$message.error(`Error fetching categories: ${res.message}`))
-    },
-    handleCategoryChange(categoryId) {
-      this.currentCategoryId = categoryId
+      const mapNodes = (nodes) => {
+        let items = []
+        if (!nodes) return null
+        for (const node of nodes) {
+          items.push({
+            label: `${node.text} (${node.tags[0]})`,
+            value: node.id,
+            children: mapNodes(node.nodes)
+          })
+        }
+        return items
+      }
+
+      this.$api.category.getNodes()
+        .then(res => this.categoriesTree = mapNodes(res.data))
+        .catch(res => this.$message.error(`Error loading category list: ${res.message}`))
     },
     onUploadChange(file, fileList) {
       console.log(file.raw.type)
@@ -98,6 +110,8 @@ export default {
       this.$refs.uploadForm.validate((valid) => {
         if (!valid) return false
 
+        this.loading = true
+
         this.$api.blog.upload(this.form.title, this.form.summary, this.form.categoryId, this.form.file.raw, this.form.zipEncoding)
           .then(res => {
             if (res.successful) {
@@ -105,7 +119,12 @@ export default {
               this.$router.push('/post/list')
             }
           })
-          .catch(res => this.$message.error(`Failed to upload post: ${res.message}`))
+          .catch(res => {
+            this.$alert(res.message, 'Upload Failed', {
+              confirmButtonText: 'OK',
+              type: 'error'
+            })
+          }).finally(() => this.loading = false)
       })
     },
   }

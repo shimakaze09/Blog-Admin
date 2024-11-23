@@ -46,17 +46,17 @@
         <el-col :span="12">
           <el-form-item label="Slug" prop="slug">
             <el-input v-model="form.slug" maxlength="150" placeholder="Slug" show-word-limit></el-input>
-            <small>(Friendly URL name, can only use letters, numbers, hyphens (-), underscores (_), and must not exceed
-              150 characters)</small>
+            <small>Friendly URL name, can only use letters, numbers, hyphens (-), underscores (_), and must not exceed
+              150 characters</small>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="Category" prop="category">
-            <el-cascader v-model="form.category" :options="categoryTree" :props="{
+            <el-cascader :options="categoryTree" :props="{
               checkStrictly: true,
               expandTrigger: 'hover',
               emitPath: false,
-            }" class="w-100" filterable></el-cascader>
+            }" class="w-100" clearable filterable></el-cascader>
           </el-form-item>
         </el-col>
       </el-row>
