@@ -43,20 +43,27 @@
       </el-form-item>
 
       <el-row :gutter="20">
-        <el-col :span="12">
+        <el-col :span="8">
           <el-form-item label="Slug" prop="slug">
             <el-input v-model="form.slug" maxlength="150" placeholder="Slug" show-word-limit></el-input>
             <small>Friendly URL name, can only use letters, numbers, hyphens (-), underscores (_), and must not exceed
               150 characters</small>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <el-form-item label="Category" prop="category">
             <el-cascader :options="categoryTree" :props="{
               checkStrictly: true,
               expandTrigger: 'hover',
               emitPath: false,
             }" class="w-100" clearable filterable></el-cascader>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="Article Tag" prop="status">
+            <el-input v-model="form.status" maxlength="20" placeholder="Status" show-word-limit></el-input>
+            <small>Extract the original markdown file name prefix to distinguish article statuses. For example:
+              Unfinished, Old Articles</small>
           </el-form-item>
         </el-col>
       </el-row>
@@ -101,6 +108,7 @@ export default {
       categoryTree: [],
       form: {
         isPublish: false,
+        status: '',
         slug: '',
         summary: '',
         category: 0,
@@ -148,6 +156,7 @@ export default {
             this.post.creationTime = dateTimeBeautify(this.post.creationTime)
             this.post.lastUpdateTime = dateTimeBeautify(this.post.lastUpdateTime)
             this.form.slug = this.post.slug
+            this.form.status = this.post.status
             this.form.isPublish = this.post.isPublish
             this.form.summary = this.post.summary
             this.form.category = this.post.categoryId
@@ -192,6 +201,7 @@ export default {
       post.content = this.postContent
       post.isPublish = this.form.isPublish
       post.slug = this.form.slug
+      post.status = this.form.status
       post.summary = this.form.summary
       post.categoryId = this.form.category
 
