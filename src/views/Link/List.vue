@@ -1,37 +1,57 @@
 <template>
-  <el-container>
-    <el-header height="30px">
-      <el-row justify="start" type="flex">
-        <div>
-          <el-button @click="handleAdd">Add</el-button>
-          <add-link-dialog ref="addDialog" @onAddSucceed="onAddSucceed"
-                           @onUpdateSucceed="onUpdateSucceed"></add-link-dialog>
-        </div>
-      </el-row>
-    </el-header>
-    <el-main>
-      <el-table ref="table" :data="data" :default-sort="{ prop: 'time', order: 'descending' }" height="730" stripe
-                style="width: 100%">
-        <el-table-column type="selection" width="30"/>
-        <el-table-column label="ID" prop="id" width="100"/>
-        <el-table-column :show-overflow-tooltip="true" label="Name" prop="name"/>
-        <el-table-column :show-overflow-tooltip="true" label="URL" prop="url"/>
-        <el-table-column :show-overflow-tooltip="true" label="Description" prop="description"/>
-        <el-table-column label="Visible" prop="visible">
-          <template slot-scope="scope">
-            <el-tag v-if="scope.row.visible" size="medium">{{ scope.row.visible }}</el-tag>
-            <el-tag v-else size="medium" type="danger">{{ scope.row.visible }}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column fixed="right" label="Actions" width="150">
-          <template slot-scope="scope">
-            <el-link type="info" @click="onItemEditClick(scope.row)">Edit</el-link>
-            <el-link type="danger" @click="onItemDeleteClick(scope.row)">Delete</el-link>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-main>
-  </el-container>
+  <div>
+    <add-link-dialog ref="addDialog" @onAddSucceed="onAddSucceed"
+                     @onUpdateSucceed="onUpdateSucceed"/>
+    <el-table
+      ref="table"
+      :data="data"
+      :default-sort="{prop: 'time', order:'descending'}"
+      height="730"
+      stripe
+      style="width: 100%">
+      <el-table-column
+        type="selection"
+        width="30"/>
+      <el-table-column
+        label="ID"
+        prop="id"
+        width="100"/>
+      <el-table-column
+        :show-overflow-tooltip="true"
+        label="Name"
+        prop="name"
+      />
+      <el-table-column
+        :show-overflow-tooltip="true"
+        label="URL"
+        prop="url"
+      />
+      <el-table-column
+        :show-overflow-tooltip="true"
+        label="Description"
+        prop="description"
+      />
+      <el-table-column
+        label="Visible"
+        prop="visible"
+      >
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.visible" size="medium">{{ scope.row.visible }}</el-tag>
+          <el-tag v-else size="medium" type="danger">{{ scope.row.visible }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="right">
+        <template slot="header" slot-scope="scope">
+          <el-button size="mini" @click="handleAdd">Add Link</el-button>
+        </template>
+        <template slot-scope="scope">
+          <el-link type="info" @click="onItemEditClick(scope.row)">Edit</el-link>
+          <el-link type="danger" @click="onItemDeleteClick(scope.row)">Delete</el-link>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
 </template>
 
 <script>

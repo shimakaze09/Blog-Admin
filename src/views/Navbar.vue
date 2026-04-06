@@ -1,7 +1,8 @@
 <template>
   <div class="menu-bar-container">
     <!-- Logo -->
-    <div :class="collapse ? 'menu-bar-collapse-width' : 'menu-bar-width'" :style="{ 'background': themeColor, 'display': fullscreen ? 'none' : '' }"
+    <div :class="collapse ? 'menu-bar-collapse-width' : 'menu-bar-width'"
+         :style="{ 'background': themeColor, 'display': fullscreen ? 'none' : '' }"
          class="logo" @click="$router.push('/')">
       <img v-if="collapse" src="@/assets/codelab.png"/>
       <div>{{ collapse ? '' : appName }}</div>
@@ -31,7 +32,7 @@
         </el-menu-item-group>
       </el-submenu>
       <el-menu-item-group title="Comment Management">
-        <el-menu-item index="/comment/need-audit">Audit Comments</el-menu-item>
+        <el-menu-item index="/comment/list">Comment Management</el-menu-item>
       </el-menu-item-group>
       <el-menu-item-group title="Tools">
         <el-menu-item index="/post/upload">Batch Upload</el-menu-item>

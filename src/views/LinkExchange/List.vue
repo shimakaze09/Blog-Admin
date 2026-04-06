@@ -1,7 +1,7 @@
 <template>
   <div>
     <reason-dialog ref="addReasonDialog" @addReason="addReason"></reason-dialog>
-    <el-table ref="table" :data="data" :default-sort="{ prop: 'time', order: 'descending' }" height="730" stripe
+    <el-table ref="table" :data="data" :default-sort="{ prop: 'time', order: 'descending' }" stripe
               style="width: 100%">
       <el-table-column type="selection" width="30"/>
       <el-table-column label="ID" prop="id" width="100"/>

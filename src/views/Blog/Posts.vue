@@ -3,24 +3,31 @@
     <el-header height="30px">
       <el-row justify="space-between" type="flex">
         <el-row :gutter="10">
-          <el-col :span="7">
+          <el-col :span="8">
             <el-input v-model="search" placeholder="Enter keyword" prefix-icon="el-icon-search"></el-input>
           </el-col>
-          <el-col :span="7">
-            <!-- Category selection -->
-            <!-- Add the attribute filterable to enable search functionality. By default, Select will find all options whose label property contains the input value. -->
-            <el-select v-model="currentCategoryName" clearable filterable placeholder="Select category"
-                       v-on:change="handleCategoryChange">
-              <el-option v-for="item in categories" :key="item.id" :label="item.name" :value="item.id">
-              </el-option>
-            </el-select>
+          <el-col :span="8">
+            <el-cascader v-model="currentCategoryId" :options="categoriesTree" :props="{
+                    checkStrictly:true,
+                    expandTrigger: 'hover',
+                    emitPath:false,
+               }" class="w-100" clearable
+                         filterable
+                         placeholder="Category Filter"></el-cascader>
           </el-col>
-          <el-col :span="7">
-            <el-select v-model="currentStatus" clearable filterable placeholder="Please select article status">
+          <el-col :span="3">
+            <el-select v-model="currentStatus" clearable filterable placeholder="Article Tag">
               <el-option v-for="item in statusList" :key="item" :label="item" :value="item"/>
             </el-select>
           </el-col>
           <el-col :span="3">
+            <el-select v-model="currentIsPublish" clearable placeholder="Article Status">
+              <el-option :value="null" label="All"/>
+              <el-option :value="true" label="Published"/>
+              <el-option :value="false" label="Draft"/>
+            </el-select>
+          </el-col>
+          <el-col :span="2">
             <el-button @click="handleSearchClick">Search</el-button>
           </el-col>
         </el-row>
@@ -33,25 +40,42 @@
     </el-header>
     <el-main>
       <!-- Fixed table header can be achieved by defining the height attribute in the el-table element. No additional code is required. -->
-      <el-table ref="table" :data="posts" :default-sort="{ prop: 'lastUpdateTime', order: 'descending' }" height="730" stripe
-                style="width: 100%"
-                @selection-change="handleSelectionChange">
+      <el-table
+        ref="table"
+        v-loading="loading"
+        :data="posts"
+        :default-sort="{ prop: 'lastUpdateTime', order: 'descending' }"
+        stripe
+        style="width: 100%"
+        @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="30"/>
-        <el-table-column label="ID" prop="id" width="180"/>
-        <el-table-column label="Article Status" prop="status" width="100"/>
-        <el-table-column :show-overflow-tooltip="true" label="Title" prop="title" sortable width="600"/>
-        <el-table-column label="Creation Time" prop="creationTime" sortable width="150"/>
-        <el-table-column label="Last Updated" prop="lastUpdateTime" sortable width="150"/>
+        <el-table-column :show-overflow-tooltip="true" label="ID" prop="id"/>
+        <el-table-column label="Article Status" prop="isPublish">
+          <template v-slot="scope">
+            <el-tag v-if="scope.row.isPublish">Published</el-tag>
+            <el-tag v-else type="info">Draft</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column :show-overflow-tooltip="true" label="Title" prop="title" sortable width="500">
+          <template v-slot="scope">
+            <el-link :href="`${baseUrl}/Blog/Post/${scope.row.id}`" target="_blank">{{ scope.row.title }}</el-link>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="Article Mark"
+          prop="status"/>
+        <el-table-column label="Creation Time" prop="creationTime" sortable/>
+        <el-table-column label="Last Updated" prop="lastUpdateTime" sortable/>
         <el-table-column label="Category" prop="category.name"/>
-        <el-table-column fixed="right" label="Operations" width="150">
-          <template slot-scope="scope">
+        <el-table-column fixed="right" label="Operations">
+          <template v-slot="scope">
             <el-link type="info" @click="onItemEditClick(scope.row)">Edit</el-link>
             <el-link type="danger" @click="onItemDeleteClick(scope.row)">Delete</el-link>
             <el-dropdown @command="cmd => onItemDropdownClick(scope.row, cmd)">
               <el-button size="small" type="text">
                 More<i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
-              <el-dropdown-menu slot="dropdown">
+              <el-dropdown-menu v-slot="dropdown">
                 <el-dropdown-item command="setFeatured">Set Featured</el-dropdown-item>
                 <el-dropdown-item command="cancelFeatured">Cancel Featured</el-dropdown-item>
                 <el-dropdown-item command="setTop">Set Top</el-dropdown-item>
@@ -60,36 +84,38 @@
           </template>
         </el-table-column>
       </el-table>
-    </el-main>
-    <el-footer height="30px">
+
       <!-- Pagination -->
-      <el-pagination :current-page="currentPage" :page-size="pageSize"
-                     :page-sizes="[10, 20, 40, 60, 80, 100]" :total="totalCount" background
+      <el-pagination :current-page="currentPage" :page-size="pageSize" :page-sizes="[10, 20, 40, 60, 80, 100]"
+                     :total="totalCount" background class="py-3 text-center"
                      layout="total, sizes, prev, pager, next, jumper"
                      @size-change="handlePageSizeChange" @current-change="handleCurrentPageChange">
       </el-pagination>
-    </el-footer>
+    </el-main>
   </el-container>
 </template>
 
 <script>
 import * as utils from '@/utils/dateTime'
+import {baseUrl} from "@/utils/global";
 
 export default {
   name: 'Posts',
   data() {
     return {
+      baseUrl: baseUrl,
+      loading: false,
       currentPage: 1,
       pageSize: 20,
       totalCount: 1000,
       search: '',
       sortBy: null,
       posts: [],
-      categories: [],
+      categoriesTree: [],
       statusList: [],
       currentCategoryId: 0,
-      currentCategoryName: '',
-      currentStatus: '',
+      currentStatus: null,
+      currentIsPublish: null,
       selectedPosts: [],
       hasSelection: false
     }
@@ -105,16 +131,28 @@ export default {
   methods: {
     // Load categories
     loadCategories() {
-      this.$api.category.getAll().then(res => {
-        let categories = [{id: 0, name: 'All'}]
-        categories = categories.concat(res.data)
-        this.categories = categories
-      }).catch(res => this.$message.error(`Error loading category list: ${res.message}`))
+      const mapNodes = (nodes) => {
+        let items = []
+        if (!nodes) return null
+        for (const node of nodes) {
+          items.push({
+            label: `${node.text} (${node.tags[0]})`,
+            value: node.id,
+            children: mapNodes(node.nodes)
+          })
+        }
+        return items
+      }
+
+      this.$api.category.getNodes()
+        .then(res => this.categoriesTree = mapNodes(res.data))
+        .catch(res => this.$message.error(`Error loading category list: ${res.message}`))
     },
     // Load blog posts
     loadBlogPosts() {
+      this.loading = true
       this.$api.blogPost.getList(
-        false, this.currentStatus,
+        this.currentIsPublish, this.currentStatus,
         this.currentCategoryId, this.search, this.sortBy,
         this.currentPage, this.pageSize
       ).then(res => {
@@ -126,6 +164,7 @@ export default {
           item.lastUpdateTime = utils.dateTimeBeautify(item.lastUpdateTime)
         })
       }).catch(res => this.$message.error(`Error fetching article list: ${res.message}`))
+        .finally(() => this.loading = false)
     },
     // Load status list
     loadStatusList() {

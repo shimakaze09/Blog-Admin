@@ -1,5 +1,10 @@
 <template>
-  <el-table :data="tableData" :height="790" stripe style="width: 100%;">
+  <el-table
+    v-loading="loading"
+    :data="tableData"
+    :height="790"
+    stripe
+    style="width: 100%;">
     <el-table-column label="ID" prop="id" width="50">
     </el-table-column>
     <el-table-column label="Featured Name" prop="name" width="250">
@@ -29,6 +34,7 @@ export default {
   name: "FeaturedCategories",
   data() {
     return {
+      loading: false,
       data: [],
       search: ''
     }
@@ -44,8 +50,14 @@ export default {
   },
   methods: {
     loadData() {
+      this.loading = true
       this.$api.featuredCategory.getAll()
         .then(res => this.data = res.data)
+        .catch(res => {
+          console.error(res)
+          this.$message.error(res.message)
+        })
+        .finally(() => this.loading = false)
     },
     cancelFeatured(index, item) {
       this.$confirm('Are you sure?', 'Confirmation', {type: 'warning'})

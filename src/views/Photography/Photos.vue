@@ -19,10 +19,16 @@
     </el-main>
     <el-footer height="30px">
       <!-- Pagination -->
-      <el-pagination :current-page="currentPage" :page-size="pageSize"
-                     :page-sizes="[10, 20, 40, 60, 80, 100]" :total="totalCount" background
-                     layout="total, sizes, prev, pager, next, jumper"
-                     @size-change="handlePageSizeChange" @current-change="handleCurrentPageChange">
+      <el-pagination
+        :current-page="currentPage"
+        :page-size="pageSize"
+        :page-sizes="[10, 20, 40, 60, 80, 100]"
+        :total="totalCount"
+        background
+        class="py-3 text-center"
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handlePageSizeChange"
+        @current-change="handleCurrentPageChange">
       </el-pagination>
     </el-footer>
   </el-container>

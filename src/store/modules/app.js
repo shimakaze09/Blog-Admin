@@ -1,8 +1,8 @@
 export default {
   state: {
-    appName: "Blog",  // Application Name
-    themeColor: "#14889A",  // Theme Color
-    oldThemeColor: "#14889A",   // Previous Theme Color
+    appName: "Blog Admin",  // Application Name
+    themeColor: "#1993DFFF",  // Theme Color
+    oldThemeColor: "#1993DFFF",   // Previous Theme Color
     collapse: false,  // Navigation bar collapse status
     menuRouteLoaded: false,    // Whether menu and routes have been loaded
     fullscreen: false,      // Fullscreen status

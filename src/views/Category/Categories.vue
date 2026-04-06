@@ -1,5 +1,9 @@
 <template>
-  <el-table :data="tableData" :height="800" style="width: 100%;">
+  <el-table
+    v-loading="loading"
+    :data="tableData"
+    :height="800"
+    style="width: 100%;">
     <el-table-column label="ID" prop="id" width="50">
     </el-table-column>
     <el-table-column label="Name" prop="name" width="250">
@@ -47,6 +51,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       data: [],
       search: ''
     }
@@ -62,8 +67,14 @@ export default {
   },
   methods: {
     loadData() {
+      this.loading = true
       this.$api.category.getAll()
         .then(res => this.data = res.data)
+        .catch(res => {
+          console.error(res)
+          this.$message.error(res.message)
+        })
+        .finally(() => this.loading = false)
     },
     handleAdd() {
       this.$refs.addDialog.add()
@@ -72,23 +83,23 @@ export default {
       this.$refs.addDialog.edit(item)
     },
     handleDelete(item) {
-      this.$confirm('此操作将删除该分类, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm('Are you sure you want to delete this category?', 'Warning', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
         type: 'warning'
       }).then(() => {
         this.$api.category.deleteItem(item.id)
-          .then(res => this.$message.success(`删除成功。${res.message}`))
-          .catch(res => this.$message.error(`操作失败。${res.message}`))
+          .then(res => this.$message.success(`Deletion successful. ${res.message}`))
+          .catch(res => this.$message.error(`Operation failed. ${res.message}`))
           .finally(() => this.loadData())
-      }).catch(() => this.$message('已取消删除'))
+      }).catch(() => this.$message('Deletion cancelled'))
     },
     onAddSucceed() {
-      this.$message.success('添加成功')
+      this.$message.success('Added successfully')
       this.loadData()
     },
     onUpdateSucceed() {
-      this.$message.success('保存成功')
+      this.$message.success('Saved successfully')
       this.loadData()
     },
     setFeatured(index, item) {
